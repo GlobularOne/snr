@@ -96,6 +96,18 @@ def _dev_option_enabled(namespace, option):
     return False
 
 
+def _download_payload_set(version: str):
+    with open(os.path.join(common_paths.CACHE_PATH, "payload_set.tar.gz"), "wb") as stream:
+        headers = {'User-Agent': 'Mozilla/5.0'}
+        payload_set = requests.get(
+            f"https://github.com/GlobularOne/snr_payloads/releases/download/{version}/payload_set.tar.gz", headers=headers)
+        if payload_set.status_code == 200:
+            stream.write(payload_set.content)
+        else:
+            print_fatal(
+                f"Downloading payload set archive failed with status code ({payload_set.status_code})")
+
+
 def main():
     """
     Main function of snr user interface
@@ -164,29 +176,26 @@ def main():
         if not _dev_option_enabled(namespace, namespace.dry_payload_set_update):
             print_debug("Fetching latest version info")
             latest_version = requests.get(
-                "https://github.com/GlobularOne/snr_payloads/releases/latest").url.split("/")
+                "https://github.com/GlobularOne/snr_payloads/releases/latest").url.split("/")[-1]
             if os.path.exists(os.path.join(common_paths.CONFIG_PATH, "payload_version")):
                 with open(os.path.join(common_paths.CONFIG_PATH, "payload_version")) as stream:
                     installed_version = stream.readline().strip()
                 if installed_version != latest_version:
                     print_info(
                         f"Version '{installed_version}' is already installed, but the latest is '{latest_version}'. Installing...")
-                    with open(os.path.join(common_paths.CACHE_PATH, "payload_set.tar.gz"), "wb") as stream:
-                        stream.write(requests.get(
-                            f"https://github.com/GlobularOne/snr_payloads/releases/{latest_version}/payload_set.tar.gz").content)
+                    _download_payload_set(latest_version)
                 else:
                     print_info("Latest version already installed")
             else:
                 print_info(
                     f"No version is installed, but the latest is '{latest_version}'. Installing...")
-                with open(os.path.join(common_paths.CACHE_PATH, "payload_set.tar.gz"), "wb") as stream:
-                    stream.write(requests.get(
-                        f"https://github.com/GlobularOne/snr_payloads/releases/{latest_version}/payload_set.tar.gz").content)
-            print_debug("Clearning payload_set directory")
+                _download_payload_set(latest_version)
+
+            print_debug("Clearing payload_set directory")
             shutil.rmtree(os.path.join(common_paths.CACHE_PATH,
                           "payload_set"), ignore_errors=True)
             print_debug("Unpacking payload set")
-            shutil.unpack_archive(os.path.join(common_paths.CACHE_PATH, "payload_set"), os.path.join(
+            shutil.unpack_archive(os.path.join(common_paths.CACHE_PATH, "payload_set.tar.gz"), os.path.join(
                 common_paths.CACHE_PATH, "payload_set"), "gztar")
             print_debug("Payload set installed successfully")
         else:
