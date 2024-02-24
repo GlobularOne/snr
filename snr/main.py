@@ -23,6 +23,8 @@ except ImportError:
     pass
 
 
+REQUIRED_FEATURE_LEVEL = 0
+
 def _app_loop():
     """
     Main application loop
@@ -122,7 +124,7 @@ def main():
         namespace.dry_payload_set_update = False
         namespace.ignore_compatibility_issues = False
         namespace.force_interactive_mode = False
-    if libsnr_version.MAJOR != version.MAJOR:
+    if libsnr_version.MAJOR != version.MAJOR or int(libsnr_version.MINOR) < REQUIRED_FEATURE_LEVEL:
         print(
             f"Incompatible version of libsnr found. libsnr version {libsnr_version.__version__} is not compatible with snr version {version.MAJOR}", end="")
         if not _dev_option_enabled(namespace, namespace.ignore_compatibility_issues):
