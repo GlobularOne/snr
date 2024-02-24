@@ -18,14 +18,14 @@ Clear the screen
     _clear_screen()
 
 
-def cmd_echo(argv, _):
+def cmd_echo(argv: list[str], _):
     """\
 Echo the arguments
     """
     return " ".join(argv)
 
 
-def cmd_exit(argv, argc):
+def cmd_exit(argv: list[str], argc: int):
     """\
 Exit the interactive environment
     """
@@ -36,7 +36,7 @@ Exit the interactive environment
     _sys.exit(_options.default_exit_code)
 
 
-def cmd_help(argv, argc):
+def cmd_help(argv: list[str], argc: int):
     """\
 Print help on a specific command or variable, or list all commands
     """

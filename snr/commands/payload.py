@@ -27,7 +27,7 @@ from libsnr.util.payloads.libsnr import install_libsnr as _install_libsnr
 from libsnr.payload.safety_pin import remove_safety_pin as _remove_safety_pin
 
 
-def cmd_use(argv, argc):
+def cmd_use(argv: list[str], argc: int):
     """\
 Use a payload
     """
@@ -68,7 +68,7 @@ Use a payload
     _options.prompt = _options.PROMPT_LOADED_FORMAT.format(args)
 
 
-def cmd_generate(argv, argc):
+def cmd_generate(argv: list[str], argc: int):
     """\
 Generate a selected payload, pass device to write to as an argument
     """

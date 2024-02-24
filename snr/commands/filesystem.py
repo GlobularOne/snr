@@ -16,7 +16,7 @@ Print current working directory
     return _os.getcwd()
 
 
-def cmd_chdir(argv, argc):
+def cmd_chdir(argv: list[str], argc: int):
     """\
 Change current working directory
     """
@@ -32,7 +32,7 @@ Change current working directory
         _print_debug(exc)
 
 
-def cmd_list(argv, argc):
+def cmd_list(argv: list[str], argc: int):
     """\
 List files and directory inside a directory\
  or current working directory if none passed
@@ -50,7 +50,7 @@ List files and directory inside a directory\
     return output
 
 
-def cmd_read(argv, argc):
+def cmd_read(argv: list[str], argc: int):
     """\
 Read the content of a file
     """
@@ -71,7 +71,7 @@ Read the content of a file
     return content
 
 
-def cmd_checksum(argv, argc):
+def cmd_checksum(argv: list[str], argc: int):
     """\
 Calculate checksum of a file.
 Valid algorithms are: blake2b, md5, sha1, sha224, sha256, sha384, sha512

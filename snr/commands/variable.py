@@ -8,7 +8,7 @@ from libsnr.util.common_utils import print_error as _print_error
 from libsnr.util.common_utils import print_warning as _print_warning
 
 
-def cmd_unset(argv, argc):
+def cmd_unset(argv: list[str], argc: int):
     """\
 Unset a variable
     """
@@ -21,7 +21,7 @@ Unset a variable
     _global_vars.del_variable(argv[0])
 
 
-def cmd_set(argv, argc):  # pylint: disable=too-many-return-statements
+def cmd_set(argv: list[str], argc: int):  # pylint: disable=too-many-return-statements
     """\
 Set value of a variable (syntax: set <variable name> <value>).
 Or unset a variable (syntax: set <variable name>).
