@@ -87,6 +87,13 @@ dependencies: {' '.join(dependencies)}
     return None
 
 
+def cmd_info(_, __):
+    """\
+Print information on the loaded payload. Same as `help payload`
+    """
+    cmd_help(["payload"], 1)
+
+
 def cmd_reload(_, __):
     """\
 Reload the shell
