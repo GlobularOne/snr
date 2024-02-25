@@ -10,9 +10,21 @@ To install snr, use pip:
 sudo pip3 install snr
 ```
 
+Or, installation could be from source code. First fetch the source code:
+
+```sh
+git clone https://github.com/GlobularOne/snr.git
+```
+
+And then install using pip:
+
+```sh
+sudo pip3 install .
+```
+
 If you get a message about externally managed environment, add the `--break-system-packages` flag.
 
-After installation, snr needs to be initialized:
+After installation (from either method), snr needs to be initialized:
 
 ```sh
 sudo snr --init
