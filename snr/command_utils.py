@@ -48,8 +48,10 @@ def dispatch_command(cmdline: str) -> str | None:
                 "Executing a command failed."
                 " This is likely to be an issue in snr itself."
                 f" Please report this issue at {_HOMEPAGE}/issues")
+            print(">>>>>> START OF TRACEBACK <<<<<<")
             _traceback.print_stack()
             _traceback.print_exc()
+            print(">>>>>> END OF TRACEBACK <<<<<<")
     else:
         _print_sys(f"Command '{argv[0]}' not found")
     return None
