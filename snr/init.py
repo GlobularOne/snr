@@ -13,9 +13,27 @@ from libsnr.util.common_utils import (print_debug, print_fatal, print_info,
 from libsnr.util.programs.debootstrap import Debootstrap
 
 SUITE = "stable"
-COMPONENTS = "main,contrib,non-free,non-free-firmware"
-ALL_PACKAGES = "btrfs-progs,console-setup,console-setup-linux,cryptsetup,curl,dbus,dosfstools,e2fsprogs,ethtool,firmware-ath9k-htc,firmware-atheros,firmware-bnx2,firmware-bnx2x,firmware-brcm80211,firmware-linux,firmware-realtek,firmware-zd1211,gdisk,grub-efi-{grub_arch}-signed,grub-pc,initramfs-tools,kmod,linux-image-{kernel_arch},lvm2,net-tools,ntfs-3g,python3,shim-signed,util-linux,wireless-tools,wpasupplicant"
+COMPONENTS = ",".join("main","contrib","non-free","non-free-firmware")
+ALL_PACKAGES = ",".join(["btrfs-progs", "console-setup", "console-setup-linux",
+                         "cryptsetup", "curl", "dbus", "dosfstools",
+                         "e2fsprogs", "ethtool", "firmware-ath9k-htc",
+                         "firmware-atheros", "firmware-bnx2", "firmware-bnx2x",
+                         "firmware-brcm80211", "firmware-linux",
+                        "firmware-realtek", "firmware-zd1211", "gdisk",
+                         "grub-efi-{grub_arch}-signed", "grub-pc",
+                         "initramfs-tools", "kmod", "linux-image-{kernel_arch}",
+                         "lvm2", "net-tools", "ntfs-3g", "python3", "shim-signed",
+                         "util-linux", "wireless-tools", "wpasupplicant"])
 ROOTFS_PATH = os.path.join(common_paths.CACHE_PATH, "rootfs")
+TRIM_DIRS = (
+    os.path.join(
+        ROOTFS_PATH, "var", "cache", "apt", "archives"),
+    os.path.join(
+        ROOTFS_PATH, "usr", "share", "man"),
+    os.path.join(
+        ROOTFS_PATH, "usr", "share", "doc")
+)
+
 
 def clear_cache():
     """
@@ -67,18 +85,13 @@ def init_main():
             grub_arch=arch.get_grub_arch()),
     }
     print_info("Generating rootfs image")
-    debootstrap.invoke(SUITE, ROOTFS_PATH,
-                       options=debootstrap_options)
-    errorcode = debootstrap.wait()
+    errorcode = debootstrap.invoke_and_wait(None, SUITE, ROOTFS_PATH,
+                                            options=debootstrap_options)
     if errorcode:
         print_fatal(f"Generating rootfs image failed ({errorcode})")
     print_debug("Cleaning rootfs image")
-    shutil.rmtree(os.path.join(
-        ROOTFS_PATH, "var", "cache", "apt", "archives"))
-    shutil.rmtree(os.path.join(
-        ROOTFS_PATH, "usr", "share", "man"))
-    shutil.rmtree(os.path.join(
-        ROOTFS_PATH, "usr", "share", "doc"))
+    for trim_dir in TRIM_DIRS:
+        shutil.rmtree(trim_dir)
     # Cleanup initrd
     rootfs_boot_path = os.path.join(ROOTFS_PATH, "boot")
     for entry in glob.glob(os.path.join(rootfs_boot_path, "initrd.img-*")):
