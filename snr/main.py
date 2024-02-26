@@ -241,11 +241,14 @@ def main():
     if not options.quiet:
         fore_blue()
         print(Figlet(font="slant").renderText("stick->'n'->run"))
+        fore_reset()
         print_sys(
             f"{BLUE}Version{RESET}: {RED}{version.__version__}"
             f" (Library version: {libsnr_version.__version__})")
+        fore_reset()
         print_sys(
             f"{BLUE}Homepage{RESET}: {RED}{version.HOMEPAGE}")
+        fore_reset()
         print_sys(
             f"{RED}{_count_payloads()}{BLUE} Available Payloads"
         )
