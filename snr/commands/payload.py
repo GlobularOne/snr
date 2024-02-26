@@ -93,6 +93,7 @@ def _payload_generate_post(context: dict):
         return False
     return True
 
+
 def cmd_generate(argv: list[str], argc: int):
     """\
 Generate a selected payload, pass device to write to as an argument

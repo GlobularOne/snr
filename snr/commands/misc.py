@@ -67,8 +67,8 @@ Print help on a specific command or variable, or list all commands
                           "AUTHORS",
                           ["No authors specified"])
         license_info = getattr(_options.payload_module,
-                          "LICENSE",
-                          "Apache-2.0")
+                               "LICENSE",
+                               "Apache-2.0")
         dependencies = getattr(_options.payload_module,
                                "DEPENDENCIES",
                                ["No dependencies specified"])

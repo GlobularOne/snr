@@ -6,6 +6,7 @@ import traceback as _traceback
 from libsnr.util.common_utils import print_error as _print_error
 from libsnr.util.common_utils import print_sys as _print_sys
 from libsnr.version import HOMEPAGE as _HOMEPAGE
+
 from snr.variables import global_vars as _global_vars
 
 commands = {}

@@ -4,6 +4,7 @@ Variable-related commands
 from libsnr.util.common_utils import Table as _Table
 from libsnr.util.common_utils import print_error as _print_error
 from libsnr.util.common_utils import print_warning as _print_warning
+
 from snr.command_utils import dispatch_command as _dispatch_command
 from snr.variables import global_vars as _global_vars
 

@@ -115,7 +115,9 @@ def _download_payload_set(set_version: str):
         headers = {'User-Agent': 'Mozilla/5.0'}
         payload_set = requests.get(
             "https://github.com/GlobularOne/snr_payloads/releases/download/"
-            f"{set_version}/payload_set.tar.gz", headers=headers)
+            f"{set_version}/payload_set.tar.gz",
+            headers=headers,
+            timeout=5)
         if payload_set.status_code == 200:
             stream.write(payload_set.content)
         else:
@@ -127,8 +129,11 @@ def _download_payload_set(set_version: str):
 def _update_payload_set(namespace):
     if not _dev_option_enabled(namespace, namespace.dry_payload_set_update):
         print_debug("Fetching latest version info")
+        headers = {'User-Agent': 'Mozilla/5.0'}
         latest_version = requests.get(
-            "https://github.com/GlobularOne/snr_payloads/releases/latest").url.split("/")[-1]
+            "https://github.com/GlobularOne/snr_payloads/releases/latest",
+            headers=headers,
+            timeout=5).url.split("/")[-1]
         if os.path.exists(os.path.join(common_paths.CONFIG_PATH, "payload_version")):
             with open(os.path.join(common_paths.CONFIG_PATH, "payload_version"),
                       encoding="utf-8") as stream:
