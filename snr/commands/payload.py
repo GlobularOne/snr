@@ -6,9 +6,11 @@ import os as _os
 import sys as _sys
 
 from libsnr.core import options as _options
+from libsnr.payload.safety_pin import remove_safety_pin as _remove_safety_pin
 from libsnr.payload_generation import (finishing, formatting,
                                        grub_installation, partitioning,
-                                       satisfy_dependencies, rootfs_preparation, target_check)
+                                       rootfs_preparation,
+                                       satisfy_dependencies, target_check)
 from libsnr.payload_generation.common import \
     bind_required_rootfs_dirs as _bind_required_rootfs_dirs
 from libsnr.payload_generation.common import clean_and_exit as _clean_and_exit
@@ -17,14 +19,15 @@ from libsnr.payload_generation.common import \
 from libsnr.payload_generation.common import \
     unbind_required_rootfs_dirs as _unbind_required_rootfs_dirs
 from libsnr.util.common_utils import \
-    call_external_function as _call_external_function, EXTERNAL_CALL_FAILURE as _EXTERNAL_CALL_FAILURE
+    EXTERNAL_CALL_FAILURE as _EXTERNAL_CALL_FAILURE
+from libsnr.util.common_utils import \
+    call_external_function as _call_external_function
 from libsnr.util.common_utils import print_debug as _print_debug
 from libsnr.util.common_utils import print_error as _print_error
 from libsnr.util.common_utils import print_info as _print_info
 from libsnr.util.common_utils import print_ok as _print_ok
-from libsnr.util.program_wrapper import ProgramWrapper as _ProgramWrapper
 from libsnr.util.payloads.libsnr import install_libsnr as _install_libsnr
-from libsnr.payload.safety_pin import remove_safety_pin as _remove_safety_pin
+from libsnr.util.program_wrapper import ProgramWrapper as _ProgramWrapper
 
 
 def cmd_use(argv: list[str], argc: int):
@@ -68,6 +71,28 @@ Use a payload
     _options.prompt = _options.PROMPT_LOADED_FORMAT.format(args)
 
 
+def _payload_generate_pre(context: dict):
+    if not target_check.check_target(context):
+        return False
+    if not partitioning.partition_target(context):
+        return False
+    if not formatting.format_target(context):
+        return False
+    if not rootfs_preparation.prepare_rootfs(context):
+        return False
+    if not satisfy_dependencies.satisfy_dependencies(context):
+        return False
+    return True
+
+
+def _payload_generate_post(context: dict):
+    _remove_safety_pin(context["temp_dir"])
+    if not grub_installation.install_grub(context):
+        return False
+    if not finishing.finish_target(context):
+        return False
+    return True
+
 def cmd_generate(argv: list[str], argc: int):
     """\
 Generate a selected payload, pass device to write to as an argument
@@ -87,17 +112,9 @@ Generate a selected payload, pass device to write to as an argument
         "target": args
     }
     try:
-        if not target_check.check_target(context):
-            return
-        if not partitioning.partition_target(context):
-            return
-        if not formatting.format_target(context):
-            return
-        if not rootfs_preparation.prepare_rootfs(context):
-            return
-        if not satisfy_dependencies.satisfy_dependencies(context):
-            return
         _print_info("Generating payload")
+        if not _payload_generate_pre(context):
+            return
         _install_libsnr(context)
         _bind_required_rootfs_dirs(context)
         errorcode = _call_external_function(
@@ -107,10 +124,7 @@ Generate a selected payload, pass device to write to as an argument
             _clean_and_exit(
                 context, f"Payload generation failed ({repr(errorcode)})")
             return
-        _remove_safety_pin(context["temp_dir"])
-        if not grub_installation.install_grub(context):
-            return
-        if not finishing.finish_target(context):
+        if not _payload_generate_post(context):
             return
         _ProgramWrapper("sync").invoke_and_wait(None)
         _print_ok("Payload generated successfully")

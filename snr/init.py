@@ -13,7 +13,7 @@ from libsnr.util.common_utils import (print_debug, print_fatal, print_info,
 from libsnr.util.programs.debootstrap import Debootstrap
 
 SUITE = "stable"
-COMPONENTS = ",".join("main","contrib","non-free","non-free-firmware")
+COMPONENTS = ",".join(["main","contrib","non-free","non-free-firmware"])
 ALL_PACKAGES = ",".join(["btrfs-progs", "console-setup", "console-setup-linux",
                          "cryptsetup", "curl", "dbus", "dosfstools",
                          "e2fsprogs", "ethtool", "firmware-ath9k-htc",

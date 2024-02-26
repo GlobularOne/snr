@@ -1,14 +1,19 @@
 """
 Other commands
 """
-import sys as _sys
 import os as _os
+import sys as _sys
 
 from libsnr.core import options as _options
-from libsnr.util.common_utils import print_debug as _print_debug, print_warning as _print_warning, print_error as _print_error, clear_screen as _clear_screen
-from snr import command_utils as _command_utils, atexit_callbacks as _atexist_callbacks
-from snr.variables import global_vars as _global_vars
+from libsnr.util.common_utils import clear_screen as _clear_screen
+from libsnr.util.common_utils import print_debug as _print_debug
+from libsnr.util.common_utils import print_error as _print_error
+from libsnr.util.common_utils import print_warning as _print_warning
 from libsnr.util.table import Table as _Table
+
+from snr import atexit_callbacks as _atexist_callbacks
+from snr import command_utils as _command_utils
+from snr.variables import global_vars as _global_vars
 
 
 def cmd_clear(_, __):
@@ -61,7 +66,7 @@ Print help on a specific command or variable, or list all commands
         authors = getattr(_options.payload_module,
                           "AUTHORS",
                           ["No authors specified"])
-        license = getattr(_options.payload_module,
+        license_info = getattr(_options.payload_module,
                           "LICENSE",
                           "Apache-2.0")
         dependencies = getattr(_options.payload_module,
@@ -71,7 +76,7 @@ Print help on a specific command or variable, or list all commands
 Payload path: {_options.payload_path}
 Input: {' '.join(inputs)}
 Authors: {' '.join(authors)}
-license: {license}
+license: {license_info}
 dependencies: {' '.join(dependencies)}
 {doc}
 """

@@ -1,11 +1,12 @@
 """
 Snr interactive environment commands
 """
+from libsnr.util.common_utils import print_debug as _print_debug
+
 from snr.commands.filesystem import *
 from snr.commands.misc import *
 from snr.commands.payload import *
 from snr.commands.variable import *
-from libsnr.util.common_utils import print_debug as _print_debug
 
 
 def discover_commands():
