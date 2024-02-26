@@ -25,6 +25,7 @@ except ImportError:
 
 REQUIRED_FEATURE_LEVEL = 0
 
+
 def _app_loop():
     """
     Main application loop
@@ -87,7 +88,8 @@ def _parse_arguments():
         dev_argument_group.add_argument("--ignore-compatibility-issues", action="store_true",
                                         help="Ignore if snr's version major doesn't match libsnr's version major")
         dev_argument_group.add_argument("--force-interactive-mode", action="store_true",
-                                        help="Even if -c is passed on the command line, still assume the program is being run interactively. This is a VERY DANGEROUS option and should not be taken lightly")
+                                        help="Even if -c is passed on the command line, still assume the program is being run interactively." 
+                                        "This is a VERY DANGEROUS option and should not be taken lightly")
     return parser.parse_args(sys.argv[1:])
 
 
@@ -108,6 +110,21 @@ def _download_payload_set(version: str):
         else:
             print_fatal(
                 f"Downloading payload set archive failed with status code ({payload_set.status_code})")
+
+
+def _count_payloads():
+    try:
+        count = 0
+        payload_set_dir = os.path.join(common_paths.CACHE_PATH, "payload_set")
+        dir_content = os.listdir(payload_set_dir)
+        for content in dir_content:
+            path = os.path.join(payload_set_dir, content)
+            if os.path.isfile(path) and path.endswith(".py"):
+                count += 1
+        return count
+                
+    except:
+        return 0
 
 
 def main():
@@ -163,12 +180,13 @@ def main():
     if not options.quiet:
         fore_blue()
         print(Figlet(font="slant").renderText("stick->'n'->run"))
-        fore_reset()
         print_sys(
             f"{BLUE}Version{RESET}: {RED}{version.__version__} (Library version: {libsnr_version.__version__})")
-        fore_reset()
         print_sys(
             f"{BLUE}Homepage{RESET}: {RED}{version.HOMEPAGE}")
+        print_sys(
+            f"{RED}{_count_payloads()}{BLUE} Available Payloads"
+        )
         fore_reset()
     if should_initialize:
         options.initializing = True
