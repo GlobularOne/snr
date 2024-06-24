@@ -1,0 +1,163 @@
+# Changelog
+
+## v0.0.1
+
+Initial release
+
+## v0.1.0
+
+* Additions:
+
+  * `info` command
+
+  * Ensure traceback is distinct enough
+
+  * Add payload count to the banner
+
+* Bugfixes:
+
+  * Fix banner coloring issues
+
+Some under-the-hood changes and code improvements
+
+## v1.0.0
+
+This release is a huge step forward for snr, truly it's transformation into an application worthy.
+
+* Additions:
+
+  * editorconfig file to ensure style across IDEs and text editors
+
+  * Now using logging methods automatically writes them to a log file as well
+
+  * Use docker and docker compose
+
+  * Payload class, with most common functionality needed for payloads as functions to ease writing payloads even more
+
+  * New utilities (like `bytes_to_str_repr`)
+
+  * New `ProgramWrapper` options: `fakeroot`, `fakechroot` and `sudo`. It allows you to run a program with fake root permissions, prepare for a fakechroot environment and ask for root using sudo
+
+  * Now program wrapper's expose the `SubprocessError` exception class for better access
+
+  * A huge set of program wrappers have been added
+
+  * Add builtin debugger support (for when an uncaught exception occurs or `print_fatal` is used)
+
+  * Add `pdb` command to drop to a shell
+
+  * Several new paths, `DATA_PATH`, `STATE_PATH` and XDG ones: The XDG basedir compliant paths
+
+  * Default DNS nameservers and hostname of generated host images can now be changed on command line
+
+  * Default exit code can now be configured as well (on command line as: `--default-exit_code`)
+
+  * Config file! Snr can now be configured with it's config file inside `~/.config/snr/main.conf` (technically: `$XDG_CONFIG_HOME/snr/main.conf`)
+
+  * `BlockInfo` a more pythonic way of handling block information
+
+  * Now you can set value of some flags using environment variables
+
+  * The init routine now has demands agreement to a disclaimer before continuing
+
+  * Fix a ton of type-annotation mistakes
+
+* Improvements:
+
+  * Get rid of the confirmation on initialization
+
+  * `run_executable` (now `misc/run_executable`) payload searches for the executable better
+
+  * `clear` command now does a better job at clearing the screen.
+
+  * Snr no longer requires root permissions (almost, with the exception of two parts)
+
+  * Snr no longer depends on `dosfstools`, `gdisk` and `parted`. (It uses the ones in the host image)
+
+  * `run_command` (now `misc/run_command`) now runs accepts several commands, and also writes them into a bash file to ensure better function.
+
+  * `unix_user_management` is now called `tampering/user_management` will soon have windows support as well
+
+  * Merge `bios_disk_encryption` with `uefi_disk_encryption` (as `tampering/disk_encryption`)
+
+  * Use factory pattern for program wrappers
+
+  * Significantly improved CI/CD
+
+  * Fully comply with XDG basedir specifications
+
+  * Running snr from source code shows more information about the state of the version.
+    Now, running from the source code shows git commit hash and whatever it was modified or not.
+    Examples for the version (`snr.version.__version__`)
+    Not running from source code:
+
+    ```txt
+    1.0.0
+    ```
+
+    Running from source code, no code modification:
+
+    ```txt
+    1.0.0-gitXXXXXXX
+    ```
+
+    Running from source code, with untracked or uncommitted modifications:
+
+    ```txt
+    1.0.0-gitXXXXXXX*
+    ```
+
+  * Convert docstrings to Google style
+
+  * Stop the wrong process of importing everything in the library with an underscore (importing `os` as `_os`) and instead prefer google's method. Import only the modules so everything is well known
+  (instead of `from snr.core.util.common_utils import print_ok as _print_ok` use `from snr.core.util import common_utils`)
+
+* Breaking changes:
+
+  * Migrate from debian stable rootfs to ubuntu LTS rootfs
+
+  * Merge `libsnr` and `snr_payloads` with snr (`libsnr.core` is now `snr.core.core`)
+
+  * Remove the `Table` class and use the `rich.table` project instead
+
+  * Payloads are no longer one single python file but a package
+
+  * Move away from pure old pip to use poetry
+
+  * Use `click` and `prompt-toolkit` instead of a homegrown solution for commands
+
+  * Now payloads are categorized by what they do
+
+  * Remove the payload set update mechanism and library version check as they are no longer needed
+  
+  * AtFormatter now looks for `"@variable@"` instead of `@variable@` to ensure that the code is still correct by syntax if the intended type is not string
+
+  * Version string is now in format: `snr {snr_version} {dependency}/{dependency_version}...`
+
+  * Using `--verbose` and `--quiet` now simply cancel each other out instead of whichever that came last
+
+  * Context is no longer a dictionary but a whole class by itself
+
+  * `ChrootProgramWrapper` no logner exists, use the factory at `core.util.chroot_program_wrapper`
+
+  * `options.prompt` no longer exists, instead use `snr.cli.interactive_shell.prompt`
+
+  * `misc/run_command` now uses `COMMANDS`, and not `COMMAND`
+
+  * Now host rootfs image is inside the share directory, not the cache directory
+
+  * Storage utilities in `snr.core.payload.storage` now function with `BlockInfo`
+
+  * Remove `version.DEVELOPMENT`
+
+  * Remove snr development options (and subsequently `dev_snr` script)
+
+  * `-V` is no longer a recognized flag, and `-v` is now for `--verbose`, to get version, use `--version`
+
+  * `-c` and `--code` flag no longer exist, snr no longer supports running snr commands non-interactively (which also means `options.interactive` no longer exists) And we would advise against running snr non-interactively using pipes
+
+  * `snr.core.util.programs` is no longer a directory of program wrappers, but a file with all the program wrappers
+
+  * Drop usage of Doxygen and use sphinx
+
+Several under the hood changes and minor improvements
