@@ -18,7 +18,7 @@ Snr (Stick 'n' Run) is a project that allows generating bootable mediums based o
 
 * Easily extendable with new payloads
 
-Be sure to check the [wiki](https://github.com/GlobularOne/en/stable) for more information.
+Be sure to check the [wiki](https://snr.readthedocs.io/en/stable) for more information.
 
 ## Installation
 
