@@ -166,7 +166,7 @@ Generates the selected payload onto the device or file you pass to it.
 
 
 Miscellaneous commands
--------------
+----------------------
 
 clear
 ^^^^^
