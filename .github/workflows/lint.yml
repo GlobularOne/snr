@@ -28,4 +28,4 @@ jobs:
 
       - name: Run pylint
         run: |
-          poetry run pylint snr
+          poetry run pylint snr --fail-under 9.80
