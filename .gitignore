@@ -4,14 +4,15 @@ __pycache__/
 
 # Build
 dist/
-build
+build/
 sdist/
 wheels/
 *.egg
 *.egg-info/
 
 # Documentation
-docs/
+docs/build/
+docs/source/ref/
 
 # Environments
 .env
@@ -21,6 +22,9 @@ venv/
 ENV/
 env.bak/
 venv.bak/
+
+# Mypy cache
+.mypy_cache/
 
 # Temporary stuff
 *.bak
