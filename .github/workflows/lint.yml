@@ -28,4 +28,4 @@ jobs:
 
       - name: Run pylint
         run: |
-          poetry run pylint
+          poetry run pylint snr
