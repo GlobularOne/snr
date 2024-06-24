@@ -1,0 +1,8 @@
+services:
+  snr:
+    build: .
+    image: globularone/snr
+    container_name: snr
+    command: poetry run snr
+    volumes:
+      - .:/app
