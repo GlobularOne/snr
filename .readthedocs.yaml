@@ -10,5 +10,6 @@ build:
       - PATH="/home/docs/.local/bin:$PATH" poetry config virtualenvs.create false
     post_install:
       - PATH="/home/docs/.local/bin:$PATH" poetry install --with=dev
+      - pip install sphinx_rtd_theme
 sphinx:
   configuration: docs/source/conf.py
