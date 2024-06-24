@@ -1,6 +1,7 @@
 """
-Module allowing calling snr using python's -m flag
+Allows calling snr using python's -m flag
 """
-from snr.main import main
+from snr.cli.main import main
 
-main()
+if __name__ == "__main__":
+    main() # pylint: disable=no-value-for-parameter

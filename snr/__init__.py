@@ -1,3 +1,3 @@
 """
-Stick 'n' run terminal interface
+Snr
 """
