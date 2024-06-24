@@ -9,6 +9,6 @@ build:
       - curl -sSL https://install.python-poetry.org | python3 -
       - PATH="/home/docs/.local/bin:$PATH" poetry config virtualenvs.create false
     post_install:
-      - PATH="/home/docs/.local/bin:$PATH" poetry install --only=main,docs
+      - PATH="/home/docs/.local/bin:$PATH" poetry install --with=dev
 sphinx:
   configuration: docs/source/conf.py
