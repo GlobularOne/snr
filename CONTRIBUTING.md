@@ -1,11 +1,12 @@
 <!-- omit in toc -->
-# Contributing to Stick 'n' Run
+# Contributing to snr
 
 First off, thanks for taking the time to contribute! ❤️
 
 All types of contributions are encouraged and valued. See the [Table of Contents](#table-of-contents) for different ways to help and details about how this project handles them. Please make sure to read the relevant section before making your contribution. It will make it a lot easier for us maintainers and smooth out the experience for all involved. The community looks forward to your contributions. 🎉
 
 > And if you like the project, but just don't have time to contribute, that's fine. There are other easy ways to support the project and show your appreciation, which we would also be very happy about:
+>
 > - Star the project
 > - Tweet about it
 > - Refer this project in your project's readme
@@ -25,14 +26,12 @@ All types of contributions are encouraged and valued. See the [Table of Contents
   - [Commit Messages](#commit-messages)
 - [Join The Project Team](#join-the-project-team)
 
-
 ## Code of Conduct
 
 This project and everyone participating in it is governed by the
 [Stick 'n' Run Code of Conduct](https://github.com/GlobularOne/snr/blob/master/CODE_OF_CONDUCT.md).
 By participating, you are expected to uphold this code. Please report unacceptable behavior
 to <GlobularOne@proton.me>.
-
 
 ## I Have a Question
 
@@ -44,13 +43,14 @@ If you then still feel the need to ask a question and need clarification, we rec
 
 - Open an [Issue](https://github.com/GlobularOne/snr/issues/new).
 - Provide as much context as you can about what you're running into.
-- Provide project and platform versions (nodejs, npm, etc), depending on what seems relevant.
+- Provide project and platform versions (python version, system version, etc), depending on what seems relevant.
 
 We will then take care of the issue as soon as possible.
 
 ## I Want To Contribute
 
 > ### Legal Notice <!-- omit in toc -->
+>
 > When contributing to this project, you must agree that you have authored 100% of the content, that you have the necessary rights to the content and that the content you contribute may be provided under the project license.
 
 ### Reporting Bugs
@@ -114,15 +114,15 @@ Enhancement suggestions are tracked as [GitHub issues](https://github.com/Globul
 
 ### Your First Code Contribution
 
-
 ### Improving The Documentation
 
 If improving the documentation or correcting it. Follow the already-established tone and theme of the documentation. For adding a new page, see other pages of the documentation as a template on how it should be structured.
 
 ## Styleguides
+
 ### Commit Messages
 
-Commit messages should be short, descriptive and use the past tense. An example of unacceptable messages is, "src/filesystem.py: Adds new command". It does not sufficiently describe the change happened and also doesn't use the past tense. It could have been: "src/filesystem.py: New write command added".
+Commit messages should be short, descriptive and use the past tense (optional). An example of unacceptable messages is, "snr/cli/commands/filesystem.py: Adds new command". It does not sufficiently describe the change happened and also doesn't use the past tense. It could have been: "snr/cli/commands/filesystem.py: New write command added" or "src/cli/commands/filesystem.py: Add new write command" (which is also acceptable)
 
 ## Join The Project Team
 
@@ -130,4 +130,5 @@ To join the project team, contact the project team's leader (GlobularOne).
 
 <!-- omit in toc -->
 ## Attribution
+
 This guide is based on the **contributing-gen**. [Make your own](https://github.com/bttger/contributing-gen)!
