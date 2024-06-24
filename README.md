@@ -1,36 +1,38 @@
 # snr
 
-Snr is the text-based interface for the project "Stick 'n' Run". Please see [snr-meta](https://github.com/GlobularOne/snr-meta) for more information.
+![Docker Build Status](https://img.shields.io/github/actions/workflow/status/GlobularOne/snr/docker-build.yml?label=Docker+Build)
+
+![Stable Release](https://img.shields.io/github/v/release/GlobularOne/snr?label=Stable+Release) ![Latest Release](https://img.shields.io/github/v/release/GlobularOne/snr?include_prereleases&label=Latest+Release)
+
+[![Contributor Covenant](https://img.shields.io/badge/Contributor%20Covenant-2.1-4baaaa.svg)](CODE_OF_CONDUCT.md)
+
+Snr (Stick 'n' Run) is a project that allows generating bootable mediums based on Debian. These bootable mediums only have one purpose. To run a payload. You can choose from the wide ranges of payloads we already offer (from changing user information to wiping disks, encrypting them, grabbing files, etc) or write your own using the framework. This allows your payload to run with absolutely no restrictions, no firewalls, no AVs, nothing.
+
+## Features
+
+* Beautiful and modern interface
+
+* Wide range of existing payloads
+
+* Running payloads in a dedicated OS allows bypassing software protection measures  
+
+* Easily extendable with new payloads
+
+Be sure to check the [wiki](https://github.com/GlobularOne/en/stable) for more information.
 
 ## Installation
 
-To install snr, use pip:
+See [Installation Guide](https://snr.readthedocs.io/en/stable/user_guide/installation.html)
 
-```sh
-sudo pip3 install snr
-```
+## Disclaimer
 
-Or, installation could be from source code. First fetch the source code:
-
-```sh
-git clone https://github.com/GlobularOne/snr.git
-```
-
-And then install using pip:
-
-```sh
-sudo pip3 install .
-```
-
-If you get a message about externally managed environment, add the `--break-system-packages` flag.
-
-After installation (from either method), snr needs to be initialized:
-
-```sh
-sudo snr --init
-```
-
-Snr should be available for use.
+This security tool is designed for lawful security testing and research purposes only.
+The development team unequivocally condemns any illegal activities or unauthorized access to systems or data.
+Misuse of this tool for malicious intent is strictly prohibited.
+The creators and contributors of this tool shall not be held responsible for any harm,
+damage, or legal repercussions resulting from its misuse by malicious actors.
+Users are solely responsible for ensuring compliance with all relevant laws and regulations when utilizing this tool.
+By using this tool, you agree to employ it responsibly and ethically.
 
 ## Contacting the author
 
