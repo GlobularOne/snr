@@ -1,0 +1,3 @@
+"""
+Payload generation core functionality
+"""
