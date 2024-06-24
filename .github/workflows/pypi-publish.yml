@@ -1,0 +1,37 @@
+name: Upload Python Package
+
+on:
+  release:
+    types: [published]
+
+jobs:
+  build:
+    runs-on: ubuntu-22.04
+
+    steps:
+      - uses: actions/checkout@v4
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.10"
+      - name: Install Poetry
+        uses: Gr1N/setup-poetry@v9
+      
+      - name: Build payloads
+        run:  |
+          ./tools/build_payloads.sh
+        
+      - name: Install project dependencies
+        run: |
+          poetry install
+
+      - name: Build the project
+        run: |
+          poetry build
+
+      - name: Publish to PyPI
+        env:
+          TWINE_PASSWORD: ${{ secrets.PYPI_TOKEN }}
+        run: |
+          poetry config pypi-token.pypi $TWINE_PASSWORD
+          poetry publish
