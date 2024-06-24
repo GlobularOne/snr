@@ -1,6 +1,7 @@
 all: build
 
 build: src/efi_disk_encryption_message.efi src/bios_disk_encryption_message.bin
+	mkdir -p data
 	cp src/efi_disk_encryption_message.efi data/EFIBOOTX64.EFI
 	cp src/bios_disk_encryption_message.bin data/bios_disk_encryption_message.bin
 
