@@ -7,8 +7,8 @@ build:
   jobs:
     post_create_environment:
       - curl -sSL https://install.python-poetry.org | python3 -
-      - poetry config virtualenvs.create false
+      - PATH="/home/docs/.local/bin:$PATH" poetry config virtualenvs.create false
     post_install:
-      - poetry install --only=main,docs
+      - PATH="/home/docs/.local/bin:$PATH" poetry install --only=main,docs
 sphinx:
   configuration: docs/source/conf.py
