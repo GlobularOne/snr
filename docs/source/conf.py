@@ -1,9 +1,11 @@
 import sys
 import pathlib
 import sphinx.highlighting
-from snr.cli.lexer import SnrLexer
+import importlib
 
 sys.path.insert(0, str(pathlib.Path(__file__).parents[2] / "snr"))
+
+lexer = importlib.import_module("cli.lexer")
 
 project = 'snr'
 copyright = '2024, GlobularOne'
@@ -25,4 +27,4 @@ html_static_path = ['_static']
 todo_include_todos = True
 
 highlight_language = "snr"
-sphinx.highlighting.lexers['snr'] = SnrLexer()
+sphinx.highlighting.lexers['snr'] = lexer.SnrLexer()
