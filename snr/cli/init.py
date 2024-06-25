@@ -132,7 +132,7 @@ def init_main() -> None:
 
     common_utils.print_info("Archiving rootfs image")
     shutil.make_archive(common_paths.ROOTFS_ARCHIVE_BASE_PATH,
-                        format=common_paths.ROOTFS_ARCHIVE_FORMAT,
+                        format= common_paths.ROOTFS_ARCHIVE_FORMAT.split(":")[1] + "tar",
                         root_dir=ROOTFS_PATH,
                         base_dir=".")
 
