@@ -165,3 +165,4 @@ def main() -> None:
         pass
     except Exception:  # pylint: disable=broad-exception-caught
         common_utils.handle_exception()
+    sys.exit(options.default_exit_code)
