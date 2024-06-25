@@ -1,6 +1,6 @@
 # snr
 
-![Docker Build Status](https://img.shields.io/github/actions/workflow/status/GlobularOne/snr/docker-build.yml?label=Docker+Build)
+![Docker Build Status](https://img.shields.io/github/actions/workflow/status/GlobularOne/snr/docker-build.yml?label=Docker+Build) [![Documentation Status](https://readthedocs.org/projects/snr/badge/?version=latest)](https://snr.readthedocs.io/en/latest/?badge=latest)
 
 ![Stable Release](https://img.shields.io/github/v/release/GlobularOne/snr?label=Stable+Release) ![Latest Release](https://img.shields.io/github/v/release/GlobularOne/snr?include_prereleases&label=Latest+Release)
 

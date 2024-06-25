@@ -1,10 +1,11 @@
 #!/bin/env python3
 
 import os
+import sys
 
 
 def main():
-    os.system("docker build -t globularone/snr .")
+    sys.exit(os.system("docker build -t globularone/snr ."))
 
 
 if __name__ == "__main__":

@@ -98,14 +98,20 @@ def init_main() -> None:
     rootfs_boot_path = os.path.join(ROOTFS_PATH, "boot")
     for entry in glob.glob(os.path.join(rootfs_boot_path, "initrd.img-*")):
         os.remove(entry)
-    for directory in ["proc", "dev"]:
-        os.unlink(os.path.join(ROOTFS_PATH, directory))
+
+    # If using fakechroot, it creates absolute links to the system's directories
+    # If we let them pass to the second fix below which converts them to relative,
+    # it will simply break. So we must fix them manually.
+    for directory in ["proc", "sys", "dev"]:
+        if os.path.islink(os.path.join(ROOTFS_PATH, directory)):
+            os.unlink(os.path.join(ROOTFS_PATH, directory))
+            os.mkdir(os.path.join(ROOTFS_PATH, directory))
 
     # Fixes on the rootfs, first make the efi directory and a few directories
     for directory in ["boot/efi", "root/.config/snr",
                       "root/.cache/snr", "root/.local/state/snr",
                       "root/.local/share/snr"]:
-        os.mkdir(os.path.join(ROOTFS_PATH, directory))
+        os.makedirs(os.path.join(ROOTFS_PATH, directory), exist_ok=True)
 
     with open(os.path.join(ROOTFS_PATH, "root/.config/snr/main.conf"),
               "w", encoding="utf-8") as _:
@@ -126,7 +132,7 @@ def init_main() -> None:
 
     common_utils.print_info("Archiving rootfs image")
     shutil.make_archive(common_paths.ROOTFS_ARCHIVE_BASE_PATH,
-                        format=common_paths.ROOTFS_ARCHIVE_FORMAT,
+                        format= common_paths.ROOTFS_ARCHIVE_FORMAT.split(":")[1] + "tar",
                         root_dir=ROOTFS_PATH,
                         base_dir=".")
 
