@@ -161,3 +161,13 @@ This release is a huge step forward for snr, truly it's transformation into an a
   * Drop usage of Doxygen and use sphinx
 
 Several under the hood changes and minor improvements
+
+## 1.0.1
+
+* Bug fixes:
+
+  * Several init process bugs fixed
+
+  * Several docker bugs fixed
+
+  * Build scripts improved
