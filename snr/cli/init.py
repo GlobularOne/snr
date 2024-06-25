@@ -111,7 +111,7 @@ def init_main() -> None:
     for directory in ["boot/efi", "root/.config/snr",
                       "root/.cache/snr", "root/.local/state/snr",
                       "root/.local/share/snr"]:
-        os.mkdir(os.path.join(ROOTFS_PATH, directory))
+        os.makedirs(os.path.join(ROOTFS_PATH, directory), exist_ok=True)
 
     with open(os.path.join(ROOTFS_PATH, "root/.config/snr/main.conf"),
               "w", encoding="utf-8") as _:
