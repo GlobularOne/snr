@@ -25,6 +25,6 @@ ENV POETRY_VIRTUALENVS_CREATE=false
 
 RUN ./tools/build_payloads.sh && poetry install --only=main
 
-RUN snr --init --quiet
+RUN snr --init --quiet --default-code-exit 1
 
 CMD ["snr"]
