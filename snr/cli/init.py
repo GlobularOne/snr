@@ -98,8 +98,14 @@ def init_main() -> None:
     rootfs_boot_path = os.path.join(ROOTFS_PATH, "boot")
     for entry in glob.glob(os.path.join(rootfs_boot_path, "initrd.img-*")):
         os.remove(entry)
-    for directory in ["proc", "dev"]:
-        os.unlink(os.path.join(ROOTFS_PATH, directory))
+
+    # If using fakechroot, it creates absolute links to the system's directories
+    # If we let them pass to the second fix below which converts them to relative,
+    # it will simply break. So we must fix them manually.
+    for directory in ["proc", "sys", "dev"]:
+        if os.path.islink(os.path.join(ROOTFS_PATH, directory)):
+            os.unlink(os.path.join(ROOTFS_PATH, directory))
+            os.mkdir(os.path.join(ROOTFS_PATH, directory))
 
     # Fixes on the rootfs, first make the efi directory and a few directories
     for directory in ["boot/efi", "root/.config/snr",
