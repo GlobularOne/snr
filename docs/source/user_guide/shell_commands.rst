@@ -70,6 +70,8 @@ checksum
 
 Generate checksum of a file. It's syntax is like this:
 
+.. code-block:: shell
+
     checksum <algorithm> <file>
 
 List of valid algorithms:
@@ -200,7 +202,7 @@ Prints back what you give it. Mostly useful for getting value of variables.
 exit
 ^^^^
 
-Exists the shell, printing whatever you want it to print.
+Exits the shell, printing whatever you want it to print.
 
 .. code-block::
 
@@ -263,7 +265,7 @@ Alternative syntax for `help payload` (again assuming we have loaded the `misc/r
     # If you want to run an executable that is locally available. Use run_executable.
     # It finds the executable and copies it onto the host filesystem.
 
-*Added in version 0.1.0*
+.. versionadded:: 0.1.0
 
 pdb
 ^^^
@@ -277,7 +279,7 @@ But if it errors out, pass `--debug` to snr, which does the same if something go
     # ...
 
 
-*Added in version 1.0.0*
+.. versionadded:: 1.0.0
 
 reload
 ^^^^^^
