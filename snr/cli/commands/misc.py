@@ -9,7 +9,6 @@ import click
 import rich.table
 
 from snr.cli import atexit_callbacks, interactive_shell, variables
-from snr.core.core import options, console
 from snr.core.util import common_utils, programs
 
 
