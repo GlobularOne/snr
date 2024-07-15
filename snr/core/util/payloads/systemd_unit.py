@@ -24,7 +24,7 @@ def SYSTEMD_SYSTEM_PATH(ctx: context.Context) -> str:  # pylint: disable=invalid
     Returns:
         The path to systemd's system directory
     """
-    return os.path.join(ctx.root_directory, "usr", "lib", "systemd", "system")
+    return ctx.join("usr", "lib", "systemd", "system")
 
 
 _ValidOptionValueType = str | int | bool
