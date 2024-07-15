@@ -9,6 +9,8 @@ __all__ = (
 )
 
 
+# Standard console
 console = rich.console.Console()
 
+# Standard console for error
 err_console = rich.console.Console(stderr=True)
