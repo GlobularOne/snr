@@ -2,11 +2,18 @@
 Utility functions to help with the storage.
 Allows working with LVM and getting information on all and any disk or partition
 """
+import contextlib
 import copy
 import json
-from typing import Literal
+import os
+import tempfile
+import time
+from types import TracebackType
+from typing import Iterable, Literal
 
-from snr.core.util import programs
+from snr.core.core import path_wrapper
+from snr.core.payload import context
+from snr.core.util import common_utils, programs
 
 __all__ = (
     "BlockInfoTypesType", "BlockInfo",
@@ -15,7 +22,9 @@ __all__ = (
     "query_partition_info_by_name", "lvm_scan_all",
     "lvm_activate_all_vgs", "luks_is_partition_encrypted",
     "luks_open", "luks_close",
-    "get_partition_root"
+    "get_partition_root", "require_root_device",
+    "setup", "handle_luks_partition",
+    "MountedPartition", "mount_partition"
 )
 
 ###############################################################################
@@ -313,3 +322,163 @@ def get_partition_root(partition: str,
             return block.path
     # We cannot continue
     return None
+
+
+def require_root_device(partition: str,
+                        block_info: list[BlockInfo] | None = None) -> str:
+    """Require root device of a partition
+
+    Args:
+        partition: Path to partition
+        block_info: list of block info queried. Optional
+
+    Raises:
+        SystemExit: Finding the root device of the partition failed
+
+    Returns:
+        Root device of the partition
+    """
+    root_device = get_partition_root(partition, block_info)
+    if root_device is None:
+        raise SystemExit(1)
+    return root_device
+
+
+def setup(no_lvm: bool = False) -> tuple[list[BlockInfo], context.Context, str]:
+    """Quick setup for storage.
+
+    Handles LVM and returns all the block information
+
+    Args:
+        no_lvm: Don't discover LVM partitions
+
+    Returns:
+        a tuple of all block information, context for /, and the device the root partition resides on
+    """
+    if not no_lvm:
+        lvm_scan_all()
+        lvm_activate_all_vgs()
+    block_info = query_all_block_info()
+    return block_info, context.require_context_for_mount_point("/"), require_root_device("/")
+
+
+def handle_luks_partition(part: str, passphrases: Iterable[str] = ()) -> tuple[str, str] | tuple[None, None]:
+    """Handle a luks partition.
+
+    First try all available passphrases, if none worked, try to get it interactively from the user.
+
+    Args:
+        part: Path to partition to mount
+            passphrases: Passphrases to try if encountered an encrypted partition. Empty by default
+
+    Returns:
+        A tuple of where the partition is mounted and it's name.
+        For example, for `/dev/sda3` it would be `("/dev/mapper/sda3_crypt", "sda3_crypt")`
+        If failed, return a tuple of None (`(None, None)`)
+    """
+    luks_encrypted = luks_is_partition_encrypted(part)
+    luks_name = part.split(os.path.sep)[-1] + "_crypt"
+    if luks_encrypted:
+        common_utils.print_info(
+            "Luks encrypted partition found! Trying available passphrases...")
+        for passphrase in passphrases:
+            if luks_open(part, luks_name, passphrase):
+                common_utils.print_info("Luks partition opened!")
+                break
+            try:
+                common_utils.print_warning(
+                    "Passphrase not found! Press Ctrl + C to try a passphrase")
+                time.sleep(5)
+            except KeyboardInterrupt:
+                try:
+                    while True:
+                        common_utils.print_info(
+                            "Enter new passphrase or press Ctrl + C again to abort: ", end="")
+                        passphrase = input()
+                        if luks_open(part, luks_name, passphrase):
+                            common_utils.print_info(
+                                "Luks partition opened!")
+                            break
+                except KeyboardInterrupt:
+                    common_utils.print_warning(
+                        f"No passphrase found for partition '{part}'")
+                    return None, None
+    part = f"/dev/mapper/{luks_name}"
+    return luks_name, part
+
+
+class MountedPartition(contextlib.AbstractContextManager, path_wrapper.PathWrapperBase, path_var_name="mount_point"):
+    """A mounted partition
+
+    Attributes:
+        mount_point: Where the partition is mounted
+    """
+    _part: str
+    _passphrases: Iterable[str]
+    _no_luks: bool
+    _is_luks_encrypted: bool
+    _luks_name: str
+    mount_point: str
+
+    def __init__(self, part: str, passphrases: Iterable[str] = (), no_luks: bool = False):
+        """Mount a partition
+
+        Args:
+            part: Path to partition to mount
+            passphrases: Passphrases to try if encountered an encrypted partition. Empty by default
+            no_luks: Do not attempt to unlock an encrypted partition. Defaults to False.
+    """
+        self._part = part
+        self._passphrases = passphrases
+        self._no_luks = no_luks
+        super().__init__('/definitely-doesnt-exist-and-also-shouldnt')
+
+    def __enter__(self) -> 'MountedPartition':
+        if not self._no_luks:
+            is_luks_encrypted = luks_is_partition_encrypted(self._part)
+
+            if is_luks_encrypted:
+                tmp, tmp2 = handle_luks_partition(
+                    self._part, self._passphrases)
+                if tmp is None or tmp2 is None:
+                    raise RuntimeError(
+                        f"Failed to unlock partition '{self._part}'")
+                luks_name, part = tmp, tmp2
+        else:
+            is_luks_encrypted = False
+        mount_point = tempfile.mkdtemp()
+        errorcode = programs.Mount().invoke_and_wait(None, part, mount_point)
+        if errorcode != 0:
+            common_utils.print_error(
+                f"Failed to mount partition '{part}'! Skipping partition")
+            if is_luks_encrypted:
+                luks_close(luks_name)
+            raise RuntimeError(
+                f"Failed to mount partition '{part}'! Skipping partition")
+
+        self._luks_name = luks_name
+        self._is_luks_encrypted = is_luks_encrypted
+        self.mount_point = mount_point
+        return self
+
+    def __exit__(self,
+                 _: type[BaseException] | None,
+                 __: BaseException | None,
+                 ___: TracebackType | None):
+        programs.Umount().invoke_and_wait(None, self.mount_point)
+        if hasattr(self, "is_luks_encrypted"):
+            luks_close(self._luks_name)
+
+
+def mount_partition(part: str, passphrases: Iterable[str] = (), no_luks: bool = False) -> MountedPartition:
+    """Mount a partition
+
+    Args:
+        part: Path to partition to mount
+        passphrases: Passphrases to try if encountered an encrypted partition. Empty by default
+        no_luks: Do not attempt to unlock an encrypted partition. Defaults to False.
+
+    Returns:
+        mounted partition
+    """
+    return MountedPartition(part, passphrases, no_luks)
