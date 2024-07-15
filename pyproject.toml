@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "snr"
-version = "1.0.1+git"
+version = "1.1.0+git"
 description = "Create bootable payloads easily"
 authors = ["Kamyar <139503563+GlobularOne@users.noreply.github.com>"]
 license = "gpl-3.0"
@@ -20,9 +20,11 @@ docs-rebuild = "tools.docs_rebuild:main"
 [tool.poetry.dependencies]
 python = "^3.10"
 click = "^8.1.7"
-pyfiglet = "^1.0.2"
+deprecated = "^1.2.14"
 prompt-toolkit = "^3.0.47"
+pyfiglet = "^1.0.2"
 pygments = "^2.18.0"
+requests = "^2.32.3"
 rich = "^13.7.1"
 
 [tool.poetry.group.docs.dependencies]
@@ -30,15 +32,18 @@ sphinx = "^7.3.7"
 sphinx-rtd-theme = "^2.0.0"
 
 [tool.poetry.group.dev.dependencies]
-pylint = "^3.2.2"
-mypy = "^1.10.0"
-isort = "^5.13.2"
 autopep8 = "^2.2.0"
-radon = "^6.0.1"
-pycryptodome = "^3.20.0"
-types-tabulate = "^0.9.0.20240106"
+impacket = "^0.11.0"
+isort = "^5.13.2"
+mypy = "^1.10.0"
 pdbpp = "^0.10.3"
+pycryptodome = "^3.20.0"
+pylint = "^3.2.2"
+radon = "^6.0.1"
+types-requests = "^2.32.0.20240622"
 types-setuptools = "^70.0.0.20240524"
+types-tabulate = "^0.9.0.20240106"
+types-deprecated = "^1.2.9.20240311"
 
 [build-system]
 requires = ["poetry-core>=1.0.0"]
