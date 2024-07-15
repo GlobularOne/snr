@@ -27,7 +27,7 @@ from snr.core.util import common_utils
 
 class WipeDisksPayload(Payload):
     AUTHORS = ("GlobularOne",)
-
+    TARGET_OS_LIST = ("All",)
     INPUTS = (
         ("WIPE_MODE", "A", 1, "Wipe mode, must be one of A, B, C, D and E"),
     )
