@@ -12,6 +12,96 @@ CHECKSUM_ALGORITHMS = (
     "sha224", "sha256", "sha384", "sha512"
 )
 
+# pylint: disable=consider-using-f-string
+
+
+def command_no_args(x: str):
+    return {x: [
+        (r'(\s*)({0})'.format(x),
+         pygments.lexer.bygroups(
+            pygments.token.Whitespace,
+            pygments.token.Keyword),
+         'eoc')
+    ]}
+
+
+def command_args(x: str):
+    return {x: [
+        (r'(\s*)({0})(\s+)'.format(x),
+         pygments.lexer.bygroups(
+            pygments.token.Whitespace,
+            pygments.token.Keyword,
+            pygments.token.Whitespace,
+        ), 'basic')
+    ]}
+
+
+def command_key_no_args(x: str, keywords: tuple[str, ...]):
+    return {x: [
+        (r'(\s*)({0})(\s+)({1})'.format(x, keywords),
+         pygments.lexer.bygroups(
+             pygments.token.Whitespace,
+             pygments.token.Keyword,
+             pygments.token.Whitespace,
+             pygments.token.Keyword.Constant,
+        ), 'eoc')
+    ]}
+
+
+def command_key_args(x: str, keywords: tuple[str, ...]):
+    return {x: [
+        (r'(\s*)({0})(\s+)({1})(\s+)'.format(x, "|".join(keywords)),
+         pygments.lexer.bygroups(
+             pygments.token.Whitespace,
+             pygments.token.Keyword,
+             pygments.token.Whitespace,
+             pygments.token.Keyword.Constant,
+             pygments.token.Whitespace
+        ), 'basic')
+    ]}
+
+
+SYNTAX = {
+    **command_no_args('pwd'),
+    **command_args("chdir"),
+    **command_args("list"),
+    **command_args("read"),
+    **command_key_args("checksum", CHECKSUM_ALGORITHMS),
+    **command_args("unset"),
+    # Special case
+    'set': [
+        # Set assign to command output
+        (r'(\s*)(set)(\s+)(!)(\w+)(\s+)',
+         pygments.lexer.bygroups(
+             pygments.token.Whitespace,
+             pygments.token.Keyword,
+             pygments.token.Whitespace,
+             pygments.token.Operator,
+             pygments.token.Name.Variable,
+             pygments.token.Whitespace,
+         ), 'commands'),
+        # Set assign to value
+        (r'(\s*)(set)(\s+)(\w+)(\s+)',
+         pygments.lexer.bygroups(
+             pygments.token.Whitespace,
+             pygments.token.Keyword,
+             pygments.token.Whitespace,
+             pygments.token.Name.Variable,
+             pygments.token.Whitespace,
+         ), 'basic'),
+        *command_args("set")["set"]
+    ],
+    **command_args("use"),
+    **command_args("generate"),
+    **command_no_args("clear"),
+    **command_args("echo"),
+    **command_args("exit"),
+    **command_args("help"),
+    **command_no_args("info"),
+    **command_no_args("pdb"),
+    **command_no_args("reload")
+}
+
 
 class SnrLexer(pygments.lexer.RegexLexer):  # type: ignore
     """Lexer for snr shell commands"""
@@ -42,6 +132,7 @@ class SnrLexer(pygments.lexer.RegexLexer):  # type: ignore
         'eoc': [
             (r'\s', pygments.token.Whitespace),
             (r'#.*$', pygments.token.Comment.Single),
+            (r'\S+', pygments.token.Error)
         ],
         'basic': [
             (r'(?<!\\)\$\w+', pygments.token.Name.Variable),
@@ -49,191 +140,5 @@ class SnrLexer(pygments.lexer.RegexLexer):  # type: ignore
             (r'\s', pygments.token.Whitespace),
             (r'(?<!\!).+', pygments.token.Text),
         ],
-        'pwd': [
-            (r'(\s*)(pwd)',
-             pygments.lexer.bygroups(
-                 pygments.token.Whitespace,
-                 pygments.token.Keyword,
-             ), 'eoc'),
-        ],
-        'chdir': [
-            (r'(\s*)(chdir)(\s+)',
-             pygments.lexer.bygroups(
-                 pygments.token.Whitespace,
-                 pygments.token.Keyword,
-                 pygments.token.Whitespace,
-             ), 'basic'),
-        ],
-        'list': [
-            (r'(\s*)(list)(\s+)',
-             pygments.lexer.bygroups(
-                 pygments.token.Whitespace,
-                 pygments.token.Keyword,
-                 pygments.token.Whitespace,
-             ), 'basic'),
-            (r'(\s*)(list)',
-             pygments.lexer.bygroups(
-                 pygments.token.Whitespace,
-                 pygments.token.Keyword,
-             ), 'eoc'),
-        ],
-        'read': [
-            (r'(\s*)(read)(\s+)',
-             pygments.lexer.bygroups(
-                 pygments.token.Whitespace,
-                 pygments.token.Keyword,
-                 pygments.token.Whitespace,
-             ), 'basic'),
-        ],
-        'checksum': [
-            (r'(\s*)(checksum)(\s+)' + f"({'|'.join(CHECKSUM_ALGORITHMS)})" + r'(\s+)',
-             pygments.lexer.bygroups(
-                 pygments.token.Whitespace,
-                 pygments.token.Keyword,
-                 pygments.token.Whitespace,
-                 pygments.token.Keyword.Constant,
-                 pygments.token.Whitespace,
-             ), 'basic'),
-        ],
-        'unset': [
-            (r'(\s*)(unset)(\s+)(\w+)(\s*)',
-             pygments.lexer.bygroups(
-                 pygments.token.Whitespace,
-                 pygments.token.Keyword,
-                 pygments.token.Whitespace,
-                 pygments.token.Name.Variable,
-                 pygments.token.Whitespace
-             ), 'eoc'),
-        ],
-        'set': [
-            # Set assign to command output
-            (r'(\s*)(set)(\s+)(!)(\w+)(\s+)',
-             pygments.lexer.bygroups(
-                 pygments.token.Whitespace,
-                 pygments.token.Keyword,
-                 pygments.token.Whitespace,
-                 pygments.token.Operator,
-                 pygments.token.Name.Variable,
-                 pygments.token.Whitespace,
-             ), 'commands'),
-            # Set normal assignment
-            (r'(\s*)(set)(\s+)(\w+)(\s+)',
-             pygments.lexer.bygroups(
-                 pygments.token.Whitespace,
-                 pygments.token.Keyword,
-                 pygments.token.Whitespace,
-                 pygments.token.Name.Variable,
-                 pygments.token.Whitespace,
-             ), 'basic'),
-            # Set remove variable
-            (r'(\s*)(set)(\s+)(\w+)(\s*)',
-             pygments.lexer.bygroups(
-                 pygments.token.Whitespace,
-                 pygments.token.Keyword,
-                 pygments.token.Whitespace,
-                 pygments.token.Name.Variable,
-                 pygments.token.Whitespace
-             ), 'eoc'),
-            # Set list variables
-            (r'(\s*)(set)',
-             pygments.lexer.bygroups(
-                 pygments.token.Whitespace,
-                 pygments.token.Keyword,
-             ), 'eoc'),
-        ],
-        'use': [
-            # Use while loading
-            (r'(\s*)(use)(\s+)',
-             pygments.lexer.bygroups(
-                 pygments.token.Whitespace,
-                 pygments.token.Keyword,
-                 pygments.token.Whitespace,
-             ), 'basic'),
-            # Use while unloading
-            (r'(\s*)(use)',
-             pygments.lexer.bygroups(
-                 pygments.token.Whitespace,
-                 pygments.token.Keyword,
-             ), 'eoc'),
-        ],
-        'generate': [
-            (r'(\s*)(generate)(\s+)',
-             pygments.lexer.bygroups(
-                 pygments.token.Whitespace,
-                 pygments.token.Keyword,
-                 pygments.token.Whitespace,
-             ), 'basic'),
-        ],
-        'clear': [
-            (r'(\s*)(clear)',
-             pygments.lexer.bygroups(
-                 pygments.token.Keyword,
-             ), 'eoc'),
-        ],
-        'echo': [
-            # echo with value
-            (r'(\s*)(echo)(\s+)',
-             pygments.lexer.bygroups(
-                 pygments.token.Whitespace,
-                 pygments.token.Keyword,
-                 pygments.token.Whitespace,
-             ), 'basic'),
-            # echo without value
-            (r'(\s*)(echo)',
-             pygments.lexer.bygroups(
-                 pygments.token.Whitespace,
-                 pygments.token.Keyword,
-             ), 'eoc'),
-        ],
-        'exit': [
-            # exit with value
-            (r'(\s*)(exit)(\s+)',
-             pygments.lexer.bygroups(
-                 pygments.token.Whitespace,
-                 pygments.token.Keyword,
-                 pygments.token.Whitespace,
-             ), 'basic'),
-            # exit without value
-            (r'(\s*)(exit)',
-             pygments.lexer.bygroups(
-                 pygments.token.Whitespace,
-                 pygments.token.Keyword
-             ), 'eoc'),
-        ],
-        'help': [
-            # help with value
-            (r'(\s*)(help)(\s+)',
-             pygments.lexer.bygroups(
-                 pygments.token.Whitespace,
-                 pygments.token.Keyword,
-                 pygments.token.Whitespace,
-             ), 'basic'),
-            # help without value
-            (r'(\s*)(help)',
-             pygments.lexer.bygroups(
-                 pygments.token.Whitespace,
-                 pygments.token.Keyword,
-             ), 'eoc'),
-        ],
-        'info': [
-            (r'(\s*)(info)',
-             pygments.lexer.bygroups(
-                 pygments.token.Whitespace,
-                 pygments.token.Keyword,
-             ), 'eoc'),
-        ],
-        'pdb': [
-            (r'(\s*)(pdb)',
-             pygments.lexer.bygroups(
-                 pygments.token.Whitespace,
-                 pygments.token.Keyword,
-             ), 'eoc'),
-        ],
-        'reload': [
-            (r'(\s*)(reload)',
-             pygments.lexer.bygroups(
-                 pygments.token.Whitespace,
-                 pygments.token.Keyword,
-             ), 'eoc'),
-        ]
+        **SYNTAX
     }
