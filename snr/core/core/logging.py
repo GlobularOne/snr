@@ -61,7 +61,7 @@ def clear_screen() -> None:
 
 def _stringize(obj: object) -> str:
     if isinstance(obj, rich.pretty.Pretty):
-        return _ANSI_ESCAPE.sub('', rich.pretty.pretty_repr(obj._object).strip())
+        return _ANSI_ESCAPE.sub('', rich.pretty.pretty_repr(obj._object).strip())  # pylint: disable=protected-access
     return str(obj)
 
 
