@@ -69,10 +69,10 @@ def partition_host(ctx: context.Context) -> bool:
             stdout=programs.PIPE,
             stderr=programs.STDOUT)
         errorcode = losetup.invoke_and_wait(None, ctx.device_name,
-                                              options={
-                                                  "find": None, 
-                                                  "show": None,
-                                                  "partscan": None})
+                                            options={
+                                                "find": None,
+                                                "show": None,
+                                                "partscan": None})
         assert losetup.stdout is not None
         if errorcode != 0:
             common_utils.print_debug(
