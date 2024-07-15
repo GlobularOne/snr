@@ -4,8 +4,8 @@ Variable-related commands
 
 import click
 import rich.console
-import rich.table
 import rich.pretty
+import rich.table
 
 from snr.cli import interactive_shell, variables
 from snr.core.core import variable_manager
@@ -42,19 +42,20 @@ Or list all variables (syntax: set)
         table = rich.table.Table(title="Variables")
         table.add_column("Name", style="blue")
         table.add_column("Type", style="red")
+        table.add_column("Required", style="cyan")
         table.add_column("Length Limit", style="magenta")
         table.add_column("Value")
         table.add_column("Description", style="green")
         for var_name, info in zip(variables.global_vars.get_variables_name(),
                                   variables.global_vars.get_variables_info()):
-            var_type = str(info.var_type.__name__)
-            var_len = str(info.length) if info.length != -1 else "unlimited"
+            var_type = str(info.var_type.__name__).title()
+            var_len = str(info.length) if info.length != -1 else "Unlimited"
             var_value = variables.global_vars.get_variable(var_name)
             if isinstance(var_value, list):
                 var_value = " ".join(map(str, var_value))
             else:
                 var_value = str(var_value)
-            table.add_row(var_name, var_type, var_len,
+            table.add_row(var_name, var_type, str(info.required), var_len,
                           var_value, info.description)
         if table.row_count == 0:
             table.add_row("", "", "", "", "")
@@ -114,7 +115,8 @@ Or list all variables (syntax: set)
                         f"'{value_str}' is too large to fit the variable")
                     return None
             case _:
-                raise ValueError("Invalid type found as variable's type")
+                raise common_utils.UserError(
+                    "Invalid type found as variable's type")
         variables.global_vars.set_variable(name, new_value, -1, "")
         common_utils.print_info(
             f"[blue]{name}[/blue][green] =>[/green]", rich.pretty.Pretty(new_value))
