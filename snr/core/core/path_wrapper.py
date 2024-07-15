@@ -27,7 +27,7 @@ class PathWrapperBase:
         cls._path_var_name = path_var_name
 
     def _get_path(self) -> str:
-        return getattr(self, self._path_var_name)
+        return getattr(self, self._path_var_name) # type: ignore 
 
     def join(self, *paths: str) -> str:
         """Join paths with the wrapped path

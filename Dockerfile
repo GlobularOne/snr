@@ -23,6 +23,8 @@ COPY . /app
 
 ENV POETRY_VIRTUALENVS_CREATE=false
 
+RUN chmod +x ./tools/build_payloads.sh
+
 RUN ./tools/build_payloads.sh && poetry install --only=main
 
 RUN snr --init --init-only --verbose --default-exit-code 1

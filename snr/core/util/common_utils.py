@@ -161,16 +161,22 @@ def get_rootfs_version() -> int:
 if hasattr(contextlib, "chdir"):
     temp_chdir = getattr(contextlib, "chdir")
 else:
-    @contextlib.contextmanager
-    def temp_chdir(path: str):
+    class chdir(contextlib.AbstractContextManager[None]):
         """Temporarily change working directory. Should be used with `with`
 
-        Args:
-            path: New CWD
+        Attributes:
+            path: Path to change directory to
         """
-        orig_path = os.getcwd()
-        try:
-            os.chdir(path)
-            yield None
-        finally:
-            os.chdir(orig_path)
+
+        path: str
+        _orig_path: str
+
+        def __init__(self, path: str):
+            self.path = path
+            self._orig_path = os.getcwd()
+
+        def __enter__(self) -> None:
+            os.chdir(self.path)
+
+        def __exit__(self, *_: Any) -> None:
+            os.chdir(self._orig_path)

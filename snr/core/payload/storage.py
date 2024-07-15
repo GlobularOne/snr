@@ -8,8 +8,7 @@ import json
 import os
 import tempfile
 import time
-from types import TracebackType
-from typing import Iterable, Literal
+from typing import Iterable, Literal, Any
 
 from snr.core.core import path_wrapper
 from snr.core.payload import context
@@ -407,7 +406,7 @@ def handle_luks_partition(part: str, passphrases: Iterable[str] = ()) -> tuple[s
     return luks_name, part
 
 
-class MountedPartition(contextlib.AbstractContextManager, path_wrapper.PathWrapperBase, path_var_name="mount_point"):
+class MountedPartition(contextlib.AbstractContextManager['MountedPartition'], path_wrapper.PathWrapperBase, path_var_name="mount_point"):
     """A mounted partition
 
     Attributes:
@@ -461,10 +460,7 @@ class MountedPartition(contextlib.AbstractContextManager, path_wrapper.PathWrapp
         self.mount_point = mount_point
         return self
 
-    def __exit__(self,
-                 _: type[BaseException] | None,
-                 __: BaseException | None,
-                 ___: TracebackType | None):
+    def __exit__(self, *_: Any) -> None: 
         programs.Umount().invoke_and_wait(None, self.mount_point)
         if hasattr(self, "is_luks_encrypted"):
             luks_close(self._luks_name)

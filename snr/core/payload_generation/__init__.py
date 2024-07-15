@@ -16,7 +16,7 @@ __all__ = (
 )
 
 
-def _call_step(func: Callable[[context.Context], bool], ctx: context.Context):
+def _call_step(func: Callable[[context.Context], bool], ctx: context.Context) -> None:
     return_value = func(ctx)
     if not return_value:
         raise RuntimeError(f"Step failed with return code: {return_value}")

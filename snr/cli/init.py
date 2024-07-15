@@ -17,6 +17,8 @@ SUITE = "jammy"
 COMPONENTS = ",".join(["main", "multiverse", "restricted", "universe"])
 ALL_PACKAGES = ",".join(["btrfs-progs", "console-setup", "console-setup-linux",
                          "cryptsetup", "curl", "dbus", "dosfstools",
+                         # Workaround for https://github.com/GlobularOne/snr/issues/3
+                         "python3-cffi-backend",
                          "e2fsprogs", "ethtool", "firmware-ath9k-htc",
                          "linux-firmware", "gdisk", "grub-efi-{grub_arch}-signed", "grub-pc",
                          "initramfs-tools", "kmod", "linux-image-generic",
@@ -41,7 +43,7 @@ def _clear_data() -> None:
     shutil.rmtree(common_paths.DATA_PATH)
 
 
-def _handle_required_directories():
+def _handle_required_directories() -> None:
 
     common_utils.print_debug("Looking for directories that should be cleaned")
 
@@ -62,7 +64,7 @@ def _handle_required_directories():
         os.makedirs(directory, exist_ok=True)
 
 
-def _generate_rootfs():
+def _generate_rootfs() -> None:
     common_utils.print_debug("Preparing to generate rootfs image")
     debootstrap_options = {
         "arch": arch.get_kernel_arch(),
@@ -73,6 +75,7 @@ def _generate_rootfs():
             grub_arch=arch.get_grub_arch()),
     }
     if os.getuid() != 0:
+        common_utils.print_debug("Using fakechroot variant")
         debootstrap_options["variant"] = "fakechroot"
     common_utils.print_info("Generating rootfs image")
     errorcode = programs.Debootstrap(
@@ -83,7 +86,7 @@ def _generate_rootfs():
             f"Generating rootfs image failed ({errorcode})")
 
 
-def _archive_post_process():
+def _archive_post_process() -> None:
     common_utils.print_debug("Cleaning rootfs image")
     for trim_dir in TRIM_DIRS:
         shutil.rmtree(trim_dir)
