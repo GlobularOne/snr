@@ -14,7 +14,7 @@ __all__ = (
 )
 
 
-def download(url: str, path: str, timeout: int | None = None):
+def download(url: str, path: str, timeout: int | None = None) -> None:
     """Download a file from the internet
 
     Args:

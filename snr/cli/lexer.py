@@ -1,5 +1,7 @@
 """Snr shell commands lexer
 """
+from typing import Any
+
 import pygments.lexer
 import pygments.token
 
@@ -15,7 +17,7 @@ CHECKSUM_ALGORITHMS = (
 # pylint: disable=consider-using-f-string
 
 
-def command_no_args(x: str):
+def command_no_args(x: str) -> dict[str, list[tuple[str, Any, str]]]:
     return {x: [
         (r'(\s*)({0})'.format(x),
          pygments.lexer.bygroups(
@@ -25,7 +27,7 @@ def command_no_args(x: str):
     ]}
 
 
-def command_args(x: str):
+def command_args(x: str) -> dict[str, list[tuple[str, Any, str]]]:
     return {x: [
         (r'(\s*)({0})(\s+)'.format(x),
          pygments.lexer.bygroups(
@@ -36,7 +38,7 @@ def command_args(x: str):
     ]}
 
 
-def command_key_no_args(x: str, keywords: tuple[str, ...]):
+def command_key_no_args(x: str, keywords: tuple[str, ...]) -> dict[str, list[tuple[str, Any, str]]]:
     return {x: [
         (r'(\s*)({0})(\s+)({1})'.format(x, keywords),
          pygments.lexer.bygroups(
@@ -48,7 +50,7 @@ def command_key_no_args(x: str, keywords: tuple[str, ...]):
     ]}
 
 
-def command_key_args(x: str, keywords: tuple[str, ...]):
+def command_key_args(x: str, keywords: tuple[str, ...]) -> dict[str, list[tuple[str, Any, str]]]:
     return {x: [
         (r'(\s*)({0})(\s+)({1})(\s+)'.format(x, "|".join(keywords)),
          pygments.lexer.bygroups(

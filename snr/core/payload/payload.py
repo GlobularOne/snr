@@ -67,7 +67,7 @@ class Payload:
                     inp[0], inp[1], inp[2], inp[3], True)
             elif len(inp) == 5:
                 variables.global_vars.set_variable(
-                    inp[0], inp[1], inp[2], inp[3], True, inp[4])  # type: ignore
+                    inp[0], inp[1], inp[2], inp[3], True, inp[4])
             else:
                 raise common_utils.UserError(
                     f"'{inp}' is not a valid input variable")

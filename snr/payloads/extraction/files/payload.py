@@ -12,7 +12,7 @@ PASSPHRASES = "@PASSPHRASES@"
 
 
 @entry_point.entry_point
-def main():
+def main() -> None:
     block_info, _, our_device = storage.setup()
     common_utils.print_info("Files payload started")
     for part in storage.query_all_partitions(block_info):
