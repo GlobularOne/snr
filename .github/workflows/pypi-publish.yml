@@ -24,6 +24,7 @@ jobs:
       
       - name: Build payloads
         run:  |
+          chmod +x tools/build_payloads.sh
           ./tools/build_payloads.sh
         
       - name: Install project dependencies
