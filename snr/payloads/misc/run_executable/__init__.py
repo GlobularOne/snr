@@ -7,15 +7,15 @@ Do note that this payload does preserve ordering
 import os.path
 import shutil
 
-from snr.core.payload.payload import Payload, Context
+from snr.core.payload.payload import Context, Payload
 from snr.core.util import common_utils
 
 
 class RunCommandPayload(Payload):
     AUTHORS = ("GlobularOne",)
-
+    TARGET_OS_LIST = ("Any",)
     INPUTS = (
-        ("EXECUTABLES", [], -1, "Executables to copy and run"),
+        ("EXECUTABLES", [], -1, "Executables to copy and run", True),
     )
 
     def generate(self, ctx: Context) -> int:
@@ -45,12 +45,13 @@ class RunCommandPayload(Payload):
 
             common_utils.print_debug(f"Copying '{executable}' to '{target}'")
             try:
-                shutil.copyfile(executable, os.path.join(
-                    ctx.root_directory, target))
+                shutil.copyfile(executable, ctx.join(target))
             except (OSError, shutil.Error) as exc:
-                common_utils.print_error(f"Installing executable to rootfs failed: {exc}")
+                common_utils.print_error(
+                    f"Installing executable to rootfs failed: {exc}")
                 return 1
-            common_utils.print_debug(f"Adding autorun service for '{executable}'")
+            common_utils.print_debug(
+                f"Adding autorun service for '{executable}'")
             self.add_autorun(ctx, os.path.join("/", target))
         return 0
 

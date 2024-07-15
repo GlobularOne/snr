@@ -116,4 +116,6 @@ Now you can run it using:
 
 Or you can activate the virtual environment with `poetry shell` and just use `snr`
 
-Now you can proceed with the :doc:`quickstart`
+.. seealso:
+
+    :doc:`quickstart`

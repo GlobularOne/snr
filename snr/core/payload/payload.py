@@ -42,11 +42,16 @@ class Payload:
             )
 
         DEPENDENCIES: Deb packages as dependencies for the payload to work
+
+        ROOTFS_VERSION: Ask for a specific rootfs version, if snr is running an earlier version, it will patch it's rootfs up
     """
     AUTHORS: tuple[Optional[str], ...] = ()
     LICENSE: str = "gpl-3.0"
-    INPUTS: tuple[tuple[str, VariableType, int, str], ...] = ()
+    INPUTS: tuple[tuple[str, VariableType, int, str] |
+                  tuple[str, VariableType, int, str, bool], ...] = ()
     DEPENDENCIES: tuple[str, ...] = ()
+    TARGET_OS_LIST: tuple[str, ...] = ()
+    ROOTFS_VERSION: int
 
     _autorun: autorun.Autorun | None = None
 
@@ -57,8 +62,15 @@ class Payload:
             status code (0 for success, anything else for failure)
         """
         for inp in self.INPUTS:
-            variables.global_vars.set_variable(
-                inp[0], inp[1], inp[2], inp[3], True)
+            if len(inp) == 4:
+                variables.global_vars.set_variable(
+                    inp[0], inp[1], inp[2], inp[3], True)
+            elif len(inp) == 5:
+                variables.global_vars.set_variable(
+                    inp[0], inp[1], inp[2], inp[3], True, inp[4])  # type: ignore
+            else:
+                raise common_utils.UserError(
+                    f"'{inp}' is not a valid input variable")
         return 0
 
     def unload(self) -> int:
@@ -95,10 +107,11 @@ class Payload:
             follow_symlinks Follow symlinks instead of recreating them. Defaults to True
 
         Returns:
-            Same as shutil.copyfile
+            Destination path
         """
-        return shutil.copyfile(os.path.join(os.path.dirname(module_path), src), os.path.join(
-            ctx.root_directory, dest), follow_symlinks=follow_symlinks)
+        return shutil.copyfile(os.path.join(os.path.dirname(module_path), src),
+                               ctx.join(dest),
+                               follow_symlinks=follow_symlinks)
 
     def format_payload_and_write(self, ctx: Context, data: Mapping[str, VariableType],
                                  local_payload_path: str = "payload.py",
@@ -127,6 +140,10 @@ class Payload:
         result = {}
         for inp in self.INPUTS:
             result[inp[0]] = variables.global_vars.get_variable(inp[0])
+            var_info = variables.global_vars.get_variable_info(inp[0])
+            if var_info.required and result[inp[0]] == var_info.default_value:
+                raise common_utils.UserError(
+                    f"{inp[0]} is required but is not set")
         return result
 
     def add_autorun(self, ctx: Context, executable: str = "root/payload.py") -> None:

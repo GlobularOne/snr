@@ -6,10 +6,10 @@ functions in this module help creating a context for a payload
 import os.path
 
 from snr.core.core.context import Context
-from snr.core.util import programs
+from snr.core.util import common_utils, programs
 
 __all__ = (
-    "create_context_for_mount_point",
+    "create_context_for_mount_point", "require_context_for_mount_point"
 )
 
 
@@ -45,3 +45,23 @@ def create_context_for_mount_point(mount_point: str) -> Context:
     context.to_level_2(partitions_prefix)
     context.to_level_3(mount_point)
     return context
+
+
+def require_context_for_mount_point(mount_point: str) -> Context:
+    """Get context for a mount point or exit
+
+    Args:
+        mount_point: Mount point to get the context for
+
+    Raises:
+        SystemExit: Could not find the mount point
+
+    Returns:
+        Context for the specified mount point
+    """
+    try:
+        return create_context_for_mount_point(mount_point)
+    except ValueError:
+        common_utils.print_error(
+            f"Creating context for '{mount_point}' failed")
+        raise SystemExit(1) from None

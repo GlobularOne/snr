@@ -27,6 +27,18 @@ The colors are used in a way that even if one doesn't remember the symbols, they
 
 And also there are some special messages, called system messages. They are from internals of snr and commands don't use them, most commonly you might see them with configuration issues or using an unknown command. They use symbol `-->` and no color.
 
+`--init-if-needed` and `--init-only`
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+These flags are used to control how snr deals with the initialization process. 
+`--init-only` only initializes and does not start the shell. Useful if you only want to initialize snr.
+`--init-if-needed` tells snr to initialize if it needs to (it has not been initialized or if it is recommended to initialize again).
+So it would be safe to run snr like this all the time to ensure you are using the latest of everything (and don't forget to update snr itself): 
+
+.. code-block:: shell
+
+    snr --init-if-needed
+
 Reality of payloads
 -------------------
 
@@ -89,8 +101,7 @@ Now:
 
 Will just error out. (As you can see as well.) Because it will expand to `$var echo` and `$var` is not a valid command.
 
+.. seealso::
 
-Configuration file
-------------------
-
-Read the :doc:`configuration`
+    :doc:`configuration`
+        Snr's behavior can be configured with a configuration file as well

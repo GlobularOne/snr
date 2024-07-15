@@ -28,3 +28,5 @@ todo_include_todos = True
 
 highlight_language = "snr"
 sphinx.highlighting.lexers['snr'] = lexer.SnrLexer()
+
+pygments_style = "vs"

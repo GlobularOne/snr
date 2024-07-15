@@ -10,13 +10,14 @@ from typing import Mapping, Optional, TypedDict
 from snr.core.core import common_paths
 
 __all__ = (
-    "debug", "verbose", 
+    "debug", "verbose",
     "quiet", "initializing",
-    "default_exit_code", "arch", 
+    "default_exit_code", "arch",
     "PROMPT_UNLOADED", "PROMPT_LOADED_FORMAT",
-    "payload_path", "payload_module", 
-    "MINIMUM_TARGET_SIZE", "default_hostname", 
-    "default_primary_nameserver", "default_secondary_nameserver"
+    "payload_path", "payload_module",
+    "MINIMUM_TARGET_SIZE", "default_hostname",
+    "default_primary_nameserver", "default_secondary_nameserver",
+    "default_user_agent"
 )
 
 _ValidConfigValueType = type[str | int | bool]
@@ -58,6 +59,9 @@ _CONFIG_SCHEMA: Mapping[str, _TypeSchemaDict] = {
     "default_secondary_nameserver": {
         "type": str,
         "ipaddress_only": True
+    },
+    "default_user_agent": {
+        "type": str
     }
 }
 
@@ -99,6 +103,9 @@ default_primary_nameserver: str = "1.1.1.1"
 
 # Default secondary dns of generated images
 default_secondary_nameserver: str = "1.0.0.1"
+
+# Default user agent
+default_user_agent: str = "Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:109.0) Gecko/20100101 Firefox/113.0"
 
 # If catching an exception, drop to a debug shell
 debug: bool = False
@@ -169,7 +176,8 @@ def _parse_config() -> None:
                     "default_exit_code": default_exit_code,
                     "default_hostname": default_hostname,
                     "default_primary_nameserver": default_primary_nameserver,
-                    "default_secondary_nameserver": default_secondary_nameserver
+                    "default_secondary_nameserver": default_secondary_nameserver,
+                    "default_user_agent": default_user_agent
                 }
             }
         )

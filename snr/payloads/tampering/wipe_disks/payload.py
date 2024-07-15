@@ -1,12 +1,14 @@
 #!/usr/bin/python3
 """
+Wipe_disks payload
 """
 import random
 
-from snr.core.payload import context, entry_point, storage
+from snr.core.payload import entry_point, storage
 from snr.core.util import common_utils
 
 WIPE_MODE = "@WIPE_MODE@"
+MODE_E_RANDOM_PASSES = 5
 
 
 def pass_zero(path: str, kbs: int) -> None:
@@ -32,21 +34,10 @@ def pass_random(path: str, kbs: int) -> None:
 
 @entry_point.entry_point
 def main() -> None:
-    storage.lvm_scan_all()
-    storage.lvm_activate_all_vgs()
-    block_info = storage.query_all_block_info()
+    block_info, _, our_device = storage.setup()
+    common_utils.print_info("Wipe_disks payload started")
     wipe_level = ord(WIPE_MODE) - ord("A")
-    common_utils.print_ok("Wipe_disks payload started")
-    # We need a context for our root, to not wipe ourselves
-    ctx = context.create_context_for_mount_point("/")
-    if ctx is None:
-        common_utils.print_error("Creating context for / failed")
-        # We cannot continue
-        return None
-    our_device = storage.get_partition_root(ctx.device_name, block_info)
-    if our_device is None:
-        common_utils.print_error("Finding partition root device for / failed")
-        return None
+
     for block in block_info:
         if block != our_device and not block.is_rom():
             common_utils.print_info(f"Targeting {block.path}")
@@ -68,12 +59,11 @@ def main() -> None:
                 common_utils.print_info(f"Doing a random pass on {block.path}")
                 pass_random(block.path, block.size // 1024)
             if wipe_level >= 4:
-                for _ in range(5-1):
+                for _ in range(MODE_E_RANDOM_PASSES-1):
                     common_utils.print_info(
                         f"Doing a random pass on {block.path}")
                     pass_random(block.path, block.size // 1024)
     common_utils.print_ok("Wipe_disks payload completed")
-    return None
 
 
 if __name__ == "__main__":

@@ -1,9 +1,6 @@
 """
 Install GRUB for both UEFI and BIOS boot on the host
 """
-import os
-import os.path
-
 from snr.core.core import context
 from snr.core.payload_generation import common
 from snr.core.util import chroot_programs, common_utils, programs
@@ -31,7 +28,7 @@ def install_grub(ctx: context.Context) -> bool:
 
         errorcode = mount.invoke_and_wait(None,
                                           src,
-                                          os.path.join(ctx.root_directory, dest))
+                                          ctx.join(dest))
         if errorcode != 0:
             assert mount.stdout is not None
             common_utils.print_debug(

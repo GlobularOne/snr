@@ -42,8 +42,14 @@ CACHE_PATH = os.path.join(XDG_CACHE_HOME, "snr")
 PAYLOAD_SET_PATH = str(pathlib.Path(__file__).parents[2] / "payloads")
 # Snr's rootfs archive base path
 ROOTFS_ARCHIVE_BASE_PATH = os.path.join(DATA_PATH, "jammy-{machine}")
+# Current version of rootfs archive
+ROOTFS_CURRENT_VERSION = 2
+# The lowest version of supported rootfs archive
+ROOTFS_MIN_VERSION = 2
 # Snr's rootfs archive path
 ROOTFS_ARCHIVE_PATH = ""
+# The archive version
+ROOTFS_ARCHIVE_VERSION_PATH = ""
 # Snr's rootfs archive format
 ROOTFS_ARCHIVE_FORMAT = "r:gz"
 # Snr's rootfs archive file extension
@@ -58,5 +64,8 @@ def format_rootfs_archive_path(machine: str) -> None:
     """
     global ROOTFS_ARCHIVE_BASE_PATH  # pylint: disable=global-statement
     global ROOTFS_ARCHIVE_PATH  # pylint: disable=global-statement
+    global ROOTFS_ARCHIVE_VERSION_PATH  # pylint: disable=global-statement
     ROOTFS_ARCHIVE_BASE_PATH = ROOTFS_ARCHIVE_BASE_PATH.format(machine=machine)
     ROOTFS_ARCHIVE_PATH = ROOTFS_ARCHIVE_BASE_PATH + ROOTFS_ARCHIVE_EXTENSION
+    ROOTFS_ARCHIVE_VERSION_PATH = ROOTFS_ARCHIVE_BASE_PATH + \
+        ROOTFS_ARCHIVE_EXTENSION + ".version"

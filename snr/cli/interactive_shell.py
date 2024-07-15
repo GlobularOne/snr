@@ -11,12 +11,15 @@ import prompt_toolkit
 import prompt_toolkit.auto_suggest
 import prompt_toolkit.history
 import prompt_toolkit.lexers
+import prompt_toolkit.styles
+import pygments.styles
 import pyfiglet
 
 from snr import version
 from snr.cli import lexer, variables
-from snr.core.core import console, common_paths, options
+from snr.core.core import common_paths, console, options
 from snr.core.util import common_utils
+
 
 __all__ = (
     "prompt", "dispatch_command",
@@ -78,7 +81,7 @@ def _expand_vars(line: list[str]) -> list[str]:
 
 def _read_input(session: prompt_toolkit.PromptSession[str]) -> str:
 
-    return session.prompt(prompt)
+    return session.prompt([("class:prompt", prompt)])
 
 
 def dispatch_command(ctx: click.Context, group: click.Group, line: str) -> str:
@@ -108,6 +111,8 @@ def dispatch_command(ctx: click.Context, group: click.Group, line: str) -> str:
             return output
         except bdb.BdbQuit:
             pass
+        except common_utils.UserError as exc:
+            common_utils.print_error(exc.message)
         except click.UsageError as e:
             console.console.print(e.format_message())
         except Exception:  # pylint: disable=broad-exception-caught
@@ -131,10 +136,13 @@ def dispatch_command(ctx: click.Context, group: click.Group, line: str) -> str:
 @click.option("--quiet", "-q", is_flag=True)
 @click.option("--arch", "payload_arch")
 @click.option("--init", "do_init", is_flag=True)
+@click.option("--init-only", is_flag=True)
+@click.option("--init-if-needed", is_flag=True)
 @click.option("--reinit", "do_reinit", is_flag=True)
 @click.option("--host-primary-nameserver")
 @click.option("--host-secondary-nameserver")
 @click.option("--host-hostname")
+@click.option("--user-agent")
 @click.option("--default-exit-code")
 @click.option("--debug", is_flag=True)
 @click.option("--version", is_flag=True)
@@ -158,7 +166,14 @@ def interactive_shell(ctx: click.Context, /, **_: dict[str, Any]) -> None:
                 os.path.join(common_paths.STATE_PATH, "history.txt")),
             auto_suggest=prompt_toolkit.auto_suggest.AutoSuggestFromHistory(),
             lexer=prompt_toolkit.lexers.PygmentsLexer(
-                lexer.SnrLexer) if not options.quiet else None)
+                lexer.SnrLexer) if not options.quiet else None,
+            style=prompt_toolkit.styles.merge_styles([
+                prompt_toolkit.styles.style_from_pygments_cls(
+                    pygments.styles.get_style_by_name("vs")),
+                prompt_toolkit.styles.Style.from_dict({
+                    "prompt": "#00e000 bold",
+                })
+            ]))
         while True:
             console.console.print(dispatch_command(
                 ctx, interactive_shell, _read_input(session)))

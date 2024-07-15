@@ -171,3 +171,63 @@ Several under the hood changes and minor improvements
   * Several docker bugs fixed
 
   * Build scripts improved
+
+## 1.1.0
+
+* Additions:
+
+  * snr core utility to download things over the internet
+
+  * Several new payloads: `access/bypass_login` `extraction/account_hashes` `extraction/files` `infection/meterpreter` `misc/multi` `tampering/files`
+
+  * Let payloads document the OS they support as target
+
+  * Payload generation method itself is now inside the core library as well
+
+  * Path wrappers: Wrap `os` and `shutil` functions around a certain path to help with reducing the amount of `os.path.join`'s one would have to write
+
+  * Significant new additions to the payload-directed parts of core library, allowing a much much more clean interface. Including a new unified interface to mount partitions.
+
+  * `temp_chdir`: A new method to temporarily change CWD
+
+  * Payloads now can additionally require a variable to be required, reducing unneeded checks in many payloads.
+
+  * `--user-agent` flag now that we can download things on the internet (and subsequently new config value `default_user_agent`)
+
+  * Rootfs versioning: This help keeping tracking of rootfs changes to root out possible issues caused by missing packages in an older version
+
+  * New flag: `--init-only` Tells snr to only initialize if needed and do not start the shell.
+
+  * `--init-if-needed` Added. Tells snr to initialize if needed, replacing the `--reinit` flag.
+    Can be mixed with `--init-only` to only initialize if needed and not start the shell.
+    It also can be used in place of `--init` but there is no plan to deprecate `--init`
+
+  * Document usage of `--init-if-needed` and `--init-only` in `deeper_introduction` as well
+
+* Improvements:
+
+  * Now every payload gets run in it's own directory, even if there are multiple payloads nested thanks to a new mechanism of storing the original cwd
+
+  * Refactored and improved several payloads
+
+  * Now all of the payload generation process is available inside `snr.core.payload_generation`
+
+  * Now no builtin payloads require any dependencies to be installed during payload generation process. However the necessary infrastructure still exists to facilitate writing custom payloads and there is no plan to remove it. This helps with reducing unnecessary downloads at payload generation time while ensuring custom payloads have a clean way of declaring and ensuring dependencies
+
+  * Init process refactored and is now more verbose to the console about what it is doing
+
+  * Colored prompt is back. Now the prompt is green, bold and italic
+
+  * Refactor and improve the `SnrLexer`, it is now almost twice faster (which also effects the documentation generation)
+
+  * Use themes for the prompt
+
+  * License the documentation as GNU FDL instead of the project's GNU GPL as it is the more suitable license
+
+  * Significant documentation improvements. Now snr has documentation for developing new payloads and commands
+
+* Deprecations:
+
+  * `data_open`, `data_mkdir`, `rootfs_makedirs`, `rootfs_open` have been deprecated in favor of path wrapper based solutions
+
+  * `--reinit` flag have been deprecated in favor of `--init-if-needed` and `--init-only` to provide better control over the invocation to the user

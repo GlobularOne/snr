@@ -37,6 +37,7 @@ def format_host(ctx: context.Context) -> bool:
                                                  part)
         if errorcode != 0:
             assert tool_wrapper.stdout is not None
-            common_utils.print_debug(f"Command's output: {tool_wrapper.stdout.read()}")
+            common_utils.print_debug(
+                f"Command's output: {tool_wrapper.stdout.read()}")
             return common.clean_and_exit(ctx, "Formatting failed", True)
     return True

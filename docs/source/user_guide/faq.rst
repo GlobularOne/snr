@@ -11,7 +11,7 @@ Natively? No. Theoretically, you should be able to run it on WSL, but we provide
 How much of my internet connection does snr use?
 ------------------------------------------------
 
-Snr downloads things once (with the exception of payload dependencies which are very lightweight, and not common) during it's initialization process.
+Snr downloads things once (with the exception of payload dependencies which are very lightweight, and not used by builtin payloads) during it's initialization process.
 
 Can I run snr as root?
 ----------------------
@@ -22,7 +22,7 @@ I configured something wrong, can I revert it?
 ----------------------------------------------
 
 In general, you can just reload the shell using `reload` command, it also resets the payload loaded (so you have to `use` it again)
-If you got a wrong value in the config file, you can just remove the config file. But for a variable, you can reload the payload to automatically reset the variables as well `use <payload>`
+If you got a wrong value in the config file, you can just remove the config file or that key. But for a variable, you can reload the payload to automatically reset the variables as well `use <payload>`
 
 Can I hack my ex/classmate/this guy I don't like with it?
 ---------------------------------------------------------

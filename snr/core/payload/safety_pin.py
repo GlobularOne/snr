@@ -2,8 +2,7 @@
 Library support for the safety pin. The safety pin is a feature on all payloads.
 It checks whatever the payload is installed or not and if not running from a target, it won't run.
 All the payloads that come with snr do use the safety pin.
-For custom written payloads, you must use require_lack_of_safety_pin at the very
-start of your payload. To ensure your payload doesn't run in the host accidentally.
+For custom written payloads, you must use the entry_point function decorator
 """
 import os.path
 

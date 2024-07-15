@@ -1,8 +1,8 @@
 """
 Prepare rootfs for payload generation
 """
-import tarfile
 import os
+import tarfile
 import tempfile
 
 from snr.core.core import common_paths, context, options
@@ -51,7 +51,7 @@ def prepare_rootfs(ctx: context.Context) -> bool:
     except Exception as exc:  # pylint: disable=broad-exception-caught
         return common.clean_and_exit(ctx, f"Unpacking rootfs image failed ({exc})")
     for directory in ["bin", "lib", "var", "root"]:
-        if not os.path.exists(os.path.join(ctx.root_directory, directory)):
+        if not ctx.exists(directory):
             return common.clean_and_exit(ctx, "Archive did not extract correctly", True, True)
     common_utils.print_debug("Preparing rootfs")
     common_utils.print_debug("Writing hostname")

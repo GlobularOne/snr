@@ -5,8 +5,7 @@ import os
 import shlex
 import shutil
 import subprocess
-from subprocess import (DEVNULL, PIPE, STDOUT,
-                        SubprocessError)
+from subprocess import DEVNULL, PIPE, STDOUT, SubprocessError
 from typing import IO, Mapping
 
 from snr.core.util import common_utils
@@ -82,7 +81,6 @@ class ProgramWrapperBase:  # pylint: disable=too-many-instance-attributes
         self._stdout = stdout
         self._stderr = stderr
 
-
     def __init_subclass__(cls, program: str | None = None, interpreter: tuple[str, str] = ("", "")):
         cls._path = program
         cls._interpreter = interpreter
@@ -95,7 +93,7 @@ class ProgramWrapperBase:  # pylint: disable=too-many-instance-attributes
 
     def set_command_verb(self, verb: str) -> None:
         """Set the verb that will be used for command
-        
+
         Args:
             verb: verb to be used for
         """
@@ -103,7 +101,7 @@ class ProgramWrapperBase:  # pylint: disable=too-many-instance-attributes
 
     def add_arguments(self, *args: str, options: Mapping[str, str | None] | None = None) -> None:
         """Add arguments to the command
-        
+
         Args:
             options: Command line options to add
         """
@@ -113,7 +111,7 @@ class ProgramWrapperBase:  # pylint: disable=too-many-instance-attributes
 
     def invoke(self, *args: str, options: Mapping[str, str | None] | None = None) -> None:
         """Invoke the program with the given arguments
-        
+
         Raises:
             TypeError: If the class was used directly and not a factory was used
         Args:
@@ -126,10 +124,12 @@ class ProgramWrapperBase:  # pylint: disable=too-many-instance-attributes
                 if not os.path.isabs(self._path):
                     path = shutil.which(self._path)
                     if path is None:
-                        raise FileNotFoundError(f"Could not find program: '{self._path}'")
+                        raise FileNotFoundError(
+                            f"Could not find program: '{self._path}'")
                     self._path = path
         if self._path is None:
-            raise TypeError("ProgramWrapperBase used directly, use one of it's factories")
+            raise TypeError(
+                "ProgramWrapperBase used directly, use one of it's factories")
         # First ensure the program isn't already running
         if self._process is not None:
             if self._process.returncode is None:
@@ -184,10 +184,10 @@ class ProgramWrapperBase:  # pylint: disable=too-many-instance-attributes
 
     def wait(self, timeout: float | None = None) -> int:
         """Wait for the process to exit.
-        
+
         Args:
             timeout: Time in seconds to wait for the process to exit.
-        
+
         Returns:
             The exit code of the process
         """

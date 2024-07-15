@@ -23,7 +23,7 @@ def SYSTEMD_NETWORK_PATH(ctx: context.Context) -> str:  # pylint: disable=invali
     Returns:
         The path to systemd's network directory
     """
-    return os.path.join(ctx.root_directory, "usr", "lib", "systemd", "system")
+    return ctx.join("usr", "lib", "systemd", "system")
 
 
 class SystemdNetwork(systemd_unit.SystemdConfigFileBase,

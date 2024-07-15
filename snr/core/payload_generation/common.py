@@ -1,17 +1,19 @@
 """
 Common utilities for payload generation
 """
-import os
-import shutil
 import grp
+import os
 import pwd
+import shutil
 from typing import Literal
 
 from snr.core.core import context, options
 from snr.core.util import common_utils, programs
 
 __all__ = (
-    "clean_on_success", "clean_and_exit"
+    "is_user_disk_admin", "bind_required_rootfs_dirs",
+    "unbind_required_rootfs_dirs", "clean_on_success",
+    "clean_and_exit"
 )
 
 
@@ -41,17 +43,17 @@ def bind_required_rootfs_dirs(ctx: context.Context) -> None:
         ctx: Context
     """
     for node, check_measure in [("dev", "dev/random"), ("sys", "sys/kernel"), ("proc", "proc/self")]:
-        if os.path.exists(os.path.join(ctx.root_directory, check_measure)):
+        if ctx.exists(check_measure):
             common_utils.print_debug(f"/{node} is already mounted")
             continue
         common_utils.print_debug(f"Mounting /{node}")
-        os.makedirs(os.path.join(ctx.root_directory, node), exist_ok=True)
+        ctx.makedirs(node, exist_ok=True)
         mount = programs.Mount(sudo=True)
 
         errorcode = mount.invoke_and_wait(None,
                                           "-B",
                                           f"/{node}",
-                                          os.path.join(ctx.root_directory, node))
+                                          ctx.join(node))
         if errorcode != 0:
             assert mount.stdout is not None
             common_utils.print_debug(

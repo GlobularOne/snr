@@ -9,7 +9,7 @@ import click
 import rich.table
 
 from snr.cli import atexit_callbacks, interactive_shell, variables
-from snr.core.core import options, console
+from snr.core.core import console, options
 from snr.core.util import common_utils, programs
 
 
@@ -76,12 +76,15 @@ Print help on a specific command or variable, or list all commands
                                "gpl-3.0")
         dependencies = getattr(getattr(options.payload_module, "payload"),
                                "DEPENDENCIES")
+        target_os_list = getattr(getattr(options.payload_module, "payload"),
+                                 "TARGET_OS_LIST", ("None specified"))
         return f"""\
 Payload path: [blue]{options.payload_path}[/blue]
 Input: [blue]{' '.join([inp[0] for inp in inputs])}[/blue]
 Authors: [blue]{' '.join(authors)}[/blue]
 License: [blue]{license_info}[/blue]
 Dependencies: [blue]{' '.join(dependencies)}[/blue]
+Supported Operating Systems: [blue]{' '.join(target_os_list)}[/blue]
 [blue]{doc}[/blue]"""
     if value in interactive_shell.interactive_shell.commands:
         return getattr(

@@ -26,6 +26,8 @@ class VariableInfo:  # pylint: disable=too-few-public-methods
     length: int = -1
     var_type: VariableTypeType = str
     used_by_payload: bool = False
+    required: bool = False
+    default_value: VariableType | None = None
 
 
 class VariableManager:
@@ -57,7 +59,7 @@ class VariableManager:
 
     def set_variable(self, name: str, value: VariableType,
                      info_length: int = -1, info_description: str = "",
-                     info_used_by_payload: bool = False) -> None:
+                     info_used_by_payload: bool = False, required: bool = False) -> None:
         """Set value of variable.
 
         Args:
@@ -66,6 +68,7 @@ class VariableManager:
             info_length: Length of variable if -1 no length will be set
             info_description: Description of variable
             info_used_by_payload: Is the variable used a payload
+            required: Is the variable required to be set
         """
         if isinstance(value, VariableTypesTuple):
             if isinstance(value, list):
@@ -84,7 +87,8 @@ class VariableManager:
         if name in self._variables and not info_used_by_payload:
             info = self._variables[name][1]
             if not isinstance(value, info.var_type):
-                raise TypeError(f"'{value}' is not of type defined for variable")
+                raise TypeError(
+                    f"'{value}' is not of type defined for variable")
             if info.length != -1 and isinstance(value, (str, list)):
                 if len(value) > info.length:
                     warnings.warn(
@@ -100,6 +104,9 @@ class VariableManager:
             info.description = info_description
             info.var_type = type(value)
             info.used_by_payload = info_used_by_payload
+            info.required = required
+            if info_used_by_payload:
+                info.default_value = value
         self._variables[name] = (value, info)
 
     def del_variable(self, name: str) -> None:

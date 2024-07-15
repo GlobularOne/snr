@@ -67,7 +67,7 @@ Now, it seems like it can be configured using `WIPE_MODE` variable (you can see 
 Now let's just change it's value:
 
 .. figure:: img/5.png
-   :alt: Changing value of WIPE_MODE to `B` using `set WIPE_MODE B`
+    :alt: Changing value of `WIPE_MODE` to `B` using `set WIPE_MODE B`
 
 Here we chose wipe mode B, which according to the payload's help text, it overwrites the whole disk with zeros. Now we can use `generate` to generate the payload but it needs an output, it could be a file (you could use dd to write it to a disk later) or a disk directly. Here we assume we have a USB stick at `/dev/sdb`:
 
@@ -77,8 +77,19 @@ Here we chose wipe mode B, which according to the payload's help text, it overwr
 
 And it's done! Now you got a very dangerous USB drive (be responsible with it, as the disclaimer said)
 
-Don't forget to read the :doc:`faq` and know more about snr with more of it's basics:
 
-* :doc:`deeper_introduction`
-* :doc:`payload_categories`
-* :doc:`shell_commands`
+.. seealso::
+
+    :doc:`faq`
+        Don't forget to read the FAQ
+
+
+.. seealso::
+
+    And some of the basics of snr
+
+        :doc:`deeper_introduction`
+
+        :doc:`payload_categories`
+
+        :doc:`shell_commands`

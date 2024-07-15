@@ -2,8 +2,9 @@
 ProgramWrapper derivatives for common tools
 """
 
-from snr.core.util.program_wrapper import (
-    DEVNULL, PIPE, STDOUT, SubprocessError, program_wrapper_factory)
+from snr.core.util.program_wrapper import (DEVNULL, PIPE, STDOUT,
+                                           SubprocessError,
+                                           program_wrapper_factory)
 
 __all__ = (
     "DEVNULL", "PIPE",
@@ -14,7 +15,7 @@ __all__ = (
     "Lvscan", "Cryptsetup",
     "Losetup", "Sgdisk",
     "Partprobe", "Chmod",
-    "Lsblk"
+    "Lsblk", "Chown"
 )
 
 Debootstrap = program_wrapper_factory("debootstrap")
