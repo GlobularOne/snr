@@ -7,10 +7,10 @@ from typing import Callable
 from snr.core.payload import data_dir, safety_pin
 from snr.core.util import common_utils
 
-
 __all__ = (
     "entry_point",
 )
+
 
 def entry_point(func: Callable[[], None]) -> Callable[[], None]:
     """Payload entry point decorator
