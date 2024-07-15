@@ -36,6 +36,16 @@ __all__ = (
 EXTERNAL_CALL_FAILURE = "\x01"
 
 
+class UserError(Exception):
+    """An error by the user, when used by commands, the command dispatch will catch it and report it as a message"""
+    message: str
+
+    def __init__(self, message: str):
+        self.message = message
+
+    def __str__(self) -> str:
+        return self.message
+
 def bytes_to_str_repr(value: bytes) -> str:
     """Convert bytes to their string representation (as you would use in a python code)
 
@@ -86,6 +96,9 @@ def call_external_function(func: Callable[..., Any], *args: object, **kwargs: ob
     """
     try:
         return func(*args, **kwargs)
+    except UserError as exc:
+        print_error(exc.message)
+        return 1
     except Exception:  # pylint: disable=broad-exception-caught
         print_debug("Calling external function failed")
         handle_exception()
