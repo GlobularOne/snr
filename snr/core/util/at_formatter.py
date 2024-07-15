@@ -22,10 +22,10 @@ class AtFormatter:  # pylint: disable=too-few-public-methods
 
     def format_str(self, string: str) -> str:
         """Formats a string according to the variables
-         
+
         Args:
             string: The string to format.
-        
+
         Returns:
             The formatted string with variables
         """
