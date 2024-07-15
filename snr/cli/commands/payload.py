@@ -1,7 +1,6 @@
 """
 Payload-related commands
 """
-import importlib
 import os
 import sys
 
@@ -9,13 +8,9 @@ import click
 
 from snr.cli import interactive_shell, variables
 from snr.core.core import context, options
-from snr.core.payload import safety_pin
-from snr.core.payload_generation import common
-from snr.core.payload_generation.post import (core_configuration, finishing,
-                                              grub_installation)
-from snr.core.payload_generation.pre import (ensuring_dependencies, formatting,
-                                             host_check, partitioning,
-                                             rootfs_preparation)
+from snr.core.payload_generation import (common, generation,
+                                         payload_generation_post,
+                                         payload_generation_pre)
 from snr.core.util import common_utils, programs
 from snr.core.util.payloads import install_snr_core
 
@@ -28,33 +23,23 @@ Use a payload
     """
     if options.payload_module is not None or \
             (payload is None and options.payload_module is not None):
-        common_utils.print_debug("Calling unload() function of payload")
-        common_utils.call_external_function(
-            getattr(options.payload_module.payload, "unload"))  # pylint: disable=no-member
+        generation.unload(options.payload_path, getattr(
+            options.payload_module, "payload"))
         options.payload_module = None
         options.payload_path = ""
         interactive_shell.prompt = options.PROMPT_UNLOADED
-        if payload is None:
+        if len(payload) == 0:
             common_utils.print_info("Payload unloaded")
             return None
     cwd = os.getcwd()
-    path = payload.replace("/", ".").replace("\\", ".")
     common_utils.print_debug(f"Appending '{cwd}' to sys.path")
     sys.path.append(cwd)
-    common_utils.print_debug("Importing payload")
-    module = importlib.import_module(path)
-    if not hasattr(module, "payload"):
-        common_utils.print_error("Not a valid payload")
-        return None
-    common_utils.print_debug("Calling load() function of payload")
-    errorcode = common_utils.call_external_function(module.payload.load)
-    if errorcode or errorcode is common_utils.EXTERNAL_CALL_FAILURE:
-        common_utils.print_error(f"Payload failed to load ({errorcode})")
-        del module
-        return None
+    payload_instance = generation.load(payload, store_cwd=True)
     sys.path.remove(cwd)
+    if payload_instance is None:
+        return None
     common_utils.print_info("Payload loaded")
-    options.payload_module = module
+    options.payload_module = sys.modules[payload_instance.__module__]
     options.payload_path = payload
     interactive_shell.prompt = options.PROMPT_LOADED_FORMAT.format(
         payload)
@@ -62,31 +47,6 @@ Use a payload
     variables.global_vars.set_variable(
         "VERBOSITY", "normal", -1, "Payload verbosity: Either quiet, normal, verbose or debug", True)
     return None
-
-
-def _payload_generate_pre(ctx: context.Context) -> bool:
-    if not host_check.check_host(ctx):
-        return False
-    if not partitioning.partition_host(ctx):
-        return False
-    if not formatting.format_host(ctx):
-        return False
-    if not rootfs_preparation.prepare_rootfs(ctx):
-        return False
-    if not ensuring_dependencies.ensure_dependencies(ctx):
-        return False
-    return True
-
-
-def _payload_generate_post(ctx: context.Context, verbosity: str) -> bool:
-    safety_pin.remove_safety_pin(ctx.root_directory)
-    if not core_configuration.configure_core(ctx, verbosity):
-        return False
-    if not grub_installation.install_grub(ctx):
-        return False
-    if not finishing.finish_host(ctx):
-        return False
-    return True
 
 
 @interactive_shell.interactive_shell.command(name="generate")
@@ -106,22 +66,21 @@ Generate a selected payload, pass device to write to as an argument
     ctx = context.Context(device)
     common_utils.print_info("Generating payload")
     common_utils.print_debug("Starting pre payload generation process")
-    if not _payload_generate_pre(ctx):
+    if not payload_generation_pre(ctx):
         common_utils.print_error("Payload pre generation failed")
         return None
     install_snr_core.install_snr_core_lib(ctx)
     common_utils.print_debug(
         "Pre payload generation steps completed successfully")
-    common_utils.print_debug("Calling generate() method of payload")
-    errorcode = getattr(getattr(options.payload_module,
-                        "payload"), "generate")(ctx)
+    errorcode = generation.generate(options.payload_path, getattr(
+        options.payload_module, "payload"), ctx)
     if errorcode != 0:
         common.clean_and_exit(
             ctx, f"Payload generation failed ({repr(errorcode)})")
         return None
     common_utils.print_debug(
         "Payload generated successfully. Starting post payload generation steps")
-    if not _payload_generate_post(ctx, verbosity):
+    if not payload_generation_post(ctx, verbosity):
         common_utils.print_error("Payload post generation failed")
         common.clean_on_success(ctx, True, True)
         return None
