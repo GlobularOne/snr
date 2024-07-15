@@ -1,11 +1,12 @@
 #!/usr/bin/python3
 """
+Pirate_flag Payload
 """
 import shutil
 import time
 
-from snr.core.util import common_utils
 from snr.core.payload import entry_point
+from snr.core.util import common_utils
 
 TERM_COLOR = "\033[41;30m"
 FLAG = r"""\
