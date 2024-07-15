@@ -3,15 +3,20 @@
 """
 import os
 import os.path
-from types import TracebackType
 from typing import IO, Any
 
+import deprecated
+
+from snr.core.core import path_wrapper
+from snr.core.payload import storage
 from snr.core.util import programs
 
 __all__ = (
-    "fix_data_dir", "data_open",
-    "data_mkdir"
+    "data", "fix_data_dir",
+    "data_open", "data_mkdir"
 )
+
+data = path_wrapper.PathWrapperBase("/data")
 
 
 def fix_data_dir() -> None:
@@ -28,6 +33,7 @@ def fix_data_dir() -> None:
         os.rmdir("/data/_fix_data_dir_test")
 
 
+@deprecated.deprecated("Use data.open instead", version="1.1.0")
 def data_open(file: str, mode: str = "r", buffering: int = -1, encoding: str | None = None) -> IO[Any]:
     """Open a file in the data directory
 
@@ -40,23 +46,31 @@ def data_open(file: str, mode: str = "r", buffering: int = -1, encoding: str | N
     Returns:
         file-like object
     """
-    stream = open(os.path.join("/data", file), mode, buffering,  # pylint: disable=consider-using-with
-                  encoding)
-
-    def __enter__() -> IO[Any]:  # pylint: disable=unused-variable
-        return stream.__enter__()
-
-    def __exit__(exc_type: type[BaseException] | None,  # pylint: disable=unused-variable
-                 exc_val: BaseException | None,
-                 exc_tb: TracebackType | None) -> None:  # pylint: disable=unused-variable
-        return stream.__exit__(exc_type, exc_val, exc_tb)
-    return stream
+    return data.open(file, mode, buffering, encoding)
 
 
+@deprecated.deprecated("Use data.mkdir instead", version="1.1.0")
 def data_mkdir(dir_path: str, mode: int = 511) -> None:
     """Create a directory if it doesn't exist
     Args:
         path: Path to the directory to create
         mode: Permissions to set for the directory
     """
-    os.mkdir(dir_path, mode=mode)
+    return data.mkdir(dir_path, mode)
+
+
+def wrap_data_path_for_block(info: storage.BlockInfo) -> path_wrapper.PathWrapperBase:
+    """Wrap a new path for a specific block
+
+    Args:
+        info: Information on the block
+
+    Returns:
+        Wrapped path specific to that block
+    """
+    if info.uuid is not None:
+        identifier = info.uuid
+    else:
+        identifier = info.path.replace("/", ".")[1:]
+    data.makedirs(identifier, exist_ok=True)
+    return data.wrap(identifier)
