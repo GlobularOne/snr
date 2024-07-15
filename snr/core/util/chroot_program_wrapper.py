@@ -5,14 +5,15 @@ from typing import Callable
 
 from snr.core.core import context
 from snr.core.util import program_wrapper
-from snr.core.util.program_wrapper import (
-    DEVNULL, PIPE, STDOUT, SubprocessError)
+from snr.core.util.program_wrapper import (DEVNULL, PIPE, STDOUT,
+                                           SubprocessError)
 
 __all__ = (
     "DEVNULL", "PIPE",
     "STDOUT", "SubprocessError",
     "chroot_program_wrapper_factory",
 )
+
 
 def chroot_program_wrapper_factory(program_name: str) \
         -> Callable[[context.Context], type[program_wrapper.ProgramWrapperBase]]:
@@ -31,7 +32,7 @@ def chroot_program_wrapper_factory(program_name: str) \
                                    interpreter=("chroot", ctx.root_directory),
                                    program=program_name):
             """Wrap {0} inside a real chroot context"""
-        class_name = f"{program_name.title()}RealChrootWrapper"
+        class_name = f"{program_name.title()}ChrootWrapper"
         class_name = class_name.replace("-", "").replace("_", "")
         CustomProgramWrapper.__name__ = class_name
         assert CustomProgramWrapper.__doc__ is not None
