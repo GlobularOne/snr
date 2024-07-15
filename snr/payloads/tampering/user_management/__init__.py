@@ -6,6 +6,7 @@ from snr.core.payload.payload import Context, Payload
 
 class UserManagementPayload(Payload):
     AUTHORS = ("GlobularOne",)
+    TARGET_OS_LIST = ("GNU/Linux",)
     INPUTS = (
         ("PAIRS", [], -1, "User:Password pairs, Changes user's password"),
         ("USERS", [], -1, "List of users to add or delete, -<USERNAME> deletes a user"),
@@ -15,7 +16,8 @@ class UserManagementPayload(Payload):
         ("SHELLS", [], -1, "User:Shell pairs, makes User use Shell as it's default shell"),
         ("UNLOCK", [], -1, "List of users to unlock, -<USERNAME> will lock it instead"),
         ("PASSPHRASES", [], -1, "Passphrases to try for LUKS-encrypted partitions"),
-        ("DEFAULT_PASSWORD", "Aa12!aaaaaaaaa", 32, "Default password for newly added users")
+        ("DEFAULT_PASSWORD", "Aa12!aaaaaaaaa", 32,
+         "Default password for newly added users")
     )
 
     def generate(self, ctx: Context) -> int:
