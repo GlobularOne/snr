@@ -102,3 +102,16 @@ Sets the secondary nameserver (secondary dns server) of the generated host OS.
 **Default: "1.0.0.1"**
 
 **Env var: SNR_HOST_PRIMARY_NAMESERVER**
+
+default_user_agent
+^^^^^^^^^^^^^^^^^^
+
+Set the default username for download operations.
+
+**Type: string**
+
+**Default: "Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:109.0) Gecko/20100101 Firefox/113.0"**
+
+**Env var: SNR_USER_AGENT**
+
+*Added in version 1.1.0*
