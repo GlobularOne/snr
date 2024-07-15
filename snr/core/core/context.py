@@ -2,12 +2,14 @@
 Context for specific mount point
 """
 
+from snr.core.core import path_wrapper
+
 __all__ = (
     "Context",
 )
 
 
-class Context:
+class Context(path_wrapper.PathWrapperBase, path_var_name="_root_directory"):
     """Context for specific mount point
 
     Context is used to pass information on a mount point around.
@@ -28,7 +30,7 @@ class Context:
     _partitions_prefix: str
     _root_directory: str
 
-    def __init__(self, device_name: str):
+    def __init__(self, device_name: str):  # pylint: disable=super-init-not-called
         self._device_name = device_name
         self._original_target = device_name
 
