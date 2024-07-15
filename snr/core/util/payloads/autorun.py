@@ -59,7 +59,7 @@ class Autorun:
             service.Service_section["Requires"] = self._services[-1].basename
         if os.path.exists(os.path.join(self._context.root_directory, path)):
             errorcode = programs.Chmod().invoke_and_wait(
-                None, "+x", os.path.join(self._context.root_directory, path))
+                None, "+x", self._context.join(path))
             if errorcode != 0:
                 common_utils.print_debug(
                     "Marking service executable as +x failed")
