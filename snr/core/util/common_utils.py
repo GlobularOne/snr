@@ -7,16 +7,16 @@ import os.path
 import pdb
 import shutil
 import sys
+import contextlib
 from shutil import get_terminal_size
-from types import TracebackType
 from typing import IO, Any, Callable, NoReturn
 
+import deprecated
 import rich.console
 import rich.pretty
 import rich.traceback
 
-
-from snr.core.core import context, options, console
+from snr.core.core import common_paths, console, context, options
 from snr.core.core.logging import (carriage_return, clear_screen, print_debug,
                                    print_error, print_fatal, print_info,
                                    print_ok, print_sys, print_warning)
@@ -29,7 +29,9 @@ __all__ = (
     "print_sys", "print_warning",
     "EXTERNAL_CALL_FAILURE", "bytes_to_str_repr",
     "remake_dir", "graceful_exit",
-    "call_external_function", "rootfs_open"
+    "call_external_function", "rootfs_open",
+    "rootfs_makedirs", "get_rootfs_version",
+    "temp_chdir", "UserError"
 )
 
 # External function call failed
@@ -45,6 +47,7 @@ class UserError(Exception):
 
     def __str__(self) -> str:
         return self.message
+
 
 def bytes_to_str_repr(value: bytes) -> str:
     """Convert bytes to their string representation (as you would use in a python code)
@@ -105,6 +108,7 @@ def call_external_function(func: Callable[..., Any], *args: object, **kwargs: ob
         return EXTERNAL_CALL_FAILURE
 
 
+@deprecated.deprecated("Use context's makedirs instead", version="1.1.0")
 def rootfs_makedirs(ctx: context.Context, path: str, mode: int = 511, exist_ok: bool = False) -> None:
     """makedirs but for rootfs
 
@@ -114,11 +118,10 @@ def rootfs_makedirs(ctx: context.Context, path: str, mode: int = 511, exist_ok: 
         mode: Directory permissions. Defaults to 511
         exist_ok: Whatever it's okay for directories to exist or not. Defaults to False
     """
-    os.makedirs(os.path.join(
-        ctx.root_directory, path
-    ), mode=mode, exist_ok=exist_ok)
+    return ctx.makedirs(path, mode, exist_ok)
 
 
+@deprecated.deprecated("Use context's open instead", version="1.1.0")
 def rootfs_open(ctx: context.Context, file: str, mode: str = "r",
                 buffering: int = -1, encoding: str | None = None) -> IO[Any]:
     """Open a file in rootfs
@@ -133,15 +136,41 @@ def rootfs_open(ctx: context.Context, file: str, mode: str = "r",
     Returns:
         The opened stream
     """
-    # pylint: disable=consider-using-with
-    stream = open(os.path.join(
-        ctx.root_directory, file), mode, buffering, encoding)
+    return ctx.open(file, mode, buffering, encoding)
 
-    def __enter__() -> IO[Any]:  # pylint: disable=unused-variable
-        return stream
 
-    def __exit__(exc_type: type[BaseException] | None,  # pylint: disable=unused-variable
-                 exc_val: BaseException | None,
-                 exc_tb: TracebackType | None) -> None:
-        return stream.__exit__(exc_type, exc_val, exc_tb)
-    return stream
+def get_rootfs_version() -> int:
+    """Get version of the current rootfs
+
+    Returns:
+        Version of the current rootfs
+    """
+    if not os.path.exists(common_paths.ROOTFS_ARCHIVE_VERSION_PATH):
+        print_sys("Could not read version data, assuming version 1")
+        return 1
+    with open(common_paths.ROOTFS_ARCHIVE_VERSION_PATH, encoding="utf-8") as stream:
+        data = stream.read()
+
+    try:
+        return int(data.strip().strip("\n"))
+    except ValueError:
+        print_sys("Invalid data found in rootfs archive version file")
+        return 0
+
+
+if hasattr(contextlib, "chdir"):
+    temp_chdir = getattr(contextlib, "chdir")
+else:
+    @contextlib.contextmanager
+    def temp_chdir(path: str):
+        """Temporarily change working directory. Should be used with `with`
+
+        Args:
+            path: New CWD
+        """
+        orig_path = os.getcwd()
+        try:
+            os.chdir(path)
+            yield None
+        finally:
+            os.chdir(orig_path)
