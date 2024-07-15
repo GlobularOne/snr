@@ -21,8 +21,8 @@ ALL_PACKAGES = ",".join(["btrfs-progs", "console-setup", "console-setup-linux",
                          "linux-firmware", "gdisk", "grub-efi-{grub_arch}-signed", "grub-pc",
                          "initramfs-tools", "kmod", "linux-image-generic",
                          "lvm2", "net-tools", "ntfs-3g",
-                         "python3", "python3-rich", "shim-signed",
-                         "util-linux", "wireless-tools", "wpasupplicant"])
+                         "python3", "python3-deprecated", "python3-impacket", "python3-pycryptodome", "python3-rich",
+                         "shim-signed", "util-linux", "wireless-tools", "wpasupplicant"])
 ROOTFS_PATH = os.path.join(common_paths.DATA_PATH, "rootfs")
 TRIM_DIRS = (
     os.path.join(
@@ -41,26 +41,13 @@ def _clear_data() -> None:
     shutil.rmtree(common_paths.DATA_PATH)
 
 
-def init_main() -> None:
-    """
-    Snr initialization routine, creates the rootfs and required directories
-    """
-    common_utils.print_info("Starting initialization process")
-    common_utils.print_debug("Registering clear data atexit callback")
-    atexit.register(_clear_data)
+def _handle_required_directories():
 
-    if os.path.exists(common_paths.DATA_PATH):
-        common_utils.print_info("Removing existing data path")
-        shutil.rmtree(common_paths.DATA_PATH)
+    common_utils.print_debug("Looking for directories that should be cleaned")
 
-    if os.path.exists(common_paths.CACHE_PATH):
-        common_utils.print_info("Removing existing cache path")
-        shutil.rmtree(common_paths.CACHE_PATH)
-
-    if os.path.exists(common_paths.STATE_PATH):
-        common_utils.print_info("Removing existing state path")
-        shutil.rmtree(common_paths.STATE_PATH)
-
+    for path in (common_paths.DATA_PATH, common_paths.CACHE_PATH, common_paths.STATE_PATH):
+        common_utils.print_info(f"Removing path: {path}")
+        shutil.rmtree(path, ignore_errors=True)
     # Preserve config path
 
     common_utils.print_info("Creating required directories")
@@ -73,6 +60,9 @@ def init_main() -> None:
             common_paths.CACHE_PATH]:
         common_utils.print_debug(f"Creating directory: {directory}")
         os.makedirs(directory, exist_ok=True)
+
+
+def _generate_rootfs():
     common_utils.print_debug("Preparing to generate rootfs image")
     debootstrap_options = {
         "arch": arch.get_kernel_arch(),
@@ -91,10 +81,13 @@ def init_main() -> None:
     if errorcode:
         common_utils.print_fatal(
             f"Generating rootfs image failed ({errorcode})")
+
+
+def _archive_post_process():
     common_utils.print_debug("Cleaning rootfs image")
     for trim_dir in TRIM_DIRS:
         shutil.rmtree(trim_dir)
-    # Cleanup initrd
+    common_utils.print_debug("Cleaning up initrd images")
     rootfs_boot_path = os.path.join(ROOTFS_PATH, "boot")
     for entry in glob.glob(os.path.join(rootfs_boot_path, "initrd.img-*")):
         os.remove(entry)
@@ -102,22 +95,32 @@ def init_main() -> None:
     # If using fakechroot, it creates absolute links to the system's directories
     # If we let them pass to the second fix below which converts them to relative,
     # it will simply break. So we must fix them manually.
+    common_utils.print_debug(
+        "Checking if /proc, /sys, and /dev need to be fixed inside rootfs")
     for directory in ["proc", "sys", "dev"]:
         if os.path.islink(os.path.join(ROOTFS_PATH, directory)):
+            common_utils.print_debug(
+                f"/{directory} needs to be fixed, doing so")
             os.unlink(os.path.join(ROOTFS_PATH, directory))
             os.mkdir(os.path.join(ROOTFS_PATH, directory))
 
     # Fixes on the rootfs, first make the efi directory and a few directories
+    common_utils.print_debug(
+        "Creating some required directories inside rootfs")
     for directory in ["boot/efi", "root/.config/snr",
                       "root/.cache/snr", "root/.local/state/snr",
                       "root/.local/share/snr"]:
+        common_utils.print_debug(f"Creating /{directory} inside rootfs")
         os.makedirs(os.path.join(ROOTFS_PATH, directory), exist_ok=True)
 
+    common_utils.print_debug("Creating config file inside rootfs")
     with open(os.path.join(ROOTFS_PATH, "root/.config/snr/main.conf"),
               "w", encoding="utf-8") as _:
         pass
 
     if os.getuid() != 0:
+        common_utils.print_debug(
+            "Fakechroot used during generation process, fixing up all symlinks")
         # Second, convert all absolute links into relative ones
         # Because if fakechroot was used, all the links are absolute
         for root, _, files in os.walk(ROOTFS_PATH):
@@ -132,10 +135,29 @@ def init_main() -> None:
 
     common_utils.print_info("Archiving rootfs image")
     shutil.make_archive(common_paths.ROOTFS_ARCHIVE_BASE_PATH,
-                        format= common_paths.ROOTFS_ARCHIVE_FORMAT.split(":")[1] + "tar",
+                        format=common_paths.ROOTFS_ARCHIVE_FORMAT.split(":")[
+                            1] + "tar",
                         root_dir=ROOTFS_PATH,
                         base_dir=".")
+    common_utils.print_debug("Creating rootfs image's .version file")
+    with open(common_paths.ROOTFS_ARCHIVE_VERSION_PATH, "w", encoding="utf-8") as stream:
+        stream.write(str(common_paths.ROOTFS_CURRENT_VERSION))
 
+
+def init_main() -> None:
+    """
+    Snr initialization routine, creates the rootfs and required directories
+    """
+    common_utils.print_info("Starting initialization process")
+    common_utils.print_debug("Registering clear data atexit callback")
+    atexit.register(_clear_data)
+
+    _handle_required_directories()
+    _generate_rootfs()
+    _archive_post_process()
+
+    common_utils.print_debug("Cleaning up rootfs directory")
     common_utils.remake_dir(ROOTFS_PATH)
+    common_utils.print_debug("Unregistering clear data atexit callback")
     atexit.unregister(_clear_data)
     common_utils.print_ok("Initialization successful")
