@@ -11,7 +11,7 @@ __all__ = (
     "chroot_program_wrapper_factory",
     "update_initramfs_factory", "update_grub_factory",
     "passwd_factory", "grub_install_factory",
-    "apt_get_factory"
+    "apt_get_factory", "chown_factory"
 )
 
 update_initramfs_factory = chroot_program_wrapper_factory("update-initramfs")
