@@ -27,7 +27,7 @@ def DIST_PACKAGES_DIR(ctx: context.Context) -> str:  # pylint: disable=invalid-n
     Returns:
         The path to the dist-packages
     """
-    return os.path.join(ctx.root_directory, "lib", "python3", "dist-packages")
+    return ctx.join("lib", "python3", "dist-packages")
 
 
 def install_snr_core_lib(ctx: context.Context) -> None:
