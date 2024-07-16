@@ -25,7 +25,7 @@ from snr.core.util import common_utils
 
 __all__ = (
     "prompt", "dispatch_command",
-    "interactive_shell"
+    "handle_non_interactive_mode", "interactive_shell"
 )
 
 prompt: str
@@ -132,6 +132,11 @@ def dispatch_command(ctx: click.Context, group: click.Group, line: str) -> str:
 
 
 def handle_non_interactive_mode(ctx: click.Context, **kwargs: Any) -> None:
+    """Handle non-interactive mode of shell
+
+    Args:
+        ctx: Click context
+    """
     assert isinstance(kwargs["payload"], str)
     assert isinstance(kwargs["defines"], tuple)
     assert isinstance(kwargs["output"], str)
