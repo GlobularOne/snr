@@ -20,7 +20,7 @@ def _filter_out_params(params: list[click.Parameter]) -> list[click.Parameter]:
     return new_params
 
 
-def main():
+def main() -> None:
     """Main function of snrgen"""
     payload_option = click.Option(["--payload", "-p"],
                                   required=True,

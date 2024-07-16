@@ -5,6 +5,7 @@ import bdb
 import os
 import pathlib
 import sys
+from typing import Any
 
 import click
 import pkg_resources
@@ -170,7 +171,7 @@ def _setup_shell() -> None:
 def _main(verbose: bool, quiet: bool, payload_arch: str, host_primary_nameserver: str,
           host_secondary_nameserver: str, host_hostname: str, user_agent: str,
           default_exit_code: int, debug: bool, show_version: bool, do_init: bool = False, init_only: bool = False,
-          init_if_needed: bool = False, do_reinit: bool = False, **kwargs) -> None:
+          init_if_needed: bool = False, do_reinit: bool = False, **kwargs: Any) -> None:
     """Stick 'n' Run (snr)"""
     common_utils.print_debug("Installing rich traceback handler")
     rich.traceback.install()
