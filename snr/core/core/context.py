@@ -89,7 +89,7 @@ class Context(path_wrapper.PathWrapperBase, path_var_name="_root_directory"):
         """Whatever device_name points to an actual device, not a file"""
         if self.level >= 1:
             return self._is_device
-        raise RuntimeError("Context does not yet have device_size")
+        raise RuntimeError("Context does not yet have is_device")
 
     @is_device.setter
     def is_device(self, is_device: bool) -> None:
@@ -100,14 +100,14 @@ class Context(path_wrapper.PathWrapperBase, path_var_name="_root_directory"):
         """The prefix in which is needed to access partitions on /dev with device_name"""
         if self.level >= 2:
             return self._partitions_prefix
-        raise RuntimeError("Context does not yet have device_size")
+        raise RuntimeError("Context does not yet have partitions_prefix")
 
     @property
     def root_directory(self) -> str:
         """The root directory which the context is based on"""
         if self.level >= 3:
             return self._root_directory
-        raise RuntimeError("Context does not yet have device_size")
+        raise RuntimeError("Context does not yet have root_directory")
 
     def construct_partition_path(self, index: str | int, original_target: bool = False) -> str:
         """Construct a partition file path
