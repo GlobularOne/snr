@@ -11,6 +11,7 @@ documentation = "https://snr.readthedocs.io/en/latest/"
 
 [tool.poetry.scripts]
 snr = "snr.cli.main:main"
+snrgen = "snr.cli.gen:main"
 docker-build = "tools.docker_build:main"
 docker-run = "tools.docker_build:main"
 docs-build = "tools.docs_build:main"
