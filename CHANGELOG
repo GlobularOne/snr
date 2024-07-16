@@ -238,6 +238,8 @@ Several under the hood changes and minor improvements
 
   * New payload: `access/ssh_server`
 
+  * snrgen: Non-interactive mode for snr
+
 * Bug fixes:
 
   * Minor bug fixes that do not effect the end user but the development team only.
