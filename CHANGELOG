@@ -231,3 +231,9 @@ Several under the hood changes and minor improvements
   * `data_open`, `data_mkdir`, `rootfs_makedirs`, `rootfs_open` have been deprecated in favor of path wrapper based solutions
 
   * `--reinit` flag have been deprecated in favor of `--init-if-needed` and `--init-only` to provide better control over the invocation to the user
+
+## 1.2.0
+
+* Additions:
+
+  * New payload: access/ssh_server
