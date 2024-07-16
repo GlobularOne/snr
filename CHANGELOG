@@ -236,4 +236,8 @@ Several under the hood changes and minor improvements
 
 * Additions:
 
-  * New payload: access/ssh_server
+  * New payload: `access/ssh_server`
+
+* Bug fixes:
+
+  * Minor bug fixes that do not effect the end user but the development team only.
