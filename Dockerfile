@@ -1,17 +1,17 @@
 FROM ubuntu:22.04
 
 RUN apt-get update && apt-get install --no-install-recommends -y \
-        make \
-        git \
-        clang \
-        lld \
-        nasm \
-        curl \
-        python3 \
-        fakeroot \
-        fakechroot \
-        debootstrap
-
+    make \
+    git \
+    clang \
+    lld \
+    nasm \
+    curl \
+    python3 \
+    fakeroot \
+    fakechroot \
+    debootstrap \
+    && apt-get clean
 
 RUN curl -sSL https://install.python-poetry.org | python3 -
 
