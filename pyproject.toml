@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "snr"
-version = "1.1.0+git"
+version = "1.2.0+git"
 description = "Create bootable payloads easily"
 authors = ["Kamyar <139503563+GlobularOne@users.noreply.github.com>"]
 license = "gpl-3.0"
