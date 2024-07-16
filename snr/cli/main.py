@@ -167,11 +167,11 @@ def _setup_shell() -> None:
 @click.option("--version", "show_version",
               is_flag=True,
               help="Print version information")
-def _main(verbose: bool, quiet: bool, payload_arch: str, do_init: bool, init_only: bool,
-          init_if_needed: bool, do_reinit: bool, host_primary_nameserver: str,
+def _main(verbose: bool, quiet: bool, payload_arch: str, host_primary_nameserver: str,
           host_secondary_nameserver: str, host_hostname: str, user_agent: str,
-          default_exit_code: int, debug: bool, show_version: bool) -> None:
-    """Main function of snr"""
+          default_exit_code: int, debug: bool, show_version: bool, do_init: bool = False, init_only: bool = False,
+          init_if_needed: bool = False, do_reinit: bool = False, **kwargs) -> None:
+    """Stick 'n' Run (snr)"""
     common_utils.print_debug("Installing rich traceback handler")
     rich.traceback.install()
     _show_version(show_version)
@@ -195,7 +195,7 @@ def _main(verbose: bool, quiet: bool, payload_arch: str, do_init: bool, init_onl
 
 
 def main() -> None:
-    """Stick 'n' Run (snr)"""
+    """Main function of snr"""
     try:
         _main()  # pylint: disable=no-value-for-parameter
     except bdb.BdbQuit:

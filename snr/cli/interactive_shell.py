@@ -2,6 +2,8 @@
 Core code of the interactive shell
 """
 import bdb
+import shlex
+import pathlib
 import os
 import os.path
 from typing import Any
@@ -129,6 +131,38 @@ def dispatch_command(ctx: click.Context, group: click.Group, line: str) -> str:
     return ""
 
 
+def handle_non_interactive_mode(ctx: click.Context, **kwargs: Any) -> None:
+    assert isinstance(kwargs["payload"], str)
+    assert isinstance(kwargs["defines"], tuple)
+    assert isinstance(kwargs["output"], str)
+    payload: str = kwargs["payload"]
+    defines: tuple[str, ...] = kwargs["defines"]
+    output: str = kwargs["output"]
+    payload_abs = os.path.join(os.getcwd(), payload)
+    if not pathlib.Path(payload_abs).resolve().is_relative_to(os.getcwd()):
+        # Not today for path traversal
+        common_utils.print_fatal("Payload is not a builtin payload")
+    if shlex.quote(payload) != payload:
+        common_utils.print_fatal("Invalid payload name")
+    common_utils.print_debug("Starting generation of command list")
+    commands = [
+        f"use {pathlib.Path(payload_abs).resolve().relative_to(os.getcwd())}"
+    ]
+    # Now handle variables
+    for define in defines:
+        name, value = define.split("=", maxsplit=1)
+        if name.startswith("!") or shlex.quote(name) != name:
+            common_utils.print_fatal(f"Invalid define name: {name}")
+        common_utils.print_debug(f"Defining variable {name}")
+        commands.append(f"set {name} {value}")
+    common_utils.print_debug("Adding generate command")
+    commands.append(f"generate {output}")
+    common_utils.print_debug("Command list:\n", commands)
+    for command in commands:
+        common_utils.print_debug(f"Executing command: {command}")
+        dispatch_command(ctx, interactive_shell, command)
+
+
 @click.group(name="interactive_shell",
              invoke_without_command=True)
 @click.pass_context
@@ -146,7 +180,7 @@ def dispatch_command(ctx: click.Context, group: click.Group, line: str) -> str:
 @click.option("--default-exit-code")
 @click.option("--debug", is_flag=True)
 @click.option("--version", is_flag=True)
-def interactive_shell(ctx: click.Context, /, **_: dict[str, Any]) -> None:
+def interactive_shell(ctx: click.Context, /, **kwargs: dict[str, Any]) -> None:
     """Interactive shell's main function
 
     Args:
@@ -174,6 +208,9 @@ def interactive_shell(ctx: click.Context, /, **_: dict[str, Any]) -> None:
                     "prompt": "#00e000 bold",
                 })
             ]))
+        if "payload" in kwargs:
+            handle_non_interactive_mode(ctx, **kwargs)
+            return
         while True:
             console.console.print(dispatch_command(
                 ctx, interactive_shell, _read_input(session)))
