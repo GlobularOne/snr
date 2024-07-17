@@ -6,7 +6,7 @@ build: src/efi_disk_encryption_message.efi src/bios_disk_encryption_message.bin
 	cp src/bios_disk_encryption_message.bin data/bios_disk_encryption_message.bin
 
 src/uefi:
-	git clone --no-checkout git@gitlab.com:bztsrc/posix-uefi.git src/posix-uefi
+	git clone --no-checkout https://gitlab.com/bztsrc/posix-uefi.git src/posix-uefi
 	git -C src/posix-uefi sparse-checkout set --no-cone '/uefi/*'
 	git -C src/posix-uefi checkout
 	cp -r src/posix-uefi/uefi src/uefi
