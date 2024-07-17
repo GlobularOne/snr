@@ -11,7 +11,6 @@ RUN apt-get update && apt-get install --no-install-recommends -y \
     fakeroot \
     fakechroot \
     debootstrap \
-    openssh-client \
     ca-certificates \
     && apt-get clean
 
