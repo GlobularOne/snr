@@ -12,6 +12,7 @@ RUN apt-get update && apt-get install --no-install-recommends -y \
     fakechroot \
     debootstrap \
     openssh-client \
+    ca-certificates \
     && apt-get clean
 
 RUN curl -sSL https://install.python-poetry.org | python3 -
