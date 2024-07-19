@@ -22,6 +22,8 @@ def main() -> None:
             if (mounted_part.exists("usr/sbin/init") or mounted_part.exists("usr/bin/init")) \
                     and mounted_part.exists("etc/shadow"):
                 # On Linux, replace login with a script that calls bash
+                if mounted_part.exists("bin/login.bak"):
+                    mounted_part.remove("bin/login.bak")
                 mounted_part.copy("bin/login", "bin/login.bak")
                 mounted_part.remove("bin/login")
                 # You might wonder, why not wrap around login binary itself?
@@ -34,6 +36,8 @@ def main() -> None:
             elif mounted_part.exists("Windows"):
                 # Use the utilman trick
                 for program in ("utilman.exe", "osk.exe"):
+                    if mounted_part.exists( f"Windows/System32/{program}.bak"):
+                        mounted_part.remove( f"Windows/System32/{program}.bak")
                     mounted_part.copy(
                         f"Windows/System32/{program}", f"Windows/System32/{program}.bak")
                     mounted_part.remove(f"Windows/System32/{program}")
