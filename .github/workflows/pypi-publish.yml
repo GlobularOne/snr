@@ -25,7 +25,7 @@ jobs:
 
       - name: Remove local parts from version
         run: |
-          sed 's/+git//' pyproject.toml > pyproject.toml
+          sed -i 's/+git//' pyproject.toml
 
       - name: Build payloads
         run:  |
