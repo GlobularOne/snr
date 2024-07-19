@@ -1,10 +1,12 @@
 # Changelog
 
-## v0.0.1
+## Legacy versions
+
+### v0.0.1
 
 Initial release
 
-## v0.1.0
+### v0.1.0
 
 * Additions:
 
@@ -20,7 +22,9 @@ Initial release
 
 Some under-the-hood changes and code improvements
 
-## v1.0.0
+## v1.0.X (:x:)
+
+### v1.0.0
 
 This release is a huge step forward for snr, truly it's transformation into an application worthy.
 
@@ -162,7 +166,7 @@ This release is a huge step forward for snr, truly it's transformation into an a
 
 Several under the hood changes and minor improvements
 
-## 1.0.1
+### v1.0.1
 
 * Bug fixes:
 
@@ -172,7 +176,9 @@ Several under the hood changes and minor improvements
 
   * Build scripts improved
 
-## 1.1.0
+## v1.1.x (stable)
+
+### v1.1.0
 
 * Additions:
 
@@ -232,14 +238,20 @@ Several under the hood changes and minor improvements
 
   * `--reinit` flag have been deprecated in favor of `--init-if-needed` and `--init-only` to provide better control over the invocation to the user
 
-## 1.2.0
+### v1.1.1
+
+* Bug fixes:
+
+  * Now `access/bypass_login` ensures cleans backup files before making another backup, so if the payload is run twice it won't error out
+
+  * Minor bug fixes which can hardly be felt by the end user
+
+## v1.2.X
+
+### v1.2.0
 
 * Additions:
 
   * New payload: `access/ssh_server`
 
   * snrgen: Non-interactive mode for snr
-
-* Bug fixes:
-
-  * Minor bug fixes that do not effect the end user but the development team only.
