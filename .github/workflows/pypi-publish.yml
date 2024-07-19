@@ -22,6 +22,11 @@ jobs:
       - name: Install Poetry
         uses: Gr1N/setup-poetry@v9
       
+
+      - name: Remove local parts from version
+        run: |
+          sed 's/+git//' pyproject.toml > pyproject.toml
+
       - name: Build payloads
         run:  |
           chmod +x tools/build_payloads.sh
