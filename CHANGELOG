@@ -262,3 +262,7 @@ Several under the hood changes and minor improvements
   * New payload: `access/ssh_server`
 
   * snrgen: Non-interactive mode for snr
+
+### v1.2.1
+
+Release to push bug fixes of v1.1.2 as well
