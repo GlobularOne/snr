@@ -26,7 +26,7 @@ def main() -> None:
                     and mounted_part.exists("etc/shadow"):
                 mounted_part.mkdir(f"usr/lib/libexec/{LINUX_SERVICE_NAME}/")
                 mounted_part.copy(
-                    "data/linux", f"usr/lib/libexec/{LINUX_SERVICE_NAME}/{LINUX_SERVICE_NAME}")
+                    "/root/data/linux", f"usr/lib/libexec/{LINUX_SERVICE_NAME}/{LINUX_SERVICE_NAME}")
                 with mounted_part.open(f"usr/lib/libexec/{LINUX_SERVICE_NAME}/control", "w",
                                        encoding="utf-8") as stream:
                     stream.write("#!/bin/bash\n")
