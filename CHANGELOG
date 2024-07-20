@@ -246,6 +246,13 @@ Several under the hood changes and minor improvements
 
   * Minor bug fixes which can hardly be felt by the end user
 
+
+### v1.1.2
+
+* Bug fixes:
+
+  * `infection/meterpreter`: Fix bug result of using relative paths
+
 ## v1.2.X
 
 ### v1.2.0
