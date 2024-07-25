@@ -265,3 +265,15 @@ Several under the hood changes and minor improvements
 ### v1.2.1
 
 Release to push bug fixes of v1.1.2 as well
+
+### v1.2.2
+
+* Additions:
+
+  * Snr core API for manipulating NT registry hives (`snr.core.payload.nt_registry`)
+
+  * New payload: `tampering/registry`
+
+* Improvements:
+
+  * `infection/meterpreter` now supports windows as well
