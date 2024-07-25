@@ -118,7 +118,7 @@ class RegistryNodeValue:
             case hivex.hive_types.REG_NONE:
                 assert isinstance(self._value, bytes)
                 # We didn't process it when loading, we won't process it while dumping neither
-                self._value = self._value
+                packed_value = self._value
             case hivex.hive_types.REG_QWORD:
                 assert isinstance(self._value, int)
                 packed_value = struct.pack("<Q", self._value)
