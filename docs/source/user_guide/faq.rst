@@ -28,3 +28,26 @@ Can I hack my ex/classmate/this guy I don't like with it?
 ---------------------------------------------------------
 
 No, we unequivocally condemn any illegal activities using this tool. It was strictly created because of passion, to raise awareness and aid during physical pentest sessions, or for education. It's your responsibility to use this tool responsibly.
+
+
+DBus error when attempting to install the project
+-------------------------------------------------
+
+If you get an error like:
+
+```
+Failed to open keyring: org.freedesktop.DBus.Error.ServiceUnknown: The name :1.325 was not provided by any .service files.
+```
+
+
+This is a bug in pip. The workaround is to set python keyring to null:
+
+```sh
+PYTHON_KEYRING_BACKEND=keyring.backends.null.Keyring
+```
+
+For example to install the project use:
+
+```sh
+PYTHON_KEYRING_BACKEND=keyring.backends.null.Keyring poetry install
+```

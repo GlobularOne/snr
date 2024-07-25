@@ -101,6 +101,8 @@ After having these installed. Install python dependencies:
     poetry install
 
 
+**If you are getting an error about failure to open keyring, it's a bug in pip, please read the FAQ for a workaround**
+
 Initialize the snr project:
 
 .. code-block:: shell
