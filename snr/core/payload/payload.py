@@ -4,7 +4,7 @@ Payload class base
 
 import os.path
 import shutil
-from typing import Mapping, Optional
+from typing import Mapping, Optional, Any
 
 from snr.cli import variables
 # This is an exception to the general rule, it is best for payloads to
@@ -113,7 +113,7 @@ class Payload:
                                ctx.join(dest),
                                follow_symlinks=follow_symlinks)
 
-    def format_payload_and_write(self, ctx: Context, data: Mapping[str, VariableType],
+    def format_payload_and_write(self, ctx: Context, data: Mapping[str, Any],
                                  local_payload_path: str = "payload.py",
                                  host_payload_path: str = "root/payload.py") -> None:
         """Format a payload using AtFormatter and write it to the host filesystem

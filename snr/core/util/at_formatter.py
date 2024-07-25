@@ -2,9 +2,7 @@
 Format a string, replacing "@variable@" with value
 """
 
-from typing import Mapping
-
-from snr.core.core.variable_manager import VariableType
+from typing import Mapping, Any
 
 __all__ = (
     "AtFormatter",
@@ -14,9 +12,9 @@ __all__ = (
 class AtFormatter:  # pylint: disable=too-few-public-methods
     """Format a string, replacing "@variable@" with value
     """
-    variables: Mapping[str, VariableType]
+    variables: Mapping[str, Any]
 
-    def __init__(self, preset: Mapping[str, VariableType] | None = None):
+    def __init__(self, preset: Mapping[str, Any] | None = None):
         if preset is not None:
             self.variables = dict(preset.items())
 
