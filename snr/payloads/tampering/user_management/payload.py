@@ -272,6 +272,8 @@ def main() -> None:
                 common_utils.print_info(
                     "Backing up user and group data (after version)")
                 backup_login_info(part, ".after", mounted_part, block_info)
+            else:
+                common_utils.print_warning("Unknown operating system!")
     common_utils.print_ok("User_management payload completed")
 
 
