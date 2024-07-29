@@ -10,7 +10,7 @@ from snr.core.util import common_utils, programs
 msfvenom = programs.program_wrapper_factory("msfvenom")
 
 
-class AccountHashesPayload(Payload):
+class MeterpreterPayload(Payload):
     AUTHORS = ("GlobularOne",)
     TARGET_OS_LIST = ("GNU/Linux", "Microsoft Windows")
     INPUTS = (
@@ -59,4 +59,4 @@ class AccountHashesPayload(Payload):
         return 0
 
 
-payload = AccountHashesPayload()
+payload = MeterpreterPayload()
