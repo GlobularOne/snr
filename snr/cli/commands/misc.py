@@ -127,6 +127,6 @@ Reload the shell
     # The reloaded shell will do those anyway
     atexit_callbacks.unregister_atexit_callbacks()
     common_utils.print_debug(f"Executing '{' '.join(sys.orig_argv)}'")
-    Python = programs.program_wrapper_factory(sys.orig_argv[0])
-    errorcode = Python().invoke_and_wait(None, *sys.orig_argv[1:])
+    python = programs.program_wrapper_factory(sys.orig_argv[0])
+    errorcode = python().invoke_and_wait(None, *sys.orig_argv[1:])
     raise SystemExit(errorcode)
