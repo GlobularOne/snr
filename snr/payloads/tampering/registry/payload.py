@@ -27,12 +27,10 @@ def main() -> None:
                             hive_path = "\\".join(name.split("\\")[:2])
                             parent_node = reg.find_node(hive_path)
                             assert parent_node is not None
-                            parent_path = hive_path
                             for node_path in name.split("\\")[2:]:
                                 new_node = parent_node.find_child(node_path)
                                 if new_node is None:
                                     new_node = parent_node.new_child(node_path)
-                                parent_path += "\\" + node_path
                                 parent_node = new_node
                             # Now parent_node is our node
                             node = parent_node

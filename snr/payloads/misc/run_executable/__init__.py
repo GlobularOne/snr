@@ -46,7 +46,7 @@ class RunCommandPayload(Payload):
             common_utils.print_debug(f"Copying '{executable}' to '{target}'")
             try:
                 shutil.copyfile(executable, ctx.join(target))
-            except (OSError, shutil.Error) as exc:
+            except (OSError) as exc:
                 common_utils.print_error(
                     f"Installing executable to rootfs failed: {exc}")
                 return 1

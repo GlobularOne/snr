@@ -131,10 +131,9 @@ class ProgramWrapperBase:  # pylint: disable=too-many-instance-attributes
             raise TypeError(
                 "ProgramWrapperBase used directly, use one of it's factories")
         # First ensure the program isn't already running
-        if self._process is not None:
-            if self._process.returncode is None:
-                # Program is still running
-                raise SubprocessError(
+        if self._process is not None and self._process.returncode is None:
+            # Program is still running
+            raise SubprocessError(
                     f"Program '{self._path}' is already running")
         self._process = None
         env = os.environ

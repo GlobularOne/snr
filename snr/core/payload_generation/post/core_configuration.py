@@ -45,8 +45,6 @@ def configure_core(ctx: context.Context, verbosity: str) -> bool:
         case "debug":
             data["main"]["verbose"] = True
             data["main"]["debug"] = True
-        case "normal":
-            pass
         case _:
             common_utils.print_error("Unknown verbosity mode")
             return False

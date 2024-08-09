@@ -364,7 +364,6 @@ class NtRegistry(contextlib.AbstractContextManager['NtRegistry']):
             if root_node is None:
                 raise ValueError(
                     "Cannot do a relative search without a root node")
-            hive = root_node._hive
         else:
             raise ValueError("Path is of unknown format")
         # Make the path suitable for search
