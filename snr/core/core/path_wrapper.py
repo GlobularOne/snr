@@ -5,7 +5,6 @@ Wrap os and shutil functions around a specific path
 import os
 import os.path
 import shutil
-from types import TracebackType
 from typing import IO, Any
 
 __all__ = (
@@ -108,17 +107,8 @@ class PathWrapperBase:
         Returns:
             file-like object
         """
-        stream = open(self.join(file), mode, buffering,  # pylint: disable=consider-using-with
+        return open(self.join(file), mode, buffering,  # pylint: disable=consider-using-with
                       encoding)
-
-        def __enter__() -> IO[Any]:  # pylint: disable=unused-variable
-            return stream.__enter__()
-
-        def __exit__(exc_type: type[BaseException] | None,  # pylint: disable=unused-variable
-                     exc_val: BaseException | None,
-                     exc_tb: TracebackType | None) -> None:  # pylint: disable=unused-variable
-            return stream.__exit__(exc_type, exc_val, exc_tb)
-        return stream
 
     def remove(self, path: str) -> None:
         """Remove file in the wrapped directory
