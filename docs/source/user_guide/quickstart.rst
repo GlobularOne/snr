@@ -18,8 +18,6 @@ If you haven't already done this in the :doc:`installation`. Snr needs to downlo
 
     snr --init
 
-Agree with the disclaimer and allow snr to initialize (write yes twice). After initialization is done, you will be met with a console interface.
-
 Snr basics
 ----------
 
