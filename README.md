@@ -6,7 +6,7 @@
 
 [![Contributor Covenant](https://img.shields.io/badge/Contributor%20Covenant-2.1-4baaaa.svg)](CODE_OF_CONDUCT.md)
 
-Snr (Stick 'n' Run) is a project that allows generating bootable mediums based on Debian. These bootable mediums only have one purpose. To run a payload. You can choose from the wide ranges of payloads we already offer (from changing user information to wiping disks, encrypting them, grabbing files, etc) or write your own using the framework. This allows your payload to run with absolutely no restrictions, no firewalls, no AVs, nothing.
+Snr (Stick 'n' Run) is a project that allows generating bootable mediums based on Ubuntu. These bootable mediums only have one purpose. To run a payload. You can choose from the wide ranges of payloads we already offer (from changing user information to wiping disks, encrypting them, grabbing files, etc) or write your own using the framework. This allows your payload to run with absolutely no restrictions, no firewalls, no AVs, nothing.
 
 [![Interface](readme/interface.png)](https://github.com/GlobularOne/snr)
 
