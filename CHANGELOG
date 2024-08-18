@@ -176,7 +176,7 @@ Several under the hood changes and minor improvements
 
   * Build scripts improved
 
-## v1.1.x (stable)
+## v1.1.x
 
 ### v1.1.0
 
@@ -254,7 +254,7 @@ Several under the hood changes and minor improvements
 
 ## v1.2.X
 
-### v1.2.0
+### v1.2.0 (Stable)
 
 * Additions:
 
@@ -277,3 +277,27 @@ Release to push bug fixes of v1.1.2 as well
 * Improvements:
 
   * `infection/meterpreter` now supports windows as well
+
+#### v1.2.3
+
+This release promotes the 1.2.X branch as stable.
+
+* Additions:
+
+  * Now tampering/user_management shows an error message when it sees an operating system it doesn't recognize
+
+  * Improve documentation on a common error in pip and it's workaround
+
+  * Snr core support for NT registries
+
+  * `tampering/registry`: New payload to change registries
+
+* Improvements:
+
+  * `infection/meterpreter`: Now has windows support!
+
+  * Several under the hood code cleanups
+
+* Bug fixes:
+
+  * Improve the README and documentation to ensure remnants of the legacy version are no longer there.
