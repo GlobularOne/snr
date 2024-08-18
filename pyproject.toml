@@ -1,22 +1,17 @@
 [tool.poetry]
 name = "snr"
-version = "1.2.3+git"
+version = "1.2.3"
 description = "Create bootable payloads easily"
 authors = ["Kamyar <139503563+GlobularOne@users.noreply.github.com>"]
 license = "gpl-3.0"
 readme = "README.md"
 homepage = "https://github.com/GlobularOne/snr"
 repository = "https://github.com/GlobularOne/snr"
-documentation = "https://snr.readthedocs.io/en/latest/"
+documentation = "https://snr.readthedocs.io/en/stable/"
 
 [tool.poetry.scripts]
 snr = "snr.cli.main:main"
 snrgen = "snr.cli.gen:main"
-docker-build = "tools.docker_build:main"
-docker-run = "tools.docker_build:main"
-docs-build = "tools.docs_build:main"
-docs-clean = "tools.docs_clean:main"
-docs-rebuild = "tools.docs_rebuild:main"
 
 [tool.poetry.dependencies]
 python = "^3.10"
