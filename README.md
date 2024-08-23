@@ -10,6 +10,12 @@ Snr (Stick 'n' Run) is a project that allows generating bootable mediums based o
 
 [![Interface](https://github.com/GlobularOne/snr/raw/main/readme/interface.png)](https://github.com/GlobularOne/snr)
 
+## Discord Channel
+
+You can join my official discord server to hang out (with a dedicated channel for discussing Snr!)
+
+[![Discord Server](https://discord.com/api/guilds/1273324871488897064/widget.png?style=banner3)](https://discord.gg/ddZv7xt7Qq)
+
 ## Features
 
 * Beautiful and modern interface
