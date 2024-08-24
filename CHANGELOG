@@ -278,7 +278,7 @@ Release to push bug fixes of v1.1.2 as well
 
   * `infection/meterpreter` now supports windows as well
 
-#### v1.2.3
+### v1.2.3
 
 This release promotes the 1.2.X branch as stable.
 
