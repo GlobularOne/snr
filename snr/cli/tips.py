@@ -19,7 +19,7 @@ TIPS = [
     r"You can use ${<var_name>} to expand a variable as well, for example: set <var_name> ${var_name}.php",
     r"You can append data before and after strings: set <var_name> prefix${var_name}suffix. Example: set my_var ${my_var}/32",
     r"Toggle Option variables using: set <var_name> !",
-    r"Just like strings, you can extend lists as well: set <var_name> data1 data2 ${<var_name>} data9",
+    r"Just like strings, you can extend lists as well: set <var_name> data1;data2;${<var_name>};data9",
     r"Help command can be used for more than help on commands, you can get help on defined variables as well",
     r"Payloads are categorized by their usage: access, extraction, infection, misc, tampering",
     r"Access type payloads create access: Like changing admin or root password for you or opening up a ssh server",
