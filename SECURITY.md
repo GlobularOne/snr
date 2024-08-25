@@ -9,7 +9,8 @@ Generally, only the last two minor releases are supported for security updating 
 | 0.x.x   | :x:                |
 | 1.0.x   | :x:                |
 | 1.1.x   | :x:                |
-| 1.2.x   | :white_check_mark: |
+| 1.2.x   | :x:                |
+| 1.3.x   | :white_check_mark: |
 
 *0.x.x versions are commonly called `Legacy`.*
 
