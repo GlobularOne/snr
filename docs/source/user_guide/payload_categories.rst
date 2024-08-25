@@ -11,7 +11,7 @@ Access Payloads create access from physical access, usually in form of admin (or
 extraction
 ----------
 
- Extraction payloads extract certain data from the device, could be files, password hashes, anything.
+Extraction payloads extract certain data from the device, could be files, password hashes, anything.
 
 infection
 ---------
