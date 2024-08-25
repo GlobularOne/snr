@@ -351,3 +351,10 @@ This release aims to make Snr more comfortable for the end user.
 * Breaking changes:
 
   * Payload generation steps are now generators. This helps creating a more pleasant experience for users.
+
+### v1.3.1
+
+* Bug fixes:
+  * Fix several critical bugs
+
+Lots of under the hood changes to formatting, typing, etc.
