@@ -7,7 +7,7 @@ Do note that this payload does preserve ordering
 import os.path
 import shutil
 
-from snr.core.payload.payload import Context, Payload
+from snr.core.payload.payload import Context, Payload, REQUIRED, VALID_STRING
 from snr.core.util import common_utils
 
 
@@ -15,7 +15,7 @@ class RunCommandPayload(Payload):
     AUTHORS = ("GlobularOne",)
     TARGET_OS_LIST = ("Any",)
     INPUTS = (
-        ("EXECUTABLES", [], -1, "Executables to copy and run", True),
+        ("EXECUTABLES", [], -1, "Executables to copy and run", REQUIRED | VALID_STRING),
     )
 
     def generate(self, ctx: Context) -> int:

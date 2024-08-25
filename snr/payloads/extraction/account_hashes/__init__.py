@@ -10,7 +10,7 @@ class AccountHashesPayload(Payload):
     TARGET_OS_LIST = ("Microsoft Windows", "GNU/Linux")
     ROOTFS_VERSION = 2
     INPUTS = (
-        ("PASSPHRASES", [], -1, "Passphrases to try for LUKS-encrypted partitions"),
+        Payload.supports_encrypted_access()
     )
 
     def generate(self, ctx: Context) -> int:

@@ -2,15 +2,15 @@
 Access and copy files by pattern
 """
 
-from snr.core.payload.payload import Context, Payload
+from snr.core.payload.payload import Context, Payload, REQUIRED
 
 
 class FilesPayload(Payload):
     AUTHORS = ("GlobularOne",)
     TARGET_OS_LIST = ("Microsoft Windows", "GNU/Linux")
     INPUTS = (
-        ("PATTERNS", [], -1, "Glob pattern for files to copy", True),
-        ("PASSPHRASES", [], -1, "Passphrases to try for LUKS-encrypted partitions"),
+        ("PATTERNS", [], -1, "Glob pattern for files to copy", REQUIRED),
+        Payload.supports_encrypted_access()
     )
 
     def generate(self, ctx: Context) -> int:

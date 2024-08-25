@@ -44,7 +44,7 @@ import pathlib
 import shutil
 import urllib.parse
 
-from snr.core.payload.payload import Context, Payload
+from snr.core.payload.payload import Context, Payload, REQUIRED, VALID_STRING
 from snr.core.util import download
 
 
@@ -52,8 +52,8 @@ class FilesPayload(Payload):
     AUTHORS = ("GlobularOne",)
     TARGET_OS_LIST = ("Microsoft Windows", "GNU/Linux")
     INPUTS = (
-        ("FILES", [], -1, "Files to change", True),
-        ("PASSPHRASES", [], -1, "Passphrases to try for LUKS-encrypted partitions"),
+        ("FILES", [], -1, "Files to change", REQUIRED | VALID_STRING),
+        Payload.supports_encrypted_access()
     )
 
     def generate(self, ctx: Context) -> int:

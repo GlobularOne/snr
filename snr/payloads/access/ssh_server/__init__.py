@@ -2,14 +2,14 @@
 Create a SSH server
 """
 
-from snr.core.payload.payload import Context, Payload
+from snr.core.payload.payload import Context, Payload, REQUIRED, VALID_LOCAL_PATH
 
 
 class SSHServerPayload(Payload):
     AUTHORS = ("GlobularOne",)
     TARGET_OS_LIST = ("Any",)
     INPUTS = (
-        ("PUBLIC_KEY", "", -1, "Public key for key-based authentication", True),
+        ("PUBLIC_KEY", "", -1, "Public key for key-based authentication", REQUIRED | VALID_LOCAL_PATH),
     )
     DEPENDENCIES = (
         "openssh-server",

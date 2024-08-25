@@ -138,6 +138,7 @@ class SnrLexer(pygments.lexer.RegexLexer):  # type: ignore
         ],
         'basic': [
             (r'(?<!\\)\$\w+', pygments.token.Name.Variable),
+            (r'(?<!\\)\${\w+}', pygments.token.Name.Variable),
             (r'\b\d+\b', pygments.token.Number),
             (r'\s', pygments.token.Whitespace),
             (r'(?<!\!).+', pygments.token.Text),

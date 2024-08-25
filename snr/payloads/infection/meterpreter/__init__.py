@@ -4,7 +4,7 @@ Infect with Meterpreter. Note that it uses Metasploit itself.
 import random
 import string
 
-from snr.core.payload.payload import Context, Payload
+from snr.core.payload.payload import Context, Payload, REQUIRED, VALID_STRING, VALID_PATH_COMPONENT, VALID_PORT, VALID_IP
 from snr.core.util import common_utils, programs
 
 msfvenom = programs.program_wrapper_factory("msfvenom")
@@ -14,17 +14,17 @@ class MeterpreterPayload(Payload):
     AUTHORS = ("GlobularOne",)
     TARGET_OS_LIST = ("GNU/Linux", "Microsoft Windows")
     INPUTS = (
-        ("ENCODER", "x86/shikata_ga_nai", -1, "Encoder to use for x86"),
+        ("ENCODER", "x86/shikata_ga_nai", -1, "Encoder to use for x86", VALID_STRING),
         ("LINUX_SERVICE_NAME", "", -1,
-         "Name of the persistance service for Linux", True),
+         "Name of the persistance service for Linux", REQUIRED | VALID_PATH_COMPONENT),
         ("LINUX_SERVICE_DESCRIPTION", "", -1,
-         "Description of the persistance service for Linux", True),
+         "Description of the persistance service for Linux", REQUIRED | VALID_STRING),
         ("WINDOWS_SERVICE_NAME", "", -1,
-         "Name of the persistance service for Windows", True),
-        ("LHOST", "", -1, "Local host (Listener address)", True),
-        ("LPORT", 8443, -1, "Local port (Listener port)"),
-        ("LURL", "", -1, "Local HTTP address, if left empty will be generated randomly"),
-        ("PASSPHRASES", [], -1, "Passphrases to try for LUKS-encrypted partitions"),
+         "Name of the persistance service for Windows", REQUIRED | VALID_PATH_COMPONENT),
+        ("LHOST", "", -1, "Local host (Listener address)", REQUIRED | VALID_IP),
+        ("LPORT", 8443, -1, "Local port (Listener port)", VALID_PORT),
+        ("LURL", "", -1, "Local HTTP address, if left empty will be generated randomly", VALID_PATH_COMPONENT),
+        Payload.supports_encrypted_access()
     )
 
     WINDOWS_PAYLOAD = "payload/windows/meterpreter_reverse_https"

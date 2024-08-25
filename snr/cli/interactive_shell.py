@@ -6,6 +6,7 @@ import shlex
 import pathlib
 import os
 import os.path
+import re
 from typing import Any
 
 import click
@@ -18,7 +19,7 @@ import pygments.styles
 import pyfiglet
 
 from snr import version
-from snr.cli import lexer, variables
+from snr.cli import lexer, variables, tips
 from snr.core.core import common_paths, console, options
 from snr.core.util import common_utils
 
@@ -56,28 +57,36 @@ def _format_banner() -> str:
     return f"[blue]{banner}[/blue]\n" + \
         f"--> Version: [red]{version.__version__}[/red]\n" + \
         f"--> Homepage: [red]{version.HOMEPAGE}[/red]\n" + \
-        f"--> [red]{_count_payloads()}[/red] Available Payloads\n"
+        f"--> [red]{_count_payloads()}[/red] Available Payloads\n" + \
+        f"\nTip: [blue]{tips.random_tip()}[/blue]\n"
+
+
+def _format_var(name: str):
+    var_value = variables.global_vars.get_variable(name)
+    if isinstance(var_value, (int, bool)):
+        var_value = str(var_value)
+    elif isinstance(var_value, list):
+        var_value = ";".join(*map(str, var_value))
+    return var_value
 
 
 def _expand_vars(line: list[str]) -> list[str]:
     new_cmdline: list[str] = []
-    for arg in line:
-        if arg.startswith("$") and not arg.startswith("\\$"):
-            # This argument must be replaced
-            var_name = arg.removeprefix("$")
-            if variables.global_vars.has_variable(var_name):
-                # Format it, it is either str, int, bool or a list of those
-                var_value = variables.global_vars.get_variable(var_name)
-                if isinstance(var_value, (int, bool)):
-                    var_value = str(var_value)
-                elif isinstance(var_value, list):
-                    var_value = ";".join(*map(str, var_value))
-                new_cmdline.append(var_value)
-            else:
-                common_utils.print_error(f"No variable named '{var_name}'")
-                new_cmdline.append(arg)
+
+    var_pattern = re.compile(r'(?<!\\)(\$(\w+)|\$\{(\w+)\})')
+
+    def replace_variable(match):
+        var_name = match.group(2) or match.group(3)
+        if variables.global_vars.has_variable(var_name):
+            return _format_var(var_name)
         else:
-            new_cmdline.append(arg)
+            common_utils.print_error(f"No variable named '{var_name}'")
+            return match.group(0)
+
+    for arg in line:
+        new_arg = var_pattern.sub(replace_variable, arg)
+        new_cmdline.append(new_arg)
+
     return new_cmdline
 
 

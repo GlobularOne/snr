@@ -13,7 +13,8 @@ Here you can see a list of the order we recommend you to read the payload develo
 3. :doc:`payload_class`
 4. :doc:`payload_types`
 5. :doc:`working_example`
-6. :doc:`contributing_a_payload`
+6. :doc:`validation`
+7. :doc:`contributing_a_payload`
 
 .. seealso::
 

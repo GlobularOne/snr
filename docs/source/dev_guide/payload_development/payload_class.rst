@@ -76,7 +76,7 @@ It is generally in this format:
 
 .. code-block:: python
     (
-        (<variable_name>, <default_value>, <max_size>, <documentation>, <required>),
+        (<variable_name>, <default_value>, <max_size>, <documentation>, <flags>),
         ...
     )
 
@@ -84,7 +84,7 @@ It is generally in this format:
 * default_value: Default value for the variable. The variable's type is determined from this and can be either a `str`, `int`, `bool` or a `list` of `str`.
 * max_size: the maximum size of the variable, to not specify it, use `-1`. In case the type is `str`, the maximum count of characters that are assumed valid, or in case of a `list`, the maximum number of elements that are considered valid. `int` or `bool` type variables are not allowed to have a max_size in which case `-1` must be used.
 * documentation: The documentation or "help value" for the variable, helps the user a lot and is recommended.
-* required: The field itself is optional and can be omitted. It is a boolean value, if True, the user is required to change the variable's value from `default_value`. If you intend to put it as `False`, you can omit the field altogether and not simply put anything.
+* flags: The field itself is optional and can be omitted. It is a mix of all flags, see :doc:`validation`.
 
 DEPENDENCIES
 ^^^^^^^^^^^^

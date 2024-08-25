@@ -8,7 +8,13 @@
 
 Snr (Stick 'n' Run) is a project that allows generating bootable mediums based on Ubuntu. These bootable mediums only have one purpose. To run a payload. You can choose from the wide ranges of payloads we already offer (from changing user information to wiping disks, encrypting them, grabbing files, etc) or write your own using the framework. This allows your payload to run with absolutely no restrictions, no firewalls, no AVs, nothing.
 
-[![Interface](readme/interface.png)](https://github.com/GlobularOne/snr)
+[![Interface](https://github.com/GlobularOne/snr/raw/main/readme/interface.png)](https://github.com/GlobularOne/snr)
+
+## Discord Channel
+
+You can join my official discord server to hang out (with a dedicated channel for discussing Snr!)
+
+[![Discord Server](https://discord.com/api/guilds/1273324871488897064/widget.png?style=banner3)](https://discord.gg/ddZv7xt7Qq)
 
 ## Features
 

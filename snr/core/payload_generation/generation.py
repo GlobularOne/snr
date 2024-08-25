@@ -70,6 +70,7 @@ def generate(name: str, p: payload.Payload, ctx: payload.Context) -> int:
         common_utils.print_info(
             f"Generating payload {name}")
         with common_utils.temp_chdir(name):
+            common_utils.call_external_function(p.validate, ctx)
             errorcode = common_utils.call_external_function(p.generate, ctx)
             if errorcode or errorcode is common_utils.EXTERNAL_CALL_FAILURE:
                 common_utils.print_error(

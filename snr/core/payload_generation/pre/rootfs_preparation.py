@@ -23,7 +23,6 @@ def prepare_rootfs(ctx: context.Context) -> bool:
     Returns:
         Whatever operation was successful or not
     """
-    common_utils.print_info("Preparing for payload generation")
     common_utils.print_debug("Unpacking rootfs image")
     root_directory = tempfile.mkdtemp(prefix="snr")
     mount = programs.Mount(
