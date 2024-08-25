@@ -3,7 +3,7 @@ Encrypt disk with AES-CBC
 """
 import random
 
-from snr.core.payload.payload import Context, Payload
+from snr.core.payload.payload import Context, Payload, VALID_STRING
 from snr.core.util import common_utils
 
 
@@ -20,7 +20,7 @@ class DiskEncryptionPayload(Payload):
         custom_message_max_len = len(self.BIOS_PAYLOAD) - (self.BIOS_PAYLOAD.find(
             self.DEFAULT_MESSAGE) + len(self.DEFAULT_MESSAGE) + 1) - 1
         self.INPUTS = ((
-            "MESSAGE", "", custom_message_max_len, "Custom additional message to show"
+            "MESSAGE", "", custom_message_max_len, "Custom additional message to show", VALID_STRING
         ),)
         return super().load()
 

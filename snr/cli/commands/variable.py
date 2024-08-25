@@ -11,6 +11,46 @@ from snr.cli import interactive_shell, variables
 from snr.core.core import variable_manager
 from snr.core.util import common_utils
 
+NORMAL_TYPES = {
+    "str": "String",
+    "int": "Number",
+    "bool": "Option",
+    "list": "String List"
+}
+
+REQUIRED_STATES = {
+    True: "Required",
+    False: "Not required"
+}
+
+DESCRIPTIVE_TYPES = {
+    "String": {
+        variable_manager.VariableFlags.VALID_STR_ALPHA: "Alphabetic String",
+        variable_manager.VariableFlags.VALID_STR_ALPHANUM: "Alphabetic-number String",
+        variable_manager.VariableFlags.VALID_STR_ASCII: "ASCII-only String",
+        variable_manager.VariableFlags.VALID_STR_PATH_COMPONENT: "Path Component",
+        variable_manager.VariableFlags.VALID_STR_HOST_PATH: "Host Path",
+        variable_manager.VariableFlags.VALID_STR_LOCAL_PATH: "Local Path",
+        variable_manager.VALID_IP: "IP Address",
+        variable_manager.VALID_IPV4: "IPv4 Address",
+        variable_manager.VALID_IPV6: "IPv6 Address",
+    },
+    "Number": {
+        variable_manager.VALID_IP: "Port Number"
+    },
+    "String List": {
+        variable_manager.VariableFlags.VALID_STR_ALPHA: "List of Alphabetic Strings",
+        variable_manager.VariableFlags.VALID_STR_ALPHANUM: "List of Alphabetic-number Strings",
+        variable_manager.VariableFlags.VALID_STR_ASCII: "List of ASCII-only Strings",
+        variable_manager.VariableFlags.VALID_STR_PATH_COMPONENT: "List of Path Components",
+        variable_manager.VariableFlags.VALID_STR_HOST_PATH: "List of Host Paths",
+        variable_manager.VariableFlags.VALID_STR_LOCAL_PATH: "List of Local Paths",
+        variable_manager.VALID_IP: "List of IP Addresses",
+        variable_manager.VALID_IPV4: "List of IPv4 Addresses",
+        variable_manager.VALID_IPV6: "List of IPv6 Addresses",
+    }
+}
+
 
 @interactive_shell.interactive_shell.command(name="unset")
 @click.argument("name", required=True)
@@ -21,8 +61,11 @@ Unset a variable
     if not variables.global_vars.has_variable(name):
         common_utils.print_error(f"No variable named '{name}'")
         return None
-    if variables.global_vars.get_variable_info(name).used_by_payload:
-        common_utils.print_error("Cannot unset a variable used by a payload")
+    if variables.global_vars.get_variable_info(name).flags & variable_manager.USED_BY_PAYLOAD:
+        variables.global_vars.set_variable(
+            name, variables.global_vars.get_variable_info(name).default_value)
+        common_utils.print_info(
+            f"[blue]{name}[/blue][green] =>[/green]", rich.pretty.Pretty(variables.global_vars.get_variable_info(name).default_value))
     else:
         variables.global_vars.del_variable(name)
     return None
@@ -48,14 +91,18 @@ Or list all variables (syntax: set)
         table.add_column("Description", style="green")
         for var_name, info in zip(variables.global_vars.get_variables_name(),
                                   variables.global_vars.get_variables_info()):
-            var_type = str(info.var_type.__name__).title()
+            var_type = NORMAL_TYPES[str(info.var_type.__name__)]
+            if var_type in DESCRIPTIVE_TYPES:
+                for flag in info.flags:
+                    if flag in DESCRIPTIVE_TYPES[var_type]:
+                        var_type = DESCRIPTIVE_TYPES[var_type][flag]
             var_len = str(info.length) if info.length != -1 else "Unlimited"
             var_value = variables.global_vars.get_variable(var_name)
             if isinstance(var_value, list):
                 var_value = " ".join(map(str, var_value))
             else:
                 var_value = str(var_value)
-            table.add_row(var_name, var_type, str(info.required), var_len,
+            table.add_row(var_name, var_type, REQUIRED_STATES[bool(info.flags & variable_manager.REQUIRED)], var_len,
                           var_value, info.description)
         if table.row_count == 0:
             table.add_row("", "", "", "", "")
@@ -73,7 +120,7 @@ Or list all variables (syntax: set)
         value = tuple(interactive_shell.dispatch_command(ctx,
                                                          interactive_shell.interactive_shell,
                                                          " ".join(value)).split(" "))
-        if value is None:
+        if len(value) == 0 or value[0] == "":
             common_utils.print_warning("Command returned nothing, aborting")
             return None
     value_str = " ".join(value).strip()
@@ -96,6 +143,9 @@ Or list all variables (syntax: set)
                         new_value = True
                     case "0" | "false" | "off":
                         new_value = False
+                    case "!":
+                        new_value = not variables.global_vars.get_variable(
+                            name)
                     case _:
                         common_utils.print_error(
                             f"'{value}' is not a valid boolean")

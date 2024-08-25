@@ -244,6 +244,18 @@ class Payload:
         """
         raise NotImplementedError
 
+    @staticmethod
+    def supports_encrypted_access():
+        """Declare that the payload supports decrypting partitions
+
+        It does so with declaring a PASSPHRASES string list variable
+        you could use with many utilities of snr to access encrypted partitions
+        
+        Returns:
+            The variable definitions you need to add
+        """
+        return ("PASSPHRASES", [], -1, "Passphrases to try for encrypted partitions")
+
     def copy_root_to_root(self, ctx: Context, module_path: str,
                           src: str, dest: str,
                           follow_symlinks: bool = True) -> str:
