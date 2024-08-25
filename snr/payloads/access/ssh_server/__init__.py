@@ -2,7 +2,8 @@
 Create a SSH server
 """
 
-from snr.core.payload.payload import Context, Payload, REQUIRED, VALID_LOCAL_PATH
+from snr.core.payload.payload import (REQUIRED, VALID_LOCAL_PATH, Context,
+                                      Payload)
 
 
 class SSHServerPayload(Payload):

@@ -8,7 +8,6 @@ from snr.core.core import context
 from snr.core.util.payloads import systemd_unit
 from snr.core.util.payloads.systemd_unit import SystemdSectionType
 
-
 __all__ = (
     "SYSTEMD_NETWORK_PATH", "SystemdNetwork"
 )
@@ -16,10 +15,10 @@ __all__ = (
 
 def SYSTEMD_NETWORK_PATH(ctx: context.Context) -> str:  # pylint: disable=invalid-name
     """Return the path to systemd's network directory
-    
+
     Args:
         ctx: Context
-    
+
     Returns:
         The path to systemd's network directory
     """

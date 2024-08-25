@@ -8,6 +8,8 @@ __all__ = [
     "TIPS", "random_tip"
 ]
 
+# pylint: disable=line-too-long
+
 TIPS = [
     r"You can set output of a command to a variable using set: set !<var_name> <command>",
     r"If a variable has type of IP, IPv4 or IPv6 Address. You can pass a domain name or an interface name, for example: set LHOST tun0",

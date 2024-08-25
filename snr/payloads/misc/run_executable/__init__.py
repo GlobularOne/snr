@@ -7,7 +7,7 @@ Do note that this payload does preserve ordering
 import os.path
 import shutil
 
-from snr.core.payload.payload import Context, Payload, REQUIRED, VALID_STRING
+from snr.core.payload.payload import REQUIRED, VALID_STRING, Context, Payload
 from snr.core.util import common_utils
 
 

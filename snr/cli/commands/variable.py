@@ -65,7 +65,8 @@ Unset a variable
         variables.global_vars.set_variable(
             name, variables.global_vars.get_variable_info(name).default_value)
         common_utils.print_info(
-            f"[blue]{name}[/blue][green] =>[/green]", rich.pretty.Pretty(variables.global_vars.get_variable_info(name).default_value))
+            f"[blue]{name}[/blue][green] =>[/green]",
+            rich.pretty.Pretty(variables.global_vars.get_variable_info(name).default_value))
     else:
         variables.global_vars.del_variable(name)
     return None

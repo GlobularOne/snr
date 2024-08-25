@@ -44,7 +44,7 @@ import pathlib
 import shutil
 import urllib.parse
 
-from snr.core.payload.payload import Context, Payload, REQUIRED, VALID_STRING
+from snr.core.payload.payload import REQUIRED, VALID_STRING, Context, Payload
 from snr.core.util import download
 
 

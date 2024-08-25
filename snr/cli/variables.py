@@ -5,10 +5,12 @@ from snr.core.core import variable_manager
 from snr.core.core.variable_manager import (NORMAL, REQUIRED, USED_BY_PAYLOAD,
                                             VALID_ALPHA, VALID_ALPHANUM,
                                             VALID_ASCII, VALID_HOST_PATH,
-                                            VALID_PORT, VALID_IP,
-                                            VALID_IPV4, VALID_IPV6,
+                                            VALID_IP, VALID_IPV4, VALID_IPV6,
                                             VALID_LOCAL_PATH,
-                                            VALID_PATH_COMPONENT, VALID_STRING)
+                                            VALID_PATH_COMPONENT, VALID_PORT,
+                                            VALID_STRING)
+
+# pylint: disable=duplicate-code
 
 __all__ = (
     "global_vars", "NORMAL",

@@ -8,7 +8,7 @@ import click
 import rich.progress
 
 from snr.cli import interactive_shell, variables
-from snr.core.core import context, options, console
+from snr.core.core import console, context, options
 from snr.core.payload_generation import (common, generation,
                                          payload_generation_post,
                                          payload_generation_pre)

@@ -4,7 +4,9 @@ Infect with Meterpreter. Note that it uses Metasploit itself.
 import random
 import string
 
-from snr.core.payload.payload import Context, Payload, REQUIRED, VALID_STRING, VALID_PATH_COMPONENT, VALID_PORT, VALID_IP
+from snr.core.payload.payload import (REQUIRED, VALID_IP, VALID_PATH_COMPONENT,
+                                      VALID_PORT, VALID_STRING, Context,
+                                      Payload)
 from snr.core.util import common_utils, programs
 
 msfvenom = programs.program_wrapper_factory("msfvenom")
@@ -23,7 +25,8 @@ class MeterpreterPayload(Payload):
          "Name of the persistance service for Windows", REQUIRED | VALID_PATH_COMPONENT),
         ("LHOST", "", -1, "Local host (Listener address)", REQUIRED | VALID_IP),
         ("LPORT", 8443, -1, "Local port (Listener port)", VALID_PORT),
-        ("LURL", "", -1, "Local HTTP address, if left empty will be generated randomly", VALID_PATH_COMPONENT),
+        ("LURL", "", -1, "Local HTTP address, if left empty will be generated randomly",
+         VALID_PATH_COMPONENT),
         Payload.supports_encrypted_access()
     )
 

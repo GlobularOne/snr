@@ -21,7 +21,7 @@ __all__ = (
 )
 
 # Mapping of registry types to python types
-REG_TYPE_MAPPING: dict[int, type[bytes | int | str | list]] = {
+REG_TYPE_MAPPING: dict[int, type[bytes | int | str | list[Any]]] = {
     REG_BINARY: bytes,
     REG_DWORD: int,
     REG_DWORD_BIG_ENDIAN: int,
@@ -44,7 +44,10 @@ class RegistryNodeValue:
     _value: bytes | int | str | list[str]
     _type: int
 
-    def __init__(self, hive: hivex.Hivex, node_handle: int, key: str, type_value: tuple[int, bytes | int | str | list[str] | None] = (REG_NONE, None)):
+    def __init__(self, hive: hivex.Hivex,
+                 node_handle: int,
+                 key: str,
+                 type_value: tuple[int, bytes | int | str | list[str] | None] = (REG_NONE, None)):
         self._hive = hive
         self._node_handle = node_handle
         self._key = key
@@ -85,7 +88,7 @@ class RegistryNodeValue:
         if type_value[1] is None:
             self.sync()
 
-    def sync(self):
+    def sync(self) -> None:
         """
         Synchronize our information with the registry, note that this doesn't change it on the disk.
         You generally don't need to worry about this and just change the value.
@@ -147,7 +150,7 @@ class RegistryNodeValue:
         return self._value
 
     @value.setter
-    def value(self, new_value:  bytes | int | str | list[str]):
+    def value(self, new_value:  bytes | int | str | list[str]) -> None:
         if self._type not in REG_TYPE_MAPPING:
             if not isinstance(new_value, bytes):
                 raise TypeError(
@@ -248,7 +251,7 @@ class RegistryNode:
         Returns:
             Count of children of the current node
         """
-        return self._hive.node_nr_children(self.handle)
+        return self._hive.node_nr_children(self.handle)  # type: ignore
 
     def get_children(self) -> Generator['RegistryNode', None, None]:
         """Get children of this node
@@ -268,14 +271,14 @@ class RegistryNode:
         Returns:
             The node if found, none otherwise
         """
-        return self._hive.node_get_child(self.handle, key)
+        return RegistryNode(self._hive, self._hive.node_get_child(self.handle, key))
 
     def new_child(self, name: str) -> 'RegistryNode':
         """Create a new child node and return it
         """
         return RegistryNode(self._hive, self._hive.node_add_child(self.handle, name))
 
-    def del_child(self, node: 'RegistryNode'):
+    def del_child(self, node: 'RegistryNode') -> None:
         """
 
         Args:

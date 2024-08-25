@@ -3,7 +3,7 @@ Run a command or executable on boot, the executable must exist on the host files
 If you want to run an executable that is locally available. Use run_executable.
 It finds the executable and copies it onto the host filesystem.
 """
-from snr.core.payload.payload import Context, Payload, REQUIRED, VALID_STRING
+from snr.core.payload.payload import REQUIRED, VALID_STRING, Context, Payload
 from snr.core.util import common_utils
 
 

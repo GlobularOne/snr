@@ -2,11 +2,11 @@
 Payload class base
 """
 
-import re
-import socket
 import ipaddress
 import os.path
+import re
 import shutil
+import socket
 from typing import Any, Mapping, Optional
 
 from snr.cli import variables
@@ -16,11 +16,11 @@ from snr.core.core.context import Context
 from snr.core.core.variable_manager import (NORMAL, REQUIRED, USED_BY_PAYLOAD,
                                             VALID_ALPHA, VALID_ALPHANUM,
                                             VALID_ASCII, VALID_HOST_PATH,
-                                            VALID_PORT, VALID_IP,
-                                            VALID_IPV4, VALID_IPV6,
+                                            VALID_IP, VALID_IPV4, VALID_IPV6,
                                             VALID_LOCAL_PATH,
-                                            VALID_PATH_COMPONENT, VALID_STRING,
-                                            VariableFlags, VariableType)
+                                            VALID_PATH_COMPONENT, VALID_PORT,
+                                            VALID_STRING, VariableFlags,
+                                            VariableType)
 from snr.core.util import at_formatter, common_utils, network_interfaces
 from snr.core.util.payloads import autorun
 
@@ -62,7 +62,8 @@ class Payload:
 
         DEPENDENCIES: Deb packages as dependencies for the payload to work
 
-        ROOTFS_VERSION: Ask for a specific rootfs version, if snr is running an earlier version, it will patch it's rootfs up
+        ROOTFS_VERSION: Ask for a specific rootfs version, if snr is running 
+                        an earlier version, it will patch it's rootfs up
     """
     AUTHORS: tuple[Optional[str], ...] = ()
     LICENSE: str = "gpl-3.0"
@@ -77,7 +78,7 @@ class Payload:
     _validated_vars: dict[str, VariableType]
 
     @staticmethod
-    def _validate_str_var(name: str, value: str, flags: VariableFlags, ctx: Context):
+    def _validate_str_var(name: str, value: str, flags: VariableFlags, ctx: Context) -> str:
         for flag in flags:
             match flag:
                 case VariableFlags.VALID_STRING:
@@ -110,7 +111,8 @@ class Payload:
                             f"{name} does not exist on the host machine")
                 case VariableFlags.VALID_PORT:
                     common_utils.print_warning(
-                        "This is a warning for developers, VALID_PORT cannot be used with strings, for a port use an integer variable instead")
+                        "This is a warning for developers, VALID_PORT cannot be used with strings,"
+                        "for a port use an integer variable instead")
                 case VariableFlags.VALID_IP | VariableFlags.VALID_IPV4:
                     try:
                         ipaddress.ip_address(value)
@@ -125,13 +127,15 @@ class Payload:
                                 value)
                             if net_if is None:
                                 raise common_utils.UserError(
-                                    f"{name} is not a valid IP address, neither a valid hostname nor a valid interface") from None
+                                    f"{name} is not a valid IP address, neither a valid"
+                                    "hostname nor a valid interface") from None
                             if flag & VariableFlags.VALID_IP:
-                                new_value = net_if.ipv4_address if net_if.ipv4_address is None else net_if.ipv6_address
-                                if new_value is None:
+                                tmp = net_if.ipv4_address if net_if.ipv4_address is None else net_if.ipv6_address
+                                if tmp is None:
                                     # No IP capability at all
                                     raise common_utils.UserError(
                                         f"Network interface {name} does not have IP capabilities") from None
+                                new_value = tmp
                             else:
                                 if net_if.ipv4_address is None:
                                     raise common_utils.UserError(
@@ -152,7 +156,8 @@ class Payload:
                                 value)
                             if net_if is None:
                                 raise common_utils.UserError(
-                                    f"{name} is not a valid IPv6 address, neither a valid hostname nor a valid interface") from None
+                                    f"{name} is not a valid IPv6 address, neither a valid hostname"
+                                    "nor a valid interface") from None
                             if net_if.ipv6_address is None:
                                 raise common_utils.UserError(
                                     f"Network interface {name} does not have IPv6 capabilities") from None
@@ -161,7 +166,7 @@ class Payload:
         return value
 
     @staticmethod
-    def _validate_int_var(name: str, value: int, flags: VariableFlags, _: Context):
+    def _validate_int_var(name: str, value: int, flags: VariableFlags, _: Context) -> int:
         for flag in flags:
             match flag:
                 case VariableFlags.VALID_PORT:
@@ -245,12 +250,12 @@ class Payload:
         raise NotImplementedError
 
     @staticmethod
-    def supports_encrypted_access():
+    def supports_encrypted_access() -> tuple[str, list[str], int, str]:
         """Declare that the payload supports decrypting partitions
 
         It does so with declaring a PASSPHRASES string list variable
         you could use with many utilities of snr to access encrypted partitions
-        
+
         Returns:
             The variable definitions you need to add
         """

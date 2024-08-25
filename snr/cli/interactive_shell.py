@@ -2,11 +2,11 @@
 Core code of the interactive shell
 """
 import bdb
-import shlex
-import pathlib
 import os
 import os.path
+import pathlib
 import re
+import shlex
 from typing import Any
 
 import click
@@ -15,14 +15,13 @@ import prompt_toolkit.auto_suggest
 import prompt_toolkit.history
 import prompt_toolkit.lexers
 import prompt_toolkit.styles
-import pygments.styles
 import pyfiglet
+import pygments.styles
 
 from snr import version
-from snr.cli import lexer, variables, tips
+from snr.cli import lexer, tips, variables
 from snr.core.core import common_paths, console, options
 from snr.core.util import common_utils
-
 
 __all__ = (
     "prompt", "dispatch_command",
@@ -61,7 +60,7 @@ def _format_banner() -> str:
         f"\nTip: [blue]{tips.random_tip()}[/blue]\n"
 
 
-def _format_var(name: str):
+def _format_var(name: str) -> str:
     var_value = variables.global_vars.get_variable(name)
     if isinstance(var_value, (int, bool)):
         var_value = str(var_value)
@@ -79,9 +78,8 @@ def _expand_vars(line: list[str]) -> list[str]:
         var_name = match.group(2) or match.group(3)
         if variables.global_vars.has_variable(var_name):
             return _format_var(var_name)
-        else:
-            common_utils.print_error(f"No variable named '{var_name}'")
-            return match.group(0)
+        common_utils.print_error(f"No variable named '{var_name}'")
+        return match.group(0)
 
     for arg in line:
         new_arg = var_pattern.sub(replace_variable, arg)

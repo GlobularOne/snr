@@ -1,7 +1,7 @@
 """
 Change user, group and related login information. Only UNIX-like environments are supported (yet)
 """
-from snr.core.payload.payload import Context, Payload, VALID_STRING
+from snr.core.payload.payload import VALID_STRING, Context, Payload
 
 
 class UserManagementPayload(Payload):
@@ -17,7 +17,7 @@ class UserManagementPayload(Payload):
         ("UNLOCK", [], -1, "List of users to unlock, -<USERNAME> will lock it instead", VALID_STRING),
         ("DEFAULT_PASSWORD", "Aa12!aaaaaaaaa", 32, "Default password for newly added users", VALID_STRING),
         Payload.supports_encrypted_access()
-        
+
     )
 
     def generate(self, ctx: Context) -> int:

@@ -134,7 +134,7 @@ class ProgramWrapperBase:  # pylint: disable=too-many-instance-attributes
         if self._process is not None and self._process.returncode is None:
             # Program is still running
             raise SubprocessError(
-                    f"Program '{self._path}' is already running")
+                f"Program '{self._path}' is already running")
         self._process = None
         env = os.environ
         cwd = os.getcwd() if self.cwd is None else self.cwd

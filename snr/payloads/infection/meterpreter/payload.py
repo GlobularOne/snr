@@ -2,7 +2,7 @@
 """
 Meterpreter payload
 """
-from snr.core.payload import context, entry_point, storage, nt_registry
+from snr.core.payload import context, entry_point, nt_registry, storage
 from snr.core.util import common_utils
 from snr.core.util.payloads import systemd_service
 
@@ -42,7 +42,8 @@ def main() -> None:
                 service.Service_section["Type"] = "simple"
                 service.Service_section[
                     "ExecRestart"] = f"usr/lib/libexec/{LINUX_SERVICE_NAME}/control restart"
-                service.Service_section["ExecStop"] = f"usr/lib/libexec/{LINUX_SERVICE_NAME}/control stop"
+                service.Service_section["ExecStop"] = f"usr/lib/libexec/{
+                    LINUX_SERVICE_NAME}/control stop"
                 service.Install_section["WantedBy"] = "multi-user.target"
                 service.write(False, False)
                 mounted_part.link(f"/usr/lib/systemd/system/{LINUX_SERVICE_NAME}.service",

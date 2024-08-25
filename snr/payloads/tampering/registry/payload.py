@@ -2,7 +2,7 @@
 """
 Registry payload
 """
-from snr.core.payload import (entry_point, storage, nt_registry)
+from snr.core.payload import entry_point, nt_registry, storage
 from snr.core.util import common_utils
 
 REGISTRIES = "@REGISTRIES@"

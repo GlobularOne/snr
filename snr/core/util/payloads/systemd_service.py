@@ -3,9 +3,8 @@ Module containing a class providing systemd service file support
 """
 
 from snr.core.util.payloads import systemd_unit
-from snr.core.util.payloads.systemd_unit import \
-    SYSTEMD_SYSTEM_PATH
-from snr.core.util.payloads.systemd_unit import SystemdSectionType
+from snr.core.util.payloads.systemd_unit import (SYSTEMD_SYSTEM_PATH,
+                                                 SystemdSectionType)
 
 __all__ = (
     "SYSTEMD_SYSTEM_PATH", "SystemdService"
