@@ -2,12 +2,20 @@
 Variable manager, containing methods to set, get and delete variables
 """
 import dataclasses
+import enum
 import warnings
 
 __all__ = (
     "VariableType", "VariableTypeType",
     "VariableTypesTuple", "VariableInfo",
-    "VariableManager"
+    "VariableManager", "NORMAL",
+    "REQUIRED", "USED_BY_PAYLOAD",
+    "VALID_STRING", "VALID_ALPHA",
+    "VALID_ALPHANUM", "VALID_ASCII",
+    "VALID_PATH_COMPONENT", "VALID_LOCAL_PATH",
+    "VALID_HOST_PATH", "VALID_PORT",
+    "VALID_IP", "VALID_IPV4",
+    "VALID_IPV6"
 )
 
 # Type that matches all possible variable types
@@ -18,6 +26,62 @@ VariableTypeType = type[str | int | bool | list[str]]
 VariableTypesTuple = (str, int, bool, list)
 
 
+class VariableFlags(enum.Flag):
+    """
+    Flag variables
+    """
+    NORMAL = 0
+    REQUIRED = enum.auto()
+    USED_BY_PAYLOAD = enum.auto()
+    VALID_STRING = enum.auto()
+    VALID_STR_ALPHA = enum.auto()
+    VALID_STR_ALPHANUM = enum.auto()
+    VALID_STR_ASCII = enum.auto()
+    VALID_STR_PATH_COMPONENT = enum.auto()
+    VALID_STR_LOCAL_PATH = enum.auto()
+    VALID_STR_HOST_PATH = enum.auto()
+    VALID_PORT = enum.auto()
+    VALID_IP = enum.auto()
+    VALID_IPV4 = enum.auto()
+    VALID_IPV6 = enum.auto()
+    VALID_ALPHA = VALID_STRING | VALID_STR_ALPHA
+    VALID_ALPHANUM = VALID_STRING | VALID_STR_ALPHANUM
+    VALID_ASCII = VALID_STRING | VALID_STR_ASCII
+    VALID_PATH_COMPONENT = VALID_STRING | VALID_STR_PATH_COMPONENT
+    VALID_LOCAL_PATH = VALID_STRING | VALID_STR_LOCAL_PATH
+    VALID_HOST_PATH = VALID_STRING | VALID_STR_HOST_PATH
+
+
+# Variable does not need any special treatment
+NORMAL = VariableFlags.NORMAL
+# Variable is required
+REQUIRED = VariableFlags.REQUIRED
+# Variable is used by a payload and should not be removed by shell commands
+USED_BY_PAYLOAD = VariableFlags.USED_BY_PAYLOAD
+# Value must be non-empty, and not be made of entirely whitespace and not contain null bytes
+VALID_STRING = VariableFlags.VALID_STRING
+# Value must be a valid [a-zA-Z]
+VALID_ALPHA = VariableFlags.VALID_ALPHA
+# Value must be a valid [a-zA-Z0-9]
+VALID_ALPHANUM = VariableFlags.VALID_ALPHANUM
+# Value must be a valid ASCII string
+VALID_ASCII = VariableFlags.VALID_ASCII
+# Value must be a valid path component
+VALID_PATH_COMPONENT = VariableFlags.VALID_PATH_COMPONENT
+# Value must be an existing, readable path in the local machine
+VALID_LOCAL_PATH = VariableFlags.VALID_LOCAL_PATH
+# Value must be an existing, readable path in the host machine
+VALID_HOST_PATH = VariableFlags.VALID_HOST_PATH
+# Value must be a valid port number
+VALID_PORT = VariableFlags.VALID_PORT
+# Value must be a valid IP (Whatever  IPv4 or IPv6)
+VALID_IP = VariableFlags.VALID_IP
+# Value must be a valid IPv4
+VALID_IPV4 = VariableFlags.VALID_IPV4
+# Value must be a valid IPv6
+VALID_IPV6 = VariableFlags.VALID_IPV6
+
+
 @dataclasses.dataclass
 class VariableInfo:  # pylint: disable=too-few-public-methods
     """Variable's info
@@ -25,8 +89,7 @@ class VariableInfo:  # pylint: disable=too-few-public-methods
     description: str = ""
     length: int = -1
     var_type: VariableTypeType = str
-    used_by_payload: bool = False
-    required: bool = False
+    flags: VariableFlags = NORMAL
     default_value: VariableType | None = None
 
 
@@ -59,7 +122,7 @@ class VariableManager:
 
     def set_variable(self, name: str, value: VariableType,
                      info_length: int = -1, info_description: str = "",
-                     info_used_by_payload: bool = False, required: bool = False) -> None:
+                     flags: VariableFlags = VariableFlags.NORMAL) -> None:
         """Set value of variable.
 
         Args:
@@ -67,8 +130,7 @@ class VariableManager:
             value: Value of variable
             info_length: Length of variable if -1 no length will be set
             info_description: Description of variable
-            info_used_by_payload: Is the variable used a payload
-            required: Is the variable required to be set
+            flags: Flags for the variable
         """
         if isinstance(value, VariableTypesTuple):
             if isinstance(value, list):
@@ -84,7 +146,7 @@ class VariableManager:
             warnings.warn("Variables of integer types cannot have length")
             info_length = -1
 
-        if name in self._variables and not info_used_by_payload:
+        if name in self._variables and not flags & USED_BY_PAYLOAD:
             info = self._variables[name][1]
             if not isinstance(value, info.var_type):
                 raise TypeError(
@@ -103,9 +165,8 @@ class VariableManager:
             info.length = info_length
             info.description = info_description
             info.var_type = type(value)
-            info.used_by_payload = info_used_by_payload
-            info.required = required
-            if info_used_by_payload:
+            info.flags = flags
+            if flags & USED_BY_PAYLOAD:
                 info.default_value = value
         self._variables[name] = (value, info)
 
