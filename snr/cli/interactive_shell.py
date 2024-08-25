@@ -18,7 +18,7 @@ import pygments.styles
 import pyfiglet
 
 from snr import version
-from snr.cli import lexer, variables
+from snr.cli import lexer, variables, tips
 from snr.core.core import common_paths, console, options
 from snr.core.util import common_utils
 
@@ -56,7 +56,8 @@ def _format_banner() -> str:
     return f"[blue]{banner}[/blue]\n" + \
         f"--> Version: [red]{version.__version__}[/red]\n" + \
         f"--> Homepage: [red]{version.HOMEPAGE}[/red]\n" + \
-        f"--> [red]{_count_payloads()}[/red] Available Payloads\n"
+        f"--> [red]{_count_payloads()}[/red] Available Payloads\n" + \
+        f"\nTip: [blue]{tips.random_tip()}[/blue]\n"
 
 
 def _expand_vars(line: list[str]) -> list[str]:
