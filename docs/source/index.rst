@@ -45,6 +45,7 @@ Welcome to snr's documentation!
    ref/snr.cli
    todo
    fdl
+   dev_guide/release_checklist
 
 
 Indices and tables
