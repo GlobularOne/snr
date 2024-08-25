@@ -254,7 +254,7 @@ Several under the hood changes and minor improvements
 
 ## v1.2.X
 
-### v1.2.0 (Stable)
+### v1.2.0
 
 * Additions:
 
@@ -301,3 +301,53 @@ This release promotes the 1.2.X branch as stable.
 * Bug fixes:
 
   * Improve the README and documentation to ensure remnants of the legacy version are no longer there.
+
+## v1.3.X (Stable)
+
+### v1.3.0
+
+This release aims to make Snr more comfortable for the end user.
+
+* Additions:
+
+  * Network interfaces snr core utils, allowing gathering data on network interfaces.
+  
+  * Payload variable validation
+  
+  * As per the new validations, now commands show a more accurate type for variables (VALID_PORT causes an int variable to become a port number, not just an int)
+
+  * Documentation for validators on `payload_development` guide.
+
+  * New development tool: `bypass_init`. It creates the directories snr needs and an empty file as rootfs to essentially bypass init for usages other than generating payloads (that obviously wouldn't work)
+
+  * Document release steps to ensure mistakes won't happen again.
+
+  * Allow toggling of Option variables using syntax: `set <var_name> !`.
+
+  * Allow expansion of variables as `${<var_name>}`.
+
+  * Now `set` command based on flags tries to return type as something more descriptive, like `IP Address` or `Port Number` once the flags are passed.
+
+  * `unset` (and subsequently `set`) no longer error out when trying to unset payload-defined variables, but instead reset it to it's default value.
+
+  * Snr now shows tips at each shell setup (after each time getting run or reloaded)
+
+  * Once `VALID_IP`, `VALID_IPV4` or `VALID_IPV6` flag is passed for a variable, user can enter interface name, or domain name and Snr would retrieve the IP for the payload.
+
+  * Payload generation now shows a progress bar.
+
+* Improvements:
+
+  * Ensure all tools have the executable bit.
+
+  * Use validators in all built-in payloads.
+
+  * Now `set` command instead of just showing the types, (even if no flags are passed) uses a more friendly type name:
+    * `String` for `str`
+    * `Number` for `int`
+    * `Option` for `bool`
+    * `String List` for `list[str]`
+
+* Breaking changes:
+
+  * Payload generation steps are now generators. This helps creating a more pleasant experience for users.
