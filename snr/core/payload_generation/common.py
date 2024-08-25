@@ -146,5 +146,5 @@ def clean_and_exit(ctx: context.Context, message: str,
     else:
         # Still for safety reasons it's best to do this
         unbind_required_rootfs_dirs(ctx)
-    common_utils.print_fatal(message)
+    common_utils.print_error(message)
     return False
