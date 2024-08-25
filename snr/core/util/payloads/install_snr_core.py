@@ -20,10 +20,10 @@ SNR_CORE_DIR = pathlib.Path(__file__).parents[2]
 
 def DIST_PACKAGES_DIR(ctx: context.Context) -> str:  # pylint: disable=invalid-name
     """Return the path to the dist-packages directory
-     
+
     Args:
         ctx: The context to use for obtaining the directory
-    
+
     Returns:
         The path to the dist-packages
     """

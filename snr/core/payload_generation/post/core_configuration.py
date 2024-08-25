@@ -17,7 +17,7 @@ def configure_core(ctx: context.Context, verbosity: str) -> bool:
 
     Args:
         ctx: Context
-        verbosity (str): Verbosity level
+        verbosity: Verbosity level
     """
     common_utils.print_debug("Configuring snr core on the host")
     # Ensure these directories exist

@@ -2,12 +2,12 @@
 Core and common utilities. If a function is found here 
 and also in snr.core.core, it is advised to use the one here
 """
+import contextlib
 import os
 import os.path
 import pdb
 import shutil
 import sys
-import contextlib
 from shutil import get_terminal_size
 from typing import IO, Any, Callable, NoReturn
 
@@ -159,9 +159,9 @@ def get_rootfs_version() -> int:
 
 
 if hasattr(contextlib, "chdir"):
-    temp_chdir = getattr(contextlib, "chdir")
+    temp_chdir = getattr(contextlib, "chdir")  # pylint: disable=invalid-name
 else:
-    class chdir(contextlib.AbstractContextManager[None]):
+    class chdir(contextlib.AbstractContextManager[None]):  # pylint: disable=invalid-name
         """Temporarily change working directory. Should be used with `with`
 
         Attributes:
@@ -180,3 +180,4 @@ else:
 
         def __exit__(self, *_: Any) -> None:
             os.chdir(self._orig_path)
+    temp_chdir = chdir  # pylint: disable=invalid-name

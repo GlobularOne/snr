@@ -3,11 +3,12 @@ Utilities to deal with Network Interfaces
 """
 
 import socket
+
 import psutil
 import psutil._common
 
 
-class NetworkInterface:
+class NetworkInterface:  # pylint: disable=too-many-instance-attributes,too-few-public-methods
     """A network interface
 
     Attributes:

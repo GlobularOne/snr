@@ -17,10 +17,10 @@ __all__ = (
 
 def SYSTEMD_SYSTEM_PATH(ctx: context.Context) -> str:  # pylint: disable=invalid-name
     """Return the path to systemd's system directory
-    
+
     Args:
         ctx: A dictionary containing context information
-    
+
     Returns:
         The path to systemd's system directory
     """
@@ -119,7 +119,7 @@ class SystemdUnit(SystemdConfigFileBase,
 
     def write(self, make_wants_dir: bool = True, make_requires_dir: bool = True) -> None:
         """Write the config to disk
-        
+
         Args:
             make_wants_dir: Whether or not to make the .wants directory.
             make_requires_dir: Whether or not to make the .requires directory

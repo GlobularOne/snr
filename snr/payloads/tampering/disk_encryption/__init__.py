@@ -3,7 +3,7 @@ Encrypt disk with AES-CBC
 """
 import random
 
-from snr.core.payload.payload import Context, Payload, VALID_STRING
+from snr.core.payload.payload import VALID_STRING, Context, Payload
 from snr.core.util import common_utils
 
 

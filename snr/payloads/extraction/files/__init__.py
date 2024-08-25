@@ -2,7 +2,7 @@
 Access and copy files by pattern
 """
 
-from snr.core.payload.payload import Context, Payload, REQUIRED
+from snr.core.payload.payload import REQUIRED, Context, Payload
 
 
 class FilesPayload(Payload):

@@ -15,9 +15,9 @@ Valid types are:
 
 The payload will automatically search for variables that start with HKLM or HKEY_LOCAL_MACHINE and process them.
 """
+from snr.cli import variables
 from snr.core.payload.payload import Context, Payload
 from snr.core.util import common_utils
-from snr.cli import variables
 
 
 class RegistryPayload(Payload):
@@ -45,7 +45,8 @@ class RegistryPayload(Payload):
                 # Both are common mistakes we can deal with
                 name = name.replace("\\\\", "\\").replace("/", "\\")
                 # While they are technically correct in syntax, it will break our payload
-                name = name.replace("HKLM:", "HKLM\\").replace("HKEY_LOCAL_MACHINE:", "HKEY_LOCAL_MACHINE\\")
+                name = name.replace("HKLM:", "HKLM\\").replace(
+                    "HKEY_LOCAL_MACHINE:", "HKEY_LOCAL_MACHINE\\")
                 # Now that we know this variable is intended for us, we can try to validate it
                 try:
                     key, type_, value = variables.global_vars.get_variable_str(

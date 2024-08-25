@@ -3,7 +3,9 @@ Non-interactive interface for snr
 """
 
 import click
-from snr.cli import interactive_shell, main as cli_main
+
+from snr.cli import interactive_shell
+from snr.cli import main as cli_main
 
 # pylint: disable=protected-access
 
@@ -38,7 +40,6 @@ def main() -> None:
                                                   *_filter_out_params(interactive_shell.interactive_shell.params)]
     cli_main._main.help = "Non-interactive interface to snr"
     cli_main.main()
-
 
 
 if __name__ == "__main__":

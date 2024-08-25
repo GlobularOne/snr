@@ -52,7 +52,7 @@ def load(path: str, store_cwd: bool = False) -> payload.Payload | None:
         if options.payload_module is None:
             options.payload_module = module
             options.payload_path = path
-        return getattr(module, "payload")
+        return getattr(module, "payload")  # type: ignore
 
 
 def generate(name: str, p: payload.Payload, ctx: payload.Context) -> int:
@@ -75,7 +75,7 @@ def generate(name: str, p: payload.Payload, ctx: payload.Context) -> int:
             if errorcode or errorcode is common_utils.EXTERNAL_CALL_FAILURE:
                 common_utils.print_error(
                     f"Payload {name} failed to generate")
-                return errorcode
+                return errorcode  # type: ignore
     return 0
 
 

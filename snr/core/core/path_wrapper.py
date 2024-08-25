@@ -26,7 +26,7 @@ class PathWrapperBase:
         cls._path_var_name = path_var_name
 
     def _get_path(self) -> str:
-        return getattr(self, self._path_var_name) # type: ignore 
+        return getattr(self, self._path_var_name)  # type: ignore
 
     def join(self, *paths: str) -> str:
         """Join paths with the wrapped path
@@ -108,7 +108,7 @@ class PathWrapperBase:
             file-like object
         """
         return open(self.join(file), mode, buffering,  # pylint: disable=consider-using-with
-                      encoding)
+                    encoding)
 
     def remove(self, path: str) -> None:
         """Remove file in the wrapped directory
@@ -179,7 +179,7 @@ class PathWrapperBase:
             dest: Directory to copy to
             symlinks: Whatever to copy symbolic links or their content. Defaults to False
             ignore_dangling_symlinks: Whatever to ignore invalid symlinks. Defaults to False
-            dirs_exist_ok (bool, optional): Whatever it's okay if destination directories already exist. Defaults to False
+            dirs_exist_ok: Whatever it's okay if destination directories already exist. Defaults to False
 
         Returns:
             destination

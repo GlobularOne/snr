@@ -8,7 +8,7 @@ import json
 import os
 import tempfile
 import time
-from typing import Iterable, Literal, Any
+from typing import Any, Iterable, Literal
 
 from snr.core.core import path_wrapper
 from snr.core.payload import context
@@ -406,7 +406,8 @@ def handle_luks_partition(part: str, passphrases: Iterable[str] = ()) -> tuple[s
     return luks_name, part
 
 
-class MountedPartition(contextlib.AbstractContextManager['MountedPartition'], path_wrapper.PathWrapperBase, path_var_name="mount_point"):
+class MountedPartition(contextlib.AbstractContextManager['MountedPartition'],
+                       path_wrapper.PathWrapperBase, path_var_name="mount_point"):
     """A mounted partition
 
     Attributes:
@@ -433,6 +434,8 @@ class MountedPartition(contextlib.AbstractContextManager['MountedPartition'], pa
         super().__init__('/definitely-doesnt-exist-and-also-shouldnt')
 
     def __enter__(self) -> 'MountedPartition':
+        part = self._part
+        luks_name = ""
         if not self._no_luks:
             is_luks_encrypted = luks_is_partition_encrypted(self._part)
 
@@ -454,13 +457,13 @@ class MountedPartition(contextlib.AbstractContextManager['MountedPartition'], pa
                 luks_close(luks_name)
             raise RuntimeError(
                 f"Failed to mount partition '{part}'! Skipping partition")
-
-        self._luks_name = luks_name
-        self._is_luks_encrypted = is_luks_encrypted
+        if is_luks_encrypted:
+            self._luks_name = luks_name
+            self._is_luks_encrypted = is_luks_encrypted
         self.mount_point = mount_point
         return self
 
-    def __exit__(self, *_: Any) -> None: 
+    def __exit__(self, *_: Any) -> None:
         programs.Umount().invoke_and_wait(None, self.mount_point)
         if hasattr(self, "is_luks_encrypted"):
             luks_close(self._luks_name)

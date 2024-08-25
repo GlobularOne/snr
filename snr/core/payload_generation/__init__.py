@@ -1,7 +1,7 @@
 """
 Payload generation core functionality
 """
-from typing import Callable, Generator, Union
+from typing import Any, Callable, Generator
 
 from snr.core.core import context
 from snr.core.payload import safety_pin
@@ -16,7 +16,7 @@ __all__ = (
 )
 
 
-def _call_step(func: Callable[..., bool], *args) -> None:
+def _call_step(func: Callable[..., bool], *args: Any) -> None:
     return_value = func(*args)
     if not return_value:
         raise RuntimeError(f"Step failed with return code: {return_value}")

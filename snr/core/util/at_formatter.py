@@ -2,7 +2,7 @@
 Format a string, replacing "@variable@" with value
 """
 
-from typing import Mapping, Any
+from typing import Any, Mapping
 
 __all__ = (
     "AtFormatter",

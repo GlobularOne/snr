@@ -38,7 +38,8 @@ def ensure_dependencies(ctx: context.Context) -> bool:
     if rootfs_version > current_rootfs_version:
         # We need to patch it up
         common_utils.print_info(
-            f"Payload requires rootfs version {rootfs_version} but the current version is {current_rootfs_version}. Patching up!")
+            f"Payload requires rootfs version {rootfs_version}"
+            f"but the current version is {current_rootfs_version}. Patching up!")
         for i in range(current_rootfs_version - 1, rootfs_version):
             p.DEPENDENCIES = (*p.DEPENDENCIES, *ROOTFS_VERSION_PATCHES[i])
     if len(p.DEPENDENCIES) != 0:

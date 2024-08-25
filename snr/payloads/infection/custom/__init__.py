@@ -3,7 +3,9 @@ Infect with Meterpreter. Note that it uses Metasploit itself.
 """
 import os
 
-from snr.core.payload.payload import Context, Payload, REQUIRED, VALID_STRING, VALID_LOCAL_PATH, VALID_PATH_COMPONENT
+from snr.core.payload.payload import (REQUIRED, VALID_LOCAL_PATH,
+                                      VALID_PATH_COMPONENT, VALID_STRING,
+                                      Context, Payload)
 
 
 class CustomPayload(Payload):
@@ -20,7 +22,6 @@ class CustomPayload(Payload):
          "Name of the persistance service for Windows", REQUIRED | VALID_PATH_COMPONENT),
         Payload.supports_encrypted_access()
     )
-
 
     def generate(self, ctx: Context) -> int:
         variables = self.get_self_variables()

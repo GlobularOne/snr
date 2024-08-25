@@ -14,6 +14,7 @@ __all__ = (
     "Autorun",
 )
 
+
 class Autorun:
     """Providing support for automatically running executables on boot while preserving order
     """
@@ -32,11 +33,11 @@ class Autorun:
 
     def add_executable(self, path: str, name: str | None = None) -> 'Autorun':
         """Add an executable to be executed to the systemd configuration
-        
+
         Args:
             path: Path to the executable
             name: Name of the service
-        
+
         Returns:
             The class instance itself. This is done for convenience
         """
