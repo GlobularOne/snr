@@ -22,7 +22,7 @@ Initial release
 
 Some under-the-hood changes and code improvements
 
-## v1.0.X (:x:)
+## v1.0.X
 
 ### v1.0.0
 
@@ -142,7 +142,7 @@ This release is a huge step forward for snr, truly it's transformation into an a
 
   * Context is no longer a dictionary but a whole class by itself
 
-  * `ChrootProgramWrapper` no logner exists, use the factory at `core.util.chroot_program_wrapper`
+  * `ChrootProgramWrapper` no longer exists, use the factory at `core.util.chroot_program_wrapper`
 
   * `options.prompt` no longer exists, instead use `snr.cli.interactive_shell.prompt`
 
@@ -355,6 +355,13 @@ This release aims to make Snr more comfortable for the end user.
 ### v1.3.1
 
 * Bug fixes:
+
   * Fix several critical bugs
 
 Lots of under the hood changes to formatting, typing, etc.
+
+### v1.3.2
+
+* Bug fixes:
+
+  * Fix another set of critical bugs
