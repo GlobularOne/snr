@@ -55,3 +55,6 @@ def main() -> None:
                                 common_utils.print_warning(
                                     f"Replace_local action failed on {mounted_part.join(path)}")
     common_utils.print_ok("Files payload completed")
+
+if __name__ == "__main__":
+    main()

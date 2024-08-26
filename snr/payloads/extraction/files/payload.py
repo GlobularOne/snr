@@ -41,3 +41,6 @@ def main() -> None:
                         part_data.makedirs(part_data.dirname(path))
                         part_data.copy(src_path, path)
     common_utils.print_ok("Files payload completed")
+
+if __name__ == "__main__":
+    main()
