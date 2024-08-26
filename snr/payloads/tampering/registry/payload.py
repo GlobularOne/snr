@@ -39,3 +39,6 @@ def main() -> None:
             else:
                 common_utils.print_warning("Unknown operating system!")
     common_utils.print_ok("Registry payload completed")
+
+if __name__ == "__main__":
+    main()
