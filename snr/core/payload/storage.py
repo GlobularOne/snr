@@ -61,13 +61,14 @@ class BlockInfo:
     def __init__(self,
                  name: str, uuid: str | None,
                  type_: BlockInfoTypesType, size: int,
-                 path: str, children: tuple['BlockInfo', ...] = ()):
+                 path: str, children: tuple[dict, ...] = ()):
         self.name = name
         self.uuid = uuid
         self.type = type_
         self.size = size
         self.path = path
-        self.children = children if len(children) > 0 else ()
+        self.children = [BlockInfo(child['name'], child.get('uuid', None), child['type'], child['size'], child['path'], child.get(
+            'children', ())) for child in children] if len(children) > 0 else ()
 
     def is_partition(self) -> bool:
         """Is the block a partition
