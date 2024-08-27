@@ -293,7 +293,7 @@ class Payload:
         """
         with open(local_payload_path, encoding="utf-8") as stream:
             payload_data = stream.read()
-        with common_utils.rootfs_open(ctx, host_payload_path, "w") as stream:
+        with ctx.open(host_payload_path, "w") as stream:
             stream.write(at_formatter.AtFormatter(
                 data).format_str(payload_data))
 
@@ -316,4 +316,5 @@ class Payload:
         """
         if self._autorun is None:
             self._autorun = autorun.Autorun(ctx)
-        self._autorun.add_executable(executable).write()
+        self._autorun.add_executable(executable)
+        self._autorun.write()
