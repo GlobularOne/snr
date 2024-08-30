@@ -122,7 +122,7 @@ With knowing all this, let's put them all to use. Here below is a more complete 
     """
     Example payload using all the optional features
     """
-    from snr.core.payload.payload import Context, Payload
+    from snr.core.payload.payload import Context, Payload, REQUIRED
     from snr.core.util import common_utils
 
     class AllFeaturesPayload(Payload):
@@ -131,7 +131,7 @@ With knowing all this, let's put them all to use. Here below is a more complete 
         TARGET_OS_LIST = ("Microsoft Windows (XP SP1 or later)", "GNU/Linux (Kernel version above 5.0.0)")
         INPUTS = (
             ("foo", "bar", 3, "Foo or bar"),
-            ("spam", [], 12, "12 Spams", True)
+            ("spam", [], 12, "12 Spams", REQUIRED)
         )
 
         def load(self) -> int:

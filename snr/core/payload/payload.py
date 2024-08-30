@@ -189,6 +189,9 @@ class Payload:
             elif len(inp) == 5:
                 flags = inp[4]
                 if isinstance(flags, bool):
+                    common_utils.print_warning(
+                        "This is a warning for payload developers, passing boolean as flags is deprecated" +
+                        "and will soon be removed, migrate to flags themselves")
                     flags = VariableFlags(flags)
                 variables.global_vars.set_variable(
                     inp[0], inp[1], inp[2], inp[3], USED_BY_PAYLOAD | flags)
