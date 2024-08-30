@@ -1,7 +1,7 @@
 Partition Types
 ===============
 
-When you open a partition (See :doc:`ref/snr.core.payload.storage`), you can use the `partition_type()` function to retrieve what kind of partition is it. Partitions are split into several categories:
+When you open a partition (See :doc:`/ref/snr.core.payload.storage`), you can use the `partition_type()` function to retrieve what kind of partition is it. Partitions are split into several categories:
 
 * EFI_PARTITION: Contains EFI boot files
 * BOOT_PARTITION: Contains bootloader files
@@ -110,6 +110,7 @@ Assuming you mount a partition and the end result is a variable called `mounted_
 * `WINDOWS_PARTITION`: `.is_windows()`
 
 .. code-block:: python
+
     if mounted_part.is_system():
         # Deal with system partitions
     ...

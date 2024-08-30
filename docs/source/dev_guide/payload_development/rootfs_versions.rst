@@ -41,7 +41,7 @@ It contains the packages:
 * wireless-tools
 * wpasupplicant
 
-.. versionremoved: 1.0.0
+.. versionremoved:: 1.0.0
 
 Non-legacy versions
 -------------------
@@ -80,9 +80,10 @@ It is the first non-legacy version of snr rootfs which is based Ubuntu 22.04 LTS
 * wireless-tools
 * wpasupplicant
 
+**This verison of rootfs is faulty and should not be used**
 
-.. versionadded: 1.0.0
-.. deprecated: 1.1.0
+.. versionadded:: 1.0.0
+.. versionremoved:: 1.1.0
 
 v2
 ^^
@@ -92,6 +93,7 @@ It is the second version of snr rootfs which is also based on Ubuntu 22.04 LTS a
 * python3-deprecated
 * python3-impacket
 * python3-pycryptodome
+* python3-cffi-backend
 
 The full list of packages are:
 
@@ -116,6 +118,7 @@ The full list of packages are:
 * net-tools
 * ntfs-3g
 * python3
+* python3-cffi-backend
 * python3-deprecated
 * python3-impacket
 * python3-pycryptodome

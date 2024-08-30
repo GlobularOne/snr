@@ -51,5 +51,5 @@ After knowing all you need to know, let's give you a working example:
 
 .. seealso::
 
-    :doc:`partition_type`
+    :doc:`partition_types`
         Read about how the partition type detection works and how you can use it.
