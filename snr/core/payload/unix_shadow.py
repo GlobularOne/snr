@@ -66,8 +66,8 @@ class UnixShadowEntry:  # pylint: disable=too-many-instance-attributes, too-few-
         return f"{self.login_name}:{locked_str}{self.password}:" + \
             f"{self.password_change_date}:{self.max_password_age}:" + \
             f"{self.min_password_age}:{self.password_warn_period}:" + \
-            f"{self.password_inactivity_period}:{
-                self.expiration_date}:{self.reserved}"
+            f"{self.password_inactivity_period}:" + \
+            f"{self.expiration_date}:{self.reserved}"
 
 
 def parse_unix_shadow_line(line: str) -> UnixShadowEntry:
