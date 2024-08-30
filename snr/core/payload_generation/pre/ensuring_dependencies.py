@@ -12,7 +12,7 @@ __all__ = (
 )
 
 ROOTFS_VERSION_PATCHES = [
-    ("python3-deprecated", "python3-impacket", "python3-pycryptodome")  # v2
+    
 ]
 
 
@@ -40,7 +40,7 @@ def ensure_dependencies(ctx: context.Context) -> bool:
         common_utils.print_info(
             f"Payload requires rootfs version {rootfs_version}"
             f"but the current version is {current_rootfs_version}. Patching up!")
-        for i in range(current_rootfs_version - 1, rootfs_version):
+        for i in range(current_rootfs_version - 2, rootfs_version):
             p.DEPENDENCIES = (*p.DEPENDENCIES, *ROOTFS_VERSION_PATCHES[i])
     if len(p.DEPENDENCIES) != 0:
         common_utils.print_debug(
