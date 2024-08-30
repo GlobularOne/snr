@@ -35,7 +35,7 @@ __all__ = (
     "VALID_IPV4", "VALID_IPV6"
 )
 
-_invalid_path_chars = re.compile(r'[<>:"/\\|?*]')
+_invalid_path_chars = re.compile(r'[\\/:*?"<>|/]')
 
 
 class Payload:
@@ -85,27 +85,27 @@ class Payload:
                     if len(value.strip()) == 0 or "\x00" in value:
                         raise common_utils.UserError(
                             f"{name} may not be empty or contain null bytes")
-                case VariableFlags.VALID_ALPHA:
-                    if value.isalpha():
+                case VariableFlags.VALID_STR_ALPHA:
+                    if not value.isalpha():
                         raise common_utils.UserError(
                             f"{name} must be alphabetic")
-                case VariableFlags.VALID_ALPHANUM:
-                    if value.isalnum():
+                case VariableFlags.VALID_STR_ALPHANUM:
+                    if not value.isalnum():
                         raise common_utils.UserError(
                             f"{name} must be alphabetic-numeric")
-                case VariableFlags.VALID_ASCII:
-                    if value.isascii():
+                case VariableFlags.VALID_STR_ASCII:
+                    if not value.isascii():
                         raise common_utils.UserError(
                             f"{name} must be ASCII")
-                case VariableFlags.VALID_PATH_COMPONENT:
+                case VariableFlags.VALID_STR_PATH_COMPONENT:
                     if _invalid_path_chars.search(value):
                         raise common_utils.UserError(
                             f"{name} must be a valid path component")
-                case VariableFlags.VALID_LOCAL_PATH:
+                case VariableFlags.VALID_STR_LOCAL_PATH:
                     if not os.path.exists(value):
                         raise common_utils.UserError(
                             f"{name} does not exist on the local machine")
-                case VariableFlags.VALID_HOST_PATH:
+                case VariableFlags.VALID_STR_HOST_PATH:
                     if not ctx.exists(value):
                         raise common_utils.UserError(
                             f"{name} does not exist on the host machine")
@@ -127,10 +127,10 @@ class Payload:
                                 value)
                             if net_if is None:
                                 raise common_utils.UserError(
-                                    f"{name} is not a valid IP address, neither a valid"
+                                    f"{name} is not a valid IP address, neither a valid "
                                     "hostname nor a valid interface") from None
                             if flag & VariableFlags.VALID_IP:
-                                tmp = net_if.ipv4_address if net_if.ipv4_address is None else net_if.ipv6_address
+                                tmp = net_if.ipv4_address if net_if.ipv4_address is not None else net_if.ipv6_address
                                 if tmp is None:
                                     # No IP capability at all
                                     raise common_utils.UserError(
@@ -156,7 +156,7 @@ class Payload:
                                 value)
                             if net_if is None:
                                 raise common_utils.UserError(
-                                    f"{name} is not a valid IPv6 address, neither a valid hostname"
+                                    f"{name} is not a valid IPv6 address, neither a valid hostname "
                                     "nor a valid interface") from None
                             if net_if.ipv6_address is None:
                                 raise common_utils.UserError(
@@ -224,17 +224,18 @@ class Payload:
             if var_info.flags & REQUIRED and result[inp[0]] == var_info.default_value:
                 raise common_utils.UserError(
                     f"{inp[0]} is required but is not set")
-            if isinstance(value, str):
+            if var_info.var_type == str:
                 result[inp[0]] = self._validate_str_var(
                     inp[0], value, var_info.flags, ctx)
-            elif isinstance(value, int):
+            elif var_info.var_type == int:
                 result[inp[0]] = self._validate_int_var(
                     inp[0], value, var_info.flags, ctx)
-            elif isinstance(value, list):
+            elif var_info.var_type == list:
                 new_value = []
                 for index, element in enumerate(value):
                     new_value.append(self._validate_str_var(
                         inp[0] + f"[{index}]", element, var_info.flags, ctx))
+                result[inp[0]] = new_value
         self._validated_vars = result
         return result
 

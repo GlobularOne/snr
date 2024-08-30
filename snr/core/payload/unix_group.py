@@ -30,7 +30,7 @@ class UnixGroupEntry:  # pylint: disable=too-few-public-methods
         self.group_name = group_name
         self.password = password
         self.gid = gid
-        self.user_list = copy.deepcopy(user_list)
+        self.user_list = copy.deepcopy(list(user_list))
 
     def __str__(self) -> str:
         return f"{self.group_name}:{self.password}:{self.gid}:{','.join(self.user_list)}"
@@ -45,6 +45,7 @@ def parse_unix_group_line(line: str) -> UnixGroupEntry:
     Returns:
         The parsed UnixGroupEntry
     """
+    line = line.strip("\n")
     group_name, password, gid, user_list_raw = line.split(":", 4)
     user_list = user_list_raw.split(",")
     return UnixGroupEntry(group_name, password, int(gid), user_list)

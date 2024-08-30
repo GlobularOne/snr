@@ -14,7 +14,8 @@ Here you can see a list of the order we recommend you to read the payload develo
 4. :doc:`payload_types`
 5. :doc:`working_example`
 6. :doc:`validation`
-7. :doc:`contributing_a_payload`
+7. :doc:`partition_types`
+8. :doc:`contributing_a_payload`
 
 .. seealso::
 

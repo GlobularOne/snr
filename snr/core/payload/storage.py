@@ -4,6 +4,7 @@ Allows working with LVM and getting information on all and any disk or partition
 """
 import contextlib
 import copy
+import enum
 import json
 import os
 import tempfile
@@ -26,11 +27,15 @@ __all__ = (
     "MountedPartition", "mount_partition"
 )
 
+_root_context: context.Context = None
+_root_device: str = ""
+
 ###############################################################################
 # Block and partition support
 ###############################################################################
 
 BlockInfoTypesType = Literal['part'] | Literal['crypt'] | Literal['loop'] | Literal['disk'] | Literal['rom']
+BlocksType = list['BlockInfo']
 
 
 class BlockInfo:
@@ -96,7 +101,7 @@ class BlockInfo:
         Returns:
             Whatever the block is an encrypted partition or not
         """
-        return self.type == "disk"
+        return self.type == "crypt"
 
     def is_loop(self) -> bool:
         """Is the block a loop
@@ -116,7 +121,7 @@ class BlockInfo:
 
     def __eq__(self, other: object) -> bool:
         if not isinstance(other, (BlockInfo, str)):
-            return NotImplemented
+            raise NotImplementedError
 
         if isinstance(other, str):
             if other.startswith("/"):
@@ -149,11 +154,12 @@ def query_all_block_info() -> list[BlockInfo]:
     return block_devices
 
 
-def query_all_partitions(block_info: list[BlockInfo] | None = None) -> list[str]:
+def query_all_partitions(block_info: list[BlockInfo] | None = None, exclude_us: bool = True) -> list[str]:
     """Query all partitions in block_info
 
     Args:
         block_info: list of block info queried. Optional
+        exclude_us: Whatever our own device's partitions should be excluded. Defaults to True.
 
     Returns:
         list of partition paths
@@ -162,6 +168,8 @@ def query_all_partitions(block_info: list[BlockInfo] | None = None) -> list[str]
         block_info = query_all_block_info()
     partitions = []
     for block in block_info:
+        if exclude_us and block.path == _root_device:
+            continue
         for child in block.children:
             if child.is_partition():
                 partitions.append(child.path)
@@ -283,7 +291,7 @@ def luks_open(path: str, name: str, passphrase: str) -> bool:
     cryptsetup.stdin.write(passphrase + "\n")
     cryptsetup.stdin.close()
     errorcode = cryptsetup.wait(None)
-    return not bool(errorcode)
+    return bool(errorcode)
 
 
 def luks_close(name: str) -> bool:
@@ -296,7 +304,7 @@ def luks_close(name: str) -> bool:
         Whatever the operation was successful or not
     """
     errorcode = programs.Cryptsetup().invoke_and_wait(None, "luksClose", name)
-    return not bool(errorcode)
+    return bool(errorcode)
 
 
 ###############################################################################
@@ -355,11 +363,15 @@ def setup(no_lvm: bool = False) -> tuple[list[BlockInfo], context.Context, str]:
     Returns:
         a tuple of all block information, context for /, and the device the root partition resides on
     """
+    global _root_context  # pylint: disable=global-statement
+    global _root_device  # pylint: disable=global-statement
     if not no_lvm:
         lvm_scan_all()
         lvm_activate_all_vgs()
     block_info = query_all_block_info()
-    return block_info, context.require_context_for_mount_point("/"), require_root_device("/")
+    _root_context = context.require_context_for_mount_point("/")
+    _root_device = require_root_device("/")
+    return block_info, _root_context, _root_device
 
 
 def handle_luks_partition(part: str, passphrases: Iterable[str] = ()) -> tuple[str, str] | tuple[None, None]:
@@ -376,33 +388,32 @@ def handle_luks_partition(part: str, passphrases: Iterable[str] = ()) -> tuple[s
         For example, for `/dev/sda3` it would be `("/dev/mapper/sda3_crypt", "sda3_crypt")`
         If failed, return a tuple of None (`(None, None)`)
     """
-    luks_encrypted = luks_is_partition_encrypted(part)
     luks_name = part.split(os.path.sep)[-1] + "_crypt"
-    if luks_encrypted:
-        common_utils.print_info(
-            "Luks encrypted partition found! Trying available passphrases...")
-        for passphrase in passphrases:
-            if luks_open(part, luks_name, passphrase):
-                common_utils.print_info("Luks partition opened!")
-                break
-            try:
-                common_utils.print_warning(
-                    "Passphrase not found! Press Ctrl + C to try a passphrase")
-                time.sleep(5)
-            except KeyboardInterrupt:
-                try:
-                    while True:
-                        common_utils.print_info(
-                            "Enter new passphrase or press Ctrl + C again to abort: ", end="")
-                        passphrase = input()
-                        if luks_open(part, luks_name, passphrase):
-                            common_utils.print_info(
-                                "Luks partition opened!")
-                            break
-                except KeyboardInterrupt:
-                    common_utils.print_warning(
-                        f"No passphrase found for partition '{part}'")
-                    return None, None
+    common_utils.print_info(
+        "Luks encrypted partition found! Trying available passphrases...")
+    for passphrase in passphrases:
+        if luks_open(part, luks_name, passphrase):
+            common_utils.print_info("Luks partition opened!")
+            return luks_name, f"/dev/mapper/{luks_name}"
+    try:
+        common_utils.print_warning(
+            "Passphrase not found! Press Ctrl + C to try a passphrase")
+        time.sleep(5)
+        return None, None
+    except KeyboardInterrupt:
+        try:
+            while True:
+                common_utils.print_info(
+                    "Enter new passphrase or press Ctrl + C again to abort: ", end="")
+                passphrase = input()
+                if luks_open(part, luks_name, passphrase):
+                    common_utils.print_info(
+                        "Luks partition opened!")
+                    break
+        except KeyboardInterrupt:
+            common_utils.print_warning(
+                f"No passphrase found for partition '{part}'")
+            return None, None
     part = f"/dev/mapper/{luks_name}"
     return luks_name, part
 
@@ -419,7 +430,24 @@ class MountedPartition(contextlib.AbstractContextManager['MountedPartition'],
     _no_luks: bool
     _is_luks_encrypted: bool
     _luks_name: str
+    _flags: 'PartitionType | None' = None
     mount_point: str
+
+    class PartitionType(enum.Flag):
+        """Partition types"""
+        EFI_PARTITION = enum.auto()
+        BOOT_PARTITION = enum.auto()
+        SYSTEM_PARTITION = enum.auto()
+        DATA_PARTITION = enum.auto()
+        LINUX_PARTITION = enum.auto()
+        WINDOWS_PARTITION = enum.auto()
+
+    EFI_PARTITION = PartitionType.EFI_PARTITION
+    BOOT_PARTITION = PartitionType.BOOT_PARTITION
+    SYSTEM_PARTITION = PartitionType.SYSTEM_PARTITION
+    DATA_PARTITION = PartitionType.DATA_PARTITION
+    LINUX_PARTITION = PartitionType.LINUX_PARTITION
+    WINDOWS_PARTITION = PartitionType.WINDOWS_PARTITION
 
     def __init__(self, part: str, passphrases: Iterable[str] = (), no_luks: bool = False):
         """Mount a partition
@@ -462,12 +490,84 @@ class MountedPartition(contextlib.AbstractContextManager['MountedPartition'],
             self._luks_name = luks_name
             self._is_luks_encrypted = is_luks_encrypted
         self.mount_point = mount_point
+        self._path_var_name = "mount_point"
         return self
 
     def __exit__(self, *_: Any) -> None:
         programs.Umount().invoke_and_wait(None, self.mount_point)
-        if hasattr(self, "is_luks_encrypted"):
+        if hasattr(self, "_is_luks_encrypted"):
             luks_close(self._luks_name)
+
+    def partition_type(self) -> PartitionType:
+        """Detect partition type
+
+        Returns:
+            Partition type flags
+        """
+        if self._flags is not None:
+            return self._flags
+        if self.isdir("EFI") and len(self.listdir("EFI")) != 0:
+            self._flags = self.EFI_PARTITION | self.BOOT_PARTITION
+            return self._flags
+        flags = self.PartitionType.DATA_PARTITION
+        if self.isdir("boot"):
+            if self.isdir("boot/grub") or self.exists("boot/vmlinuz") or self.exists("boot/initrd.img"):
+                flags |= self.BOOT_PARTITION
+            # Probably just some random file named `boot` on some random partition
+        if self.isdir("Windows/System32"):
+            flags |= self.SYSTEM_PARTITION | self.WINDOWS_PARTITION
+        elif self.exists("etc/os-release") or self.exists("etc/lsb-release") or self.exists("etc/shadow"):
+            flags |= self.SYSTEM_PARTITION | self.LINUX_PARTITION
+        self._flags = flags
+        return self._flags
+
+    def is_efi(self) -> bool:
+        """Return whatever the current partition is EFI_PARTITION 
+
+        Returns:
+            Whatever current partition is EFI_PARTITION
+        """
+        return bool(self.partition_type() & self.EFI_PARTITION)
+
+    def is_boot(self) -> bool:
+        """Return whatever the current partition is BOOT_PARTITION 
+
+        Returns:
+            Whatever current partition is BOOT_PARTITION
+        """
+        return bool(self.partition_type() & self.BOOT_PARTITION)
+
+    def is_system(self) -> bool:
+        """Return whatever the current partition is SYSTEM_PARTITION 
+
+        Returns:
+            Whatever current partition is SYSTEM_PARTITION
+        """
+        return bool(self.partition_type() & self.SYSTEM_PARTITION)
+
+    def is_data(self) -> bool:
+        """Return whatever the current partition is DATA_PARTITION 
+
+        Returns:
+            Whatever current partition is DATA_PARTITION
+        """
+        return bool(self.partition_type() & self.DATA_PARTITION)
+
+    def is_linux(self) -> bool:
+        """Return whatever the current partition is LINUX_PARTITION 
+
+        Returns:
+            Whatever current partition is LINUX_PARTITION
+        """
+        return bool(self.partition_type() & self.LINUX_PARTITION)
+
+    def is_windows(self) -> bool:
+        """Return whatever the current partition is WINDOWS_PARTITION 
+
+        Returns:
+            Whatever current partition is WINDOWS_PARTITION
+        """
+        return bool(self.partition_type() & self.WINDOWS_PARTITION)
 
 
 def mount_partition(part: str, passphrases: Iterable[str] = (), no_luks: bool = False) -> MountedPartition:

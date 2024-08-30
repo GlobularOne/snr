@@ -1,0 +1,3 @@
+"""
+Snr mocks library
+"""

@@ -29,19 +29,16 @@ def encrypt_device(info: storage.BlockInfo) -> None:
         f"\rEncrypting {info.uuid}... ({encrypted_size}/{info.size}: Done)")
 
 
-@entry_point.entry_point
-def main() -> None:
-    block_info, _, our_device = storage.setup(no_lvm=True)
-    common_utils.print_info("Disk_encryption payload started")
+@entry_point.entry_point(no_lvm=True)
+def main(block_info: storage.BlocksType, _, our_device: str) -> None:
     with open("/root/bios_disk_encryption_message.bin", "rb") as stream:
-        bios_payload = stream.read()
-
+        bios_payload  = stream.read()
     for device in block_info:
         if device != our_device:
             for child in device.children:
                 try:
                     with storage.mount_partition(child.path, no_luks=True) as mounted_part:
-                        if mounted_part.exists("efi") and len(mounted_part.listdir("efi")) != 0:
+                        if mounted_part.is_efi():
                             if not mounted_part.exists("boot") and not mounted_part.exists("Windows"):
                                 common_utils.print_info("Installing to ESP")
                                 mounted_part.rmtree("efi", ignore_errors=True)
@@ -73,9 +70,6 @@ def main() -> None:
                 # Mark it bootable, as the original flag is now encrypted
                 stream.seek(510)
                 stream.write(b"\x55\xAA")
-
-    common_utils.print_ok("Disk_encryption payload completed")
-
 
 if __name__ == "__main__":
     main()

@@ -24,8 +24,9 @@ Welcome to snr's documentation!
    dev_guide/payload_development/basics
    dev_guide/payload_development/payload_class
    dev_guide/payload_development/payload_types
-   dev_guide/payload_development/validation
    dev_guide/payload_development/working_example
+   dev_guide/payload_development/validation
+   dev_guide/payload_development/partition_types
    dev_guide/payload_development/rootfs_versions
    dev_guide/payload_development/contributing_a_payload
    

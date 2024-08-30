@@ -34,3 +34,8 @@ venv.bak/
 
 # Visual Studio Code
 .vscode/
+
+# Test and coverage
+.pytest_cache/
+.coverage
+coverage.xml

@@ -209,16 +209,10 @@ def remove_user_from_group(user_group_pair: str, ctx: context.Context, mounted_p
 
 
 @entry_point.entry_point
-def main() -> None:
-    block_info, _, our_device = storage.setup()
-    common_utils.print_info("User_management payload started")
+def main(block_info: storage.BlocksType, *_) -> None:
     for part in storage.query_all_partitions(block_info):
-        if storage.get_partition_root(part, block_info) == our_device:
-            continue
         with storage.mount_partition(part, PASSPHRASES) as mounted_part:
-            if (mounted_part.exists("usr/sbin/init")
-                or mounted_part.exists("usr/bin/init")) \
-                    and mounted_part.exists("etc/shadow"):
+            if mounted_part.is_linux():
                 # Take a copy of passwd,shadow,group and gshadow files
                 common_utils.print_info(
                     "Backing up user and group data (before version)")
@@ -274,7 +268,6 @@ def main() -> None:
                 backup_login_info(part, ".after", mounted_part, block_info)
             else:
                 common_utils.print_warning("Unknown operating system!")
-    common_utils.print_ok("User_management payload completed")
 
 
 if __name__ == "__main__":
