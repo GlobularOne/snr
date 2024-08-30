@@ -10,7 +10,6 @@ from snr.core.util import programs
 
 __all__ = (
     "data", "fix_data_dir",
-    "data_open", "data_mkdir"
 )
 
 data = path_wrapper.PathWrapperBase("/data")
