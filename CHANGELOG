@@ -302,7 +302,7 @@ This release promotes the 1.2.X branch as stable.
 
   * Improve the README and documentation to ensure remnants of the legacy version are no longer there.
 
-## v1.3.X (Stable)
+## v1.3.X
 
 ### v1.3.0
 
@@ -372,3 +372,32 @@ Lots of under the hood changes to formatting, typing, etc.
 
   * Fix a yet another set of bugs
 
+## v1.4.X (Stable)
+
+### v1.4.0
+
+This release is aimed at making writing payloads even easier and also stabilization of Snr.
+
+* Breaking changes:
+
+  * `data_open` and `data_mkdir` have been finally removed after being deprecated from version `1.1.0`
+
+* Additions:
+
+  * Now the payload's storage utilities allows detection of what kind of partition is mounted based on content.
+
+  * Now it's easier to exclude the payload's host device when looping over devices or partitions.
+
+* Improvements:
+
+  * All built-in payloads use the new storage utility.
+
+  * Now the entry point automatically writes the payload started and completed messages, guessing from module docstring.
+
+  * Test cases for 100% coverage of Snr core payloads library.
+
+  * The prompt is now `Snr>` and not `snr>`. Minor detail.
+
+* Bug fixes:
+
+  * A few more bugs have been fixed.

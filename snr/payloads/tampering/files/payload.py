@@ -13,12 +13,8 @@ PASSPHRASES = "@PASSPHRASES@"
 
 
 @entry_point.entry_point
-def main() -> None:
-    block_info, _, our_device = storage.setup()
-    common_utils.print_info("Files payload started")
+def main(block_info: storage.BlocksType, *_) -> None:
     for part in storage.query_all_partitions(block_info):
-        if storage.get_partition_root(part, block_info) == our_device:
-            continue
         with storage.mount_partition(part, PASSPHRASES) as mounted_part:
             for file in FILES:
                 pattern, action, arg = file.split(":", maxsplit=2)
@@ -54,7 +50,6 @@ def main() -> None:
                             except Exception:
                                 common_utils.print_warning(
                                     f"Replace_local action failed on {mounted_part.join(path)}")
-    common_utils.print_ok("Files payload completed")
 
 if __name__ == "__main__":
     main()

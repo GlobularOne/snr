@@ -5,6 +5,7 @@ Wrap os and shutil functions around a specific path
 import os
 import os.path
 import shutil
+import warnings
 from typing import IO, Any
 
 __all__ = (
@@ -34,6 +35,15 @@ class PathWrapperBase:
         Returns:
             Absolute path
         """
+        new_paths = []
+        for path in paths:
+            if path.startswith("/"):
+                # Convert it, with a warning
+                warnings.warn(
+                    f"Do not pass absolute paths to PathWrapper ({path})")
+                new_paths.append(path[1:])
+                continue
+            new_paths.append(path)
         return os.path.join(self._get_path(), *paths)
 
     def dirname(self, path: str) -> str:
@@ -107,8 +117,8 @@ class PathWrapperBase:
         Returns:
             file-like object
         """
-        return open(self.join(file), mode, buffering,  # pylint: disable=consider-using-with
-                    encoding)
+        return open(self.join(file), mode, buffering=buffering,  # pylint: disable=consider-using-with
+                    encoding=encoding)
 
     def remove(self, path: str) -> None:
         """Remove file in the wrapped directory
@@ -167,7 +177,7 @@ class PathWrapperBase:
             mode: Directory permissions. Defaults to 511
             exist_ok: Whatever it's okay for directories to exist or not. Defaults to False
         """
-        os.makedirs(self.join(dir_path), mode, exist_ok)
+        os.makedirs(self.join(dir_path), mode=mode, exist_ok=exist_ok)
 
     def copytree(self, src: str, dest: str, symlinks: bool = False,
                  ignore_dangling_symlinks: bool = False,
@@ -186,7 +196,7 @@ class PathWrapperBase:
         """
         if not os.path.isabs(src):
             src = self.join(src)
-        shutil.copytree(src, self.join(dest), symlinks,
+        shutil.copytree(src, self.join(dest), symlinks=symlinks,
                         ignore_dangling_symlinks=ignore_dangling_symlinks,
                         dirs_exist_ok=dirs_exist_ok)
         return dest
@@ -209,7 +219,7 @@ class PathWrapperBase:
             path: Path to work on
             ignore_errors: Whatever to ignore any errors or not. Defaults to False.
         """
-        shutil.rmtree(self.join(path), ignore_errors)
+        shutil.rmtree(self.join(path), ignore_errors=ignore_errors)
 
     def wrap(self, path: str) -> 'PathWrapperBase':
         """Create a new path wrapper for the specific path inside the already wrapped path

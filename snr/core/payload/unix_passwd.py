@@ -72,6 +72,7 @@ def parse_unix_passwd_line(line: str) -> UnixPasswdEntry:
     Returns:
         The parsed UnixPasswdEntry
     """
+    line = line.strip("\n")
     login_name, password, uid, gid, comment, home, shell = line.split(":", 7)
     locked = False
     if password.startswith("!"):

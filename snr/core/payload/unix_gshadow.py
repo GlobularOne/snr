@@ -33,8 +33,8 @@ class UnixGShadowEntry:  # pylint: disable=too-many-instance-attributes, too-few
                  locked: bool):
         self.group_name = group_name
         self.password = password
-        self.administrators = copy.deepcopy(administrators)
-        self.members = copy.deepcopy(members)
+        self.administrators = copy.deepcopy(list(administrators))
+        self.members = copy.deepcopy(list(members))
         self.locked = locked
 
     def __str__(self) -> str:
@@ -54,9 +54,10 @@ def parse_unix_gshadow_line(line: str) -> UnixGShadowEntry:
     Returns:
         The parsed UnixPasswdEntry
     """
+    line = line.strip("\n")
     group_name, password, administrators_raw, members_raw = line.split(":", 4)
-    administrators = ",".split(administrators_raw)
-    members = ",".split(members_raw)
+    administrators = administrators_raw.split(",")
+    members = members_raw.split(",")
     locked = False
     if password.startswith("!"):
         password = password[1:]

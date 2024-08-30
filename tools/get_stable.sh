@@ -53,7 +53,7 @@ esac
 
 
 echo "Installing snr"
-python3 -m pipx install snr==1.3.3
+python3 -m pipx install snr==1.4.0
 
 echo "Installation successful. Initializing..."
 

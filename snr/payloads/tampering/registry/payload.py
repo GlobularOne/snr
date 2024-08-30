@@ -10,14 +10,10 @@ PASSPHRASES = "@PASSPHRASES@"
 
 
 @entry_point.entry_point
-def main() -> None:
-    block_info, _, our_device = storage.setup()
-    common_utils.print_info("Registry payload started")
+def main(block_info: storage.BlocksType, *_) -> None:
     for part in storage.query_all_partitions(block_info):
-        if storage.get_partition_root(part, block_info) == our_device:
-            continue
         with storage.mount_partition(part, PASSPHRASES) as mounted_part:
-            if mounted_part.exists("Windows"):
+            if mounted_part.is_windows():
                 with nt_registry.NtRegistry(mounted_part) as reg:
                     for raw_key in REGISTRIES:
                         name, key, type_ = raw_key.split(":", maxsplit=2)
@@ -38,7 +34,6 @@ def main() -> None:
                             nt_registry, type_), REGISTRIES[raw_key])
             else:
                 common_utils.print_warning("Unknown operating system!")
-    common_utils.print_ok("Registry payload completed")
 
 if __name__ == "__main__":
     main()

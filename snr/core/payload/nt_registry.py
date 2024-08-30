@@ -6,12 +6,20 @@ import struct
 from typing import Any, Generator
 
 import hivex
-import hivex.hive_types
-from hivex.hive_types import (REG_BINARY, REG_DWORD, REG_DWORD_BIG_ENDIAN,
-                              REG_EXPAND_SZ, REG_LINK, REG_MULTI_SZ, REG_NONE,
-                              REG_QWORD, REG_SZ)
+from hivex import hive_types
 
 from snr.core.core import path_wrapper
+
+REG_BINARY = hive_types.REG_BINARY
+REG_DWORD = hive_types.REG_DWORD
+REG_DWORD_BIG_ENDIAN = hive_types.REG_DWORD_BIG_ENDIAN
+REG_EXPAND_SZ = hive_types.REG_EXPAND_SZ
+REG_LINK = hive_types.REG_LINK
+REG_MULTI_SZ = hive_types.REG_MULTI_SZ
+REG_NONE = hive_types.REG_NONE
+REG_QWORD = hive_types.REG_QWORD
+REG_SZ = hive_types.REG_SZ
+
 
 __all__ = (
     "REG_BINARY", "REG_DWORD", "REG_DWORD_BIG_ENDIAN",
@@ -65,9 +73,12 @@ class RegistryNodeValue:
             case hivex.hive_types.REG_DWORD_BIG_ENDIAN:
                 self._value = struct.unpack(">I", value)[0]
             case hivex.hive_types.REG_EXPAND_SZ:
-                self._value = value.decode()
+                self._value = value.decode(
+                )[:-1] if value.decode().endswith("\x00") else value.decode()
+
             case hivex.hive_types.REG_LINK:
-                self._value = value.decode()
+                self._value = value.decode(
+                )[:-1] if value.decode().endswith("\x00") else value.decode()
             case hivex.hive_types.REG_MULTI_SZ:
                 self._value = []
                 values = value.split(b"\x00")
@@ -81,7 +92,8 @@ class RegistryNodeValue:
             case hivex.hive_types.REG_QWORD:
                 self._value = struct.unpack("<Q", value)[0]
             case hivex.hive_types.REG_SZ:
-                self._value = value.decode()
+                self._value = value.decode(
+                )[:-1] if value.decode().endswith("\x00") else value.decode()
             case _:
                 # We don't know it
                 self._value = value
@@ -226,7 +238,7 @@ class RegistryNode:
     handle: int
     name: str
     timestamp: int
-    parent: 'RegistryNode' | None
+    parent: 'RegistryNode | None'
     data: dict[str, RegistryNodeValue]
 
     def __init__(self, hive: hivex.Hivex, handle: int):
@@ -240,6 +252,7 @@ class RegistryNode:
         except RuntimeError:
             # No parent, we are the root
             self.parent = None
+        self.data = {}
         for data_handle in self._hive.node_values(self.handle):
             key = self._hive.value_key(data_handle)
             self.data[key] = RegistryNodeValue(self._hive, self.handle, key)
@@ -262,7 +275,7 @@ class RegistryNode:
         for i in self._hive.node_children(self.handle):
             yield RegistryNode(self._hive, i)
 
-    def find_child(self, key: str) -> 'RegistryNode' | None:
+    def find_child(self, key: str) -> 'RegistryNode | None':
         """Find a child by it's name
 
         Args:
@@ -271,6 +284,8 @@ class RegistryNode:
         Returns:
             The node if found, none otherwise
         """
+        if self._hive.node_get_child(self.handle, key) is None:
+            return None
         return RegistryNode(self._hive, self._hive.node_get_child(self.handle, key))
 
     def new_child(self, name: str) -> 'RegistryNode':
@@ -316,9 +331,9 @@ class NtRegistry(contextlib.AbstractContextManager['NtRegistry']):
 
     def __exit__(self, *_: Any) -> None:
         # To exit, commit all hives and close them
-        for hive_name, hive in self._hives.values():
+        for hive_name, hive in self._hives.items():
             hive.commit(f"Windows/System32/config/{hive_name}")
-            del self._hives[hive_name]
+        self._hives.clear()
 
     def find_node(self, path: str, root_node: RegistryNode | None = None) -> RegistryNode | None:
         """Find a node

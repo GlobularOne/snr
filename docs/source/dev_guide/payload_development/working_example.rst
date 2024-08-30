@@ -34,24 +34,22 @@ After knowing all you need to know, let's give you a working example:
 .. code-block:: python
 
     """
-    my_payload Payload
+    My_payload Payload
     """
     #!/usr/bin/python3
-    from snr.core.payload import entry_point, storage
+    from snr.core.payload import entry_point, storage, context
 
     USERNAME = "@USERNAME@"
     PASSPHRASES = "@PASSPHRASES@"
 
     @entry_point.entry_point
-    def main() -> None:
-        block_info, root_ctx, our_device = storage.setup()
-        common_utils.print_info("My_payload payload started")
+    def main(block_info: list[storage.BlockInfo], root_ctx: contact.Context, our_device: str) -> None:
         for part in storage.query_all_partitions(block_info):
-            if storage.get_partition_root(part, block_info) == our_device:
-                continue
             with storage.mount_partition(part, PASSPHRASES) as mounted_part:
-                if (mounted_part.exists("usr/sbin/init")
-                    or mounted_part.exists("usr/bin/init")) \
-                        and mounted_part.exists("etc/shadow"):
+                if mounted_part.is_linux():
                     mounted_part.copy("/root/payload.py", f"/home/{USERNAME}/payload.py")
-        common_utils.print_ok("My_payload payload completed")
+
+.. seealso::
+
+    :doc:`partition_type`
+        Read about how the partition type detection works and how you can use it.

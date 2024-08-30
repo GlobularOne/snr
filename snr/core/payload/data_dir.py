@@ -3,9 +3,6 @@
 """
 import os
 import os.path
-from typing import IO, Any
-
-import deprecated
 
 from snr.core.core import path_wrapper
 from snr.core.payload import storage
@@ -31,32 +28,6 @@ def fix_data_dir() -> None:
                                          "/data", options={"t": "tmpfs"})
     else:
         os.rmdir("/data/_fix_data_dir_test")
-
-
-@deprecated.deprecated("Use data.open instead", version="1.1.0")
-def data_open(file: str, mode: str = "r", buffering: int = -1, encoding: str | None = None) -> IO[Any]:
-    """Open a file in the data directory
-
-    Args:
-        file: The name of the file to open.
-        mode: The mode to open the file in.
-        buffering: The buffering size in bytes.
-        encoding: The encoding to use.
-
-    Returns:
-        file-like object
-    """
-    return data.open(file, mode, buffering, encoding)
-
-
-@deprecated.deprecated("Use data.mkdir instead", version="1.1.0")
-def data_mkdir(dir_path: str, mode: int = 511) -> None:
-    """Create a directory if it doesn't exist
-    Args:
-        path: Path to the directory to create
-        mode: Permissions to set for the directory
-    """
-    return data.mkdir(dir_path, mode)
 
 
 def wrap_data_path_for_block(info: storage.BlockInfo) -> path_wrapper.PathWrapperBase:

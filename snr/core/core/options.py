@@ -81,10 +81,10 @@ default_exit_code: int = 0
 arch: str
 
 # Prompt when no payload is loaded
-PROMPT_UNLOADED = "snr> "
+PROMPT_UNLOADED = "Snr> "
 
 # Format for the prompt when a payload is loaded
-PROMPT_LOADED_FORMAT = "snr ({0})> "
+PROMPT_LOADED_FORMAT = "Snr ({0})> "
 
 # Path to the currently loaded payload
 payload_path: str = ""

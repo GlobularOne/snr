@@ -33,11 +33,8 @@ def pass_random(path: str, kbs: int) -> None:
 
 
 @entry_point.entry_point
-def main() -> None:
-    block_info, _, our_device = storage.setup()
-    common_utils.print_info("Wipe_disks payload started")
+def main(block_info: storage.BlocksType, _, our_device: str) -> None:
     wipe_level = ord(WIPE_MODE) - ord("A")
-
     for block in block_info:
         if block != our_device and not block.is_rom():
             common_utils.print_info(f"Targeting {block.path}")
@@ -63,7 +60,6 @@ def main() -> None:
                     common_utils.print_info(
                         f"Doing a random pass on {block.path}")
                     pass_random(block.path, block.size // 1024)
-    common_utils.print_ok("Wipe_disks payload completed")
 
 
 if __name__ == "__main__":

