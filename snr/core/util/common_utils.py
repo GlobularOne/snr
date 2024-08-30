@@ -158,26 +158,4 @@ def get_rootfs_version() -> int:
         return 0
 
 
-if hasattr(contextlib, "chdir"):
-    temp_chdir = getattr(contextlib, "chdir")  # pylint: disable=invalid-name
-else:
-    class chdir(contextlib.AbstractContextManager[None]):  # pylint: disable=invalid-name
-        """Temporarily change working directory. Should be used with `with`
-
-        Attributes:
-            path: Path to change directory to
-        """
-
-        path: str
-        _orig_path: str
-
-        def __init__(self, path: str):
-            self.path = path
-            self._orig_path = os.getcwd()
-
-        def __enter__(self) -> None:
-            os.chdir(self.path)
-
-        def __exit__(self, *_: Any) -> None:
-            os.chdir(self._orig_path)
-    temp_chdir = chdir  # pylint: disable=invalid-name
+temp_chdir = contextlib.chdir  # pylint: disable=invalid-name
