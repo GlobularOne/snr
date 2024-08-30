@@ -51,7 +51,7 @@ def finish_host(ctx: context.Context) -> bool:  # pylint: disable=too-many-retur
         return common.clean_and_exit(ctx, "ESP UUID not found!", True, True)
     if root_uuid is None:
         return common.clean_and_exit(ctx, "Rootfs UUID not found!", True, True)
-    with common_utils.rootfs_open(ctx, "etc/fstab", "w", encoding="ascii") as stream:
+    with ctx.open("etc/fstab", "w", encoding="ascii") as stream:
         stream.write(FSTAB_FORMAT.format(
             esp_uuid=esp_uuid, root_uuid=root_uuid))
     common_utils.print_debug("Generating initramfs")
@@ -68,13 +68,13 @@ def finish_host(ctx: context.Context) -> bool:  # pylint: disable=too-many-retur
             f"Command's output: {update_initramfs.stdout.read()}")
         return common.clean_and_exit(ctx, "Generating initramfs failed", True, True)
     common_utils.print_debug("Updating grub configuration")
-    with common_utils.rootfs_open(ctx, "etc/default/grub", "r",
+    with ctx.open("etc/default/grub", "r",
                                   encoding="ascii") as stream:
         grub_cfg = stream.read()
         grub_cfg = grub_cfg.replace("GRUB_TIMEOUT=5", "GRUB_TIMEOUT=0")
         grub_cfg = grub_cfg.replace(
             "#GRUB_DISABLE_RECOVERY=\"true\"", "GRUB_DISABLE_RECOVERY=\"true\"")
-    with common_utils.rootfs_open(ctx, "etc/default/grub", "w",
+    with ctx.open("etc/default/grub", "w",
                                   encoding="ascii") as stream:
         stream.write(grub_cfg)
 

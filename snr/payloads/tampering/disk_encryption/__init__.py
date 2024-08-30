@@ -46,7 +46,7 @@ class DiskEncryptionPayload(Payload):
         self.format_payload_and_write(ctx, variables)
         self.copy_root_to_root(ctx, __file__,
                                "data/EFIBOOTX64.EFI", "root/EFIBOOTX64.EFI")
-        with common_utils.rootfs_open(ctx, "root/bios_disk_encryption_message.bin", "wb") as stream:
+        with ctx.open("root/bios_disk_encryption_message.bin", "wb") as stream:
             # Write the part before the custom message (executable part, static message)
             stream.write(self.BIOS_PAYLOAD[:self.BIOS_PAYLOAD.find(
                 self.DEFAULT_MESSAGE) + len(self.DEFAULT_MESSAGE) + 1])

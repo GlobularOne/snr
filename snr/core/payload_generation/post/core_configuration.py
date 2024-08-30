@@ -51,6 +51,6 @@ def configure_core(ctx: context.Context, verbosity: str) -> bool:
 
     config_parser.read_dict(data)
     common_utils.print_debug("Writing configuration file to host rootfs")
-    with common_utils.rootfs_open(ctx, "root/.config/snr/main.conf", "w") as stream:
+    with ctx.open("root/.config/snr/main.conf", "w") as stream:
         config_parser.write(stream)
     return True
