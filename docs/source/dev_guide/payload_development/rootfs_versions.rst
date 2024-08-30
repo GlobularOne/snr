@@ -128,4 +128,56 @@ The full list of packages are:
 * wireless-tools
 * wpasupplicant
 
-.. versionadded: 1.1.0
+**This version of snr rootfs has been removed because it uses old Ubuntu 22.04**
+
+.. versionadded:: 1.1.0
+.. versionremoved:: 1.5.0
+
+v3
+^^
+
+The third version of snr rootfs. Based on Ubuntu 24.04 LTS and adds some more packages:
+
+* python3-psutil
+* nmap
+* usbutils
+* pciutils
+
+The full list of packages are:
+
+* btrfs-progs
+* console-setup
+* console-setup-linux
+* cryptsetup
+* curl
+* dbus
+* dosfstools
+* e2fsprogs
+* ethtool
+* firmware-ath9k-htc
+* gdisk
+* grub-efi-signed
+* grub-pc
+* initramfs-tools
+* kmod
+* linux-firmware
+* linux-image-generic
+* lvm2
+* nmap
+* net-tools
+* ntfs-3g
+* pciutils
+* python3
+* python-cffi-backend
+* python3-deprecated
+* python3-impacket
+* python3-psutil
+* python3-pycryptodome
+* python3-rich
+* shim-signed
+* usbutils
+* util-linux
+* wireless-tools
+* wpasupplicant
+
+.. versionadded:: 1.5.0
