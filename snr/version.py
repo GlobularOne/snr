@@ -24,7 +24,7 @@ if _git_path is not None:
         pass
 
 MAJOR = "1"
-MINOR = "4"
+MINOR = "5"
 PATCH = "0" + _LOCAL_VERSION
 HOMEPAGE = "https://github.com/GlobularOne/snr"
 
