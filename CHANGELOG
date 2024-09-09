@@ -401,3 +401,25 @@ This release is aimed at making writing payloads even easier and also stabilizat
 * Bug fixes:
 
   * A few more bugs have been fixed.
+
+## v1.5.X
+
+### v1.5.0
+
+* Breaking changes:
+
+  * Remove long deprecated `rootfs_open` and `rootfs_makedirs`
+
+  * Drop support for backwards rootfs versions
+
+* Deprecations:
+
+  * Deprecate usage of a boolean as payload variable flags
+
+* Additions:
+
+  * New rootfs version using Ubuntu 24.04 LTS
+
+* Bug fixes:
+
+  * Fix minor documentation bugs
