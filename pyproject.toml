@@ -19,7 +19,7 @@ docs-clean = "tools.docs_clean:main"
 docs-rebuild = "tools.docs_rebuild:main"
 
 [tool.poetry.dependencies]
-python = "^3.10"
+python = "^3.11"
 click = "^8.1.7"
 deprecated = "^1.2.14"
 prompt-toolkit = "^3.0.47"
