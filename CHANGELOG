@@ -402,6 +402,12 @@ This release is aimed at making writing payloads even easier and also stabilizat
 
   * A few more bugs have been fixed.
 
+### v1.4.1
+
+* Bug fixes:
+
+  * Fix a bug in `payload_generation_post`
+
 ## v1.5.X
 
 ### v1.5.0
@@ -423,3 +429,7 @@ This release is aimed at making writing payloads even easier and also stabilizat
 * Bug fixes:
 
   * Fix minor documentation bugs
+
+### v1.5.1
+
+Release to push bug fixes of v1.4.1 as well
