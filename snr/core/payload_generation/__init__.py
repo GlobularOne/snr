@@ -58,6 +58,7 @@ def payload_generation_post(ctx: context.Context, verbosity: str) -> Generator[i
     Returns:
         Whatever the steps were successful or not
     """
+    yield 6
     safety_pin.remove_safety_pin(ctx.root_directory)
     yield 1
     try:
