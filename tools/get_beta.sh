@@ -19,10 +19,10 @@ nonroot_init_workaround() {
     cd ~
     sudo HOME=$(pwd) snr --init --init-only
     sudo chown $USER:$USER -R ~/.local/share/snr ~/.local/state/snr ~/.config/snr ~/.cache/snr
-    sudo tar -C ~/.local/share/snr/rootfs -xf ~/.local/share/snr/jammy-x86_64.tar.gz
-    sudo rm -f ~/.local/share/snr/rootfs/jammy-x86_64.tar.gz
+    sudo tar -C ~/.local/share/snr/rootfs -xf ~/.local/share/snr/noble-x86_64.tar.gz
+    sudo rm -f ~/.local/share/snr/rootfs/noble-x86_64.tar.gz
     sudo chown $USER:$USER -R ~/.local/share/snr/rootfs
-    tar -C ~/.local/share/snr/rootfs -caf ~/.local/share/snr/jammy-x86_64.tar.gz 
+    tar -C ~/.local/share/snr/rootfs -caf ~/.local/share/snr/noble-x86_64.tar.gz 
     cd $ORIG_CWD
 }
 
