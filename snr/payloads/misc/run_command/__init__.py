@@ -17,7 +17,7 @@ class RunCommandPayload(Payload):
     def generate(self, ctx: Context) -> int:
         variables = self.get_self_variables()
         assert isinstance(variables["COMMANDS"], list)
-        with common_utils.rootfs_open(ctx, "root/payload.sh", "w", encoding="utf-8") as stream:
+        with ctx.open("root/payload.sh", "w", encoding="utf-8") as stream:
             stream.write("#!/bin/bash\n")
             for command in variables["COMMANDS"]:
                 stream.write(command)

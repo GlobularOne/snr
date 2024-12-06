@@ -12,6 +12,6 @@ If you want to contribute your payload but unsure how to satisfy the above condi
 
 But if you want to keep the payload private or test it out before adding it to snr's list of builtin payloads. You need to follow this structure:
 
-* Each payload is inside it's own directory. It is the payload's own world.
+* Each payload is inside its own directory. It is the payload's own world.
 * The payload's generation method (the `Payload` class) must be inside a file named `__init__.py`.
-* Any other files the payload uses, should be put inside the payload's directory (so you can use the many utility functions)
+* Any other files the payload uses, should be put inside the payload's directory (so you can use the many utility functions.)

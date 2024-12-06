@@ -13,18 +13,45 @@ __all__ = (
     "init_main",
 )
 
-SUITE = "jammy"
+SUITE = "noble"
 COMPONENTS = ",".join(["main", "multiverse", "restricted", "universe"])
-ALL_PACKAGES = ",".join(["btrfs-progs", "console-setup", "console-setup-linux",
-                         "cryptsetup", "curl", "dbus", "dosfstools",
-                         # Workaround for https://github.com/GlobularOne/snr/issues/3
-                         "python3-cffi-backend",
-                         "e2fsprogs", "ethtool", "firmware-ath9k-htc",
-                         "linux-firmware", "gdisk", "grub-efi-{grub_arch}-signed", "grub-pc",
-                         "initramfs-tools", "kmod", "linux-image-generic",
-                         "lvm2", "net-tools", "ntfs-3g",
-                         "python3", "python3-deprecated", "python3-impacket", "python3-pycryptodome", "python3-rich",
-                         "shim-signed", "util-linux", "wireless-tools", "wpasupplicant"])
+ALL_PACKAGES = ",".join([
+    "console-setup",
+    "console-setup-linux",
+    "cryptsetup",
+    "curl",
+    "dbus",
+    "dosfstools",
+    "e2fsprogs",
+    "ethtool",
+    "firmware-ath9k-htc",
+    "gdisk",
+    "grub-efi-{grub_arch}-signed",
+    "grub-pc",
+    "initramfs-tools",
+    "kmod",
+    "linux-firmware",
+    "linux-image-generic",
+    "lvm2",
+    "nmap",
+    "net-tools",
+    "ntfs-3g",
+    "pciutils",
+    "python3",
+    # Workaround for https://github.com/GlobularOne/snr/issues/3
+    "python3-cffi-backend",
+    "python3-deprecated",
+    "python3-impacket",
+    "python3-psutil",
+    "python3-pycryptodome",
+    "python3-rich",
+    "shim-signed",
+    "usbutils",
+    "util-linux",
+    "wireless-tools",
+    "wpasupplicant"
+])
+
 ROOTFS_PATH = os.path.join(common_paths.DATA_PATH, "rootfs")
 TRIM_DIRS = (
     os.path.join(

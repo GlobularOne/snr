@@ -18,13 +18,13 @@ You can join my official discord server to hang out (with a dedicated channel fo
 
 ## Features
 
-* Beautiful and modern interface
+- Beautiful and modern interface
 
-* Wide range of existing payloads
+- Wide range of existing payloads
 
-* Running payloads in a dedicated OS allows bypassing software protection measures  
+- Running payloads in a dedicated OS allows bypassing software protection measures  
 
-* Easily extendable with new payloads
+- Easily extendable with new payloads
 
 Be sure to check the [wiki](https://snr.readthedocs.io/en/stable) for more information.
 

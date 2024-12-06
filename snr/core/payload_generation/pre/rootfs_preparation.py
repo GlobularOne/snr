@@ -54,10 +54,10 @@ def prepare_rootfs(ctx: context.Context) -> bool:
             return common.clean_and_exit(ctx, "Archive did not extract correctly", True, True)
     common_utils.print_debug("Preparing rootfs")
     common_utils.print_debug("Writing hostname")
-    with common_utils.rootfs_open(ctx, "etc/hostname", "w") as stream:
+    with ctx.open(ctx, "etc/hostname", "w") as stream:
         stream.write(options.default_hostname + "\n")
     common_utils.print_debug("Writing dns configuration")
-    with common_utils.rootfs_open(ctx, "etc/resolv.conf", "w") as stream:
+    with ctx.open("etc/resolv.conf", "w") as stream:
         stream.write(f"nameserver {options.default_primary_nameserver}\n"
                      f"nameserver {options.default_secondary_nameserver}\n"
                      )

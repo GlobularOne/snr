@@ -1,18 +1,18 @@
 Shell Commands
 ==============
 
-Snr comes with many commands, mostly to help in not exiting the shell to run a command with the system shell and then run snr again.
-Full list of commands can be retrieved using `help`, here we list them all, alongside examples to help you understand them better.
+Snr comes with many commands, mostly to help with not having to exit the shell to run a system shell command and then running snr again.
+A full list of commands can be retrieved using `help`, here we list them all, alongside examples to help you understand them better.
 
-*Note that here, the command results are commented out to avoid highlighting issues*
+*Note that here, the command results are commented out to avoid highlighting issues.*
 
-Filesystem commands
+Filesystem Commands
 -------------------
 
 pwd
 ^^^
 
-Prints the current working directory:
+It prints the current working directory:
 
 .. code-block::
 
@@ -22,7 +22,7 @@ Prints the current working directory:
 chdir
 ^^^^^
 
-Changes the current working directory:
+It changes the current working directory:
 
 .. code-block::
 
@@ -36,7 +36,7 @@ Changes the current working directory:
 list
 ^^^^
 
-Lists files and directories.
+It lists files and directories.
 By default lists the content of the current working directory:
 
 .. code-block::
@@ -47,7 +47,7 @@ By default lists the content of the current working directory:
     # dir1/
     # dir2/
 
-Also accepts a directory to list content of:
+Also accepts a directory to list the content of:
 
 .. code-block::
 
@@ -58,7 +58,7 @@ Also accepts a directory to list content of:
 read
 ^^^^
 
-Reads the content of a file:
+It reads the content of a file:
 
 .. code-block::
 
@@ -68,7 +68,7 @@ Reads the content of a file:
 checksum
 ^^^^^^^^
 
-Generate checksum of a file. It's syntax is like this:
+It generates checksum of a file. Syntax:
 
 .. code-block:: shell
 
@@ -92,13 +92,13 @@ For example:
     # d8e8fca2dc0f896fd7cb4cb0031ba249
 
 
-Variable commands
+Variable Commands
 -----------------
 
 unset
 ^^^^^
 
-Removes a variable, it's an alternative syntax to `set variable_name` which does the same:
+It removes a variable, it's an alternative syntax to `set variable_name` which does the same:
 
 .. code-block::
 
@@ -107,7 +107,7 @@ Removes a variable, it's an alternative syntax to `set variable_name` which does
 set
 ^^^
 
-See it as variable manager, it allows you to set variables:
+See it as the variable manager, it allows you to set variables:
 
 .. code-block::
 
@@ -118,11 +118,11 @@ Set also has a special ability, it can tie the output of a command to a variable
 
 .. code-block::
 
-    set my_var !checksum test.txt
+    set !my_var checksum md5 test.txt
 
 Note that this syntax is only used by set and no other commands support it.
 
-But also can remove them:
+But also it can remove variables:
 
 .. code-block::
 
@@ -134,15 +134,15 @@ You can also list all variables with it:
 
     set
 
-Payload commands
+Payload Commands
 ----------------
 
 use
 ^^^
 
-Use command allows you to load and unload payloads.
+The use command allows you to load and unload payloads.
 
-To load a payload, pass it's path to use:
+To load a payload, pass its path to use:
 
 .. code-block::
 
@@ -160,20 +160,20 @@ You may also reload a payload with just loading the same payload again.
 generate
 ^^^^^^^^
 
-Generates the selected payload onto the device or file you pass to it.
+It generates the selected payload onto the device or file you pass to it.
 
 .. code-block::
 
     generate /dev/sdb
 
 
-Miscellaneous commands
+Miscellaneous Commands
 ----------------------
 
 clear
 ^^^^^
 
-Clears the screen.
+It clears the screen.
 
 .. code-block::
 
@@ -182,7 +182,7 @@ Clears the screen.
 echo
 ^^^^
 
-Prints back what you give it. Mostly useful for getting value of variables.
+It prints back what you give it. Mostly useful for getting value of variables.
 
 .. code-block::
 
@@ -202,7 +202,7 @@ Prints back what you give it. Mostly useful for getting value of variables.
 exit
 ^^^^
 
-Exits the shell, printing whatever you want it to print.
+Used to exit the shell, optionally printing whatever you want it to print.
 
 .. code-block::
 
@@ -210,13 +210,12 @@ Exits the shell, printing whatever you want it to print.
 
 The above example prints nothing.
 
-
 help
 ^^^^
 
-Can you give you a lot of information.
+It can give you a lot of information.
 
-List of all commands:
+To get a list of all commands:
 
 .. code-block:: 
 
@@ -270,21 +269,20 @@ Alternative syntax for `help payload` (again assuming we have loaded the `misc/r
 pdb
 ^^^
 
-Drop into a debug shell, useful for debugging if something is misbehaving.
-But if it errors out, pass `--debug` to snr, which does the same if something goes wrong
+Drop to a debug shell, useful for debugging if something is not behaving correctly.
+If you are getting an error, instead pass `--debug` to snr when running, which drops to a debug shell when encountering an error.
 
 .. code-block:: 
 
     pdb
     # ...
 
-
 .. versionadded:: 1.0.0
 
 reload
 ^^^^^^
 
-Reloads the shell, note that no state will be saved (variables, loaded payload)
+It reloads the shell, note that no state will be saved (variables, loaded payload.)
 
 .. code-block::
 

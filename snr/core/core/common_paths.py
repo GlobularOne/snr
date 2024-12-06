@@ -41,11 +41,11 @@ CACHE_PATH = os.path.join(XDG_CACHE_HOME, "snr")
 
 PAYLOAD_SET_PATH = str(pathlib.Path(__file__).parents[2] / "payloads")
 # Snr's rootfs archive base path
-ROOTFS_ARCHIVE_BASE_PATH = os.path.join(DATA_PATH, "jammy-{machine}")
+ROOTFS_ARCHIVE_BASE_PATH = os.path.join(DATA_PATH, "noble-{machine}")
 # Current version of rootfs archive
-ROOTFS_CURRENT_VERSION = 2
+ROOTFS_CURRENT_VERSION = 3
 # The lowest version of supported rootfs archive
-ROOTFS_MIN_VERSION = 2
+ROOTFS_MIN_VERSION = 3
 # Snr's rootfs archive path
 ROOTFS_ARCHIVE_PATH = ""
 # The archive version

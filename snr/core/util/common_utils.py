@@ -108,37 +108,6 @@ def call_external_function(func: Callable[..., Any], *args: object, **kwargs: ob
         return EXTERNAL_CALL_FAILURE
 
 
-@deprecated.deprecated("Use context's makedirs instead", version="1.1.0")
-def rootfs_makedirs(ctx: context.Context, path: str, mode: int = 511, exist_ok: bool = False) -> None:
-    """makedirs but for rootfs
-
-    Args:
-        ctx: Context
-        path: Path to directory to create
-        mode: Directory permissions. Defaults to 511
-        exist_ok: Whatever it's okay for directories to exist or not. Defaults to False
-    """
-    return ctx.makedirs(path, mode, exist_ok)
-
-
-@deprecated.deprecated("Use context's open instead", version="1.1.0")
-def rootfs_open(ctx: context.Context, file: str, mode: str = "r",
-                buffering: int = -1, encoding: str | None = None) -> IO[Any]:
-    """Open a file in rootfs
-
-    Args:
-        ctx: Context
-        file: The file to open.
-        mode: The mode to open the file with
-        buffering: The buffering size to use
-        encoding: The encoding to use. If None the default encoding will be used
-
-    Returns:
-        The opened stream
-    """
-    return ctx.open(file, mode, buffering, encoding)
-
-
 def get_rootfs_version() -> int:
     """Get version of the current rootfs
 

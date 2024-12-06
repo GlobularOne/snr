@@ -24,8 +24,8 @@ if _git_path is not None:
         pass
 
 MAJOR = "1"
-MINOR = "4"
-PATCH = "1" + _LOCAL_VERSION
+MINOR = "5"
+PATCH = "2" + _LOCAL_VERSION
 HOMEPAGE = "https://github.com/GlobularOne/snr"
 
 __version__ = ".".join([MAJOR, MINOR, PATCH])

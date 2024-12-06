@@ -1,6 +1,14 @@
 Welcome to snr's documentation!
 ===============================
 
+Starting out, you can read :doc:`user_guide/installation` to install snr and then dive into :doc:`user_guide/quickstart` to get started!
+
+Also you might want to read the :doc:`user_guide/faq` for commonly asked questions. After that you might want to get a more deeper knowledge of snr with reading :doc:`user_guide/deeper_introduction` and :doc:`user_guide/shell_commands`.
+
+For details on how to protect your devices from snr (and similar physical-based attacks), you can read :doc:`user_guide/protection`.
+
+If you are interesting in developing your own payloads do not forget to read our dedicated payload development guide (:doc:`dev_guide/payload_development/develop_your_own`)!
+
 .. toctree::
    :maxdepth: 2
    :caption: User Guide
