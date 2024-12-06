@@ -17,11 +17,11 @@ Bootloader
 
 1. Bootloader must not automatically discover operating systems on boot, or if that option cannot be disabled. External sources must be blacklisted.
 
-2. Bootloader must protect it's boot options using a password or don't expose such function. As an example, GRUB2 can have users, and it's console and entry editing functions can be protected using a password with requiring a valid user credentials.
+2. Bootloader must protect its boot options using a password or not expose such functionality. As an example, GRUB2 can have users, and its console and entry editing functions can be protected using a password with requiring a valid user's credentials.
 
 Operating System
 ----------------
 
 1. Automatic login must be not be used. This is likely to let the user a way to change the bootloader's loading sequence from inside the operating system. In simpler words, the attacker must get nothing but a login screen after booting the operating system.
 
-Failure to do any of the above opens your device to attacks. If one is not possible, then your device must not ever leave your side. The less time your device is left without you, the less chance of such attacks. Even with all the above, protection from such attacks is not 100 percent. Security is never 100 percent. So it's generally a good idea to know who is exactly with your device.
+Failure to do any of the above opens your device to attacks. If one is not possible, then your device must not ever leave your side. The less time your device is left without you, the less chance of such attacks. Even with all of the above, protection from such attacks is not 100 percent. Security is never 100 percent. So it's generally a good idea to know who is exactly with your device.

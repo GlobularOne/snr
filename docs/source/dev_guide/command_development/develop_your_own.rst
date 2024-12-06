@@ -5,10 +5,10 @@ While snr does not provide a method to hot plug a module and load a command, it 
 
 * Identify the group the command belongs to (either of `filesystem`, `misc`, `payload` or `variable`)
 * Add the function of the command.
-* Document it (In `docs/user_guide/shell_commands.rst` as well)
-* Provide necessary information for the syntax highlighting (read :doc:`highlighting`)
+* Document it (In `docs/user_guide/shell_commands.rst` as well.)
+* Provide necessary information for the syntax highlighting (read :doc:`highlighting`.)
 
-Basics of commands
+Basics of Commands
 ------------------
 
 Each command is simply a function (prefixed by `cmd_`) inside the categories that are inside `snr/cli/commands`. The documentation of these commands is the function's docstring.
@@ -23,8 +23,7 @@ The basic command would be:
 The function decorator adds it to the commands, the `name` parameter being the command name. Then, as you can see, the return value of the command is not what it prints (those are just logs)
 but the value it return. This allows the shell to process the output if it needs to before printing it back to the user (this makes things like `set !my_var my_command` possible)
 
-
-Add an argument
+Add an Argument
 ---------------
 
 Let's add a basic argument:
@@ -37,7 +36,7 @@ Let's add a basic argument:
         return f"my_command has been invoked with '{argument}'"
 
 
-Add an optional argument
+Add an Optional Argument
 ------------------------
 
 .. code-block:: python
@@ -49,7 +48,7 @@ Add an optional argument
             return f"my_command has been invoked with nothing" 
         return f"my_command has been invoked with '{argument}'"
 
-Add an integer argument
+Add an Integer Argument
 -----------------------
 
 .. code-block:: python
@@ -60,7 +59,7 @@ Add an integer argument
         return f"my_command has been invoked with '{argument}'"
 
 
-Add a path argument
+Add a Path Argument
 -------------------
 
 .. code-block:: python
@@ -72,12 +71,12 @@ Add a path argument
 
 Control what kind of path is ok using the follow parameters to `click.Path`:
 
-* exists: The path must exist
-* file_okay: The path can be a file
-* dir_okay: The path can be a directory
-* readable: The path must be readable
-* writable: The path must be writable
-* executable: The path must be executable
+* exists: The path must exist.
+* file_okay: The path can be a file.
+* dir_okay: The path can be a directory.
+* readable: The path must be readable.
+* writable: The path must be writable.
+* executable: The path must be executable.
 
 
 That's all you need to know!
@@ -85,4 +84,4 @@ That's all you need to know!
 .. seealso::
 
     :doc:`highlighting`
-        To make the syntax highlighting also recognize your command
+        To make the syntax highlighting also recognize your command.

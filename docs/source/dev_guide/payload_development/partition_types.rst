@@ -11,6 +11,9 @@ When you open a partition (See :doc:`/ref/snr.core.payload.storage`), you can us
 * WINDOWS_PARTITION: Partition with Windows structure
 
 
+Partition Detection Criteria
+----------------------------
+
 Here is how to interpret them in simple language:
 
 * EFI_PARTITION: ESP
@@ -81,7 +84,7 @@ In summary:
 * If you saw `EFI_PARTITION` it's obviously for ESP.
 * If you saw `BOOT_PARTITION`, it may or may not be ESP but contains boot files. (Check for existence of `EFI_PARTITION` flag.)
 * If you saw `SYSTEM_PARTITION`, it definitely contains system data, may or may not contains user data as well. (Check for... `DATA_PARTITION`?)
-* If you saw `DATA_PARTITION`, it definitely contains user data, may or may not contain system data. (You know the drill)
+* If you saw `DATA_PARTITION`, it definitely contains user data, may or may not contain system data. (You know the drill.)
 * If you saw `LINUX_PARTITION`, it definitely contains Linux structure like `/etc`.
 * If you saw `WINDOWS_PARTITION`, it definitely contains Windows structure like `Windows`.
 
@@ -92,13 +95,13 @@ Here is the criteria for each (if you want a complex answer):
 
 * `EFI_PARTITION`: Contains a directory named `EFI` that is not empty.
 * `BOOT_PARTITION`: If `EFI_PARTITION` or contains a `/boot` partition that at least contains `grub` directory, `vmlinuz` or `initrd.img` files.
-* `SYSTEM_PARTITION`: If `LINUX_PARTITION` or `WINDOWS_PARTITION`
-* `DATA_PARTITION`: If not `EFI_PARTITION`
-* `LINUX_PARTITION`: If `/etc/os-release`, `/etc/lsb-release` or `/etc/shadow` exist
-* `WINDOWS_PARTITION`: If `Windows\System32` exists
+* `SYSTEM_PARTITION`: If `LINUX_PARTITION` or `WINDOWS_PARTITION`.
+* `DATA_PARTITION`: If not `EFI_PARTITION`.
+* `LINUX_PARTITION`: If `/etc/os-release`, `/etc/lsb-release` or `/etc/shadow` exist.
+* `WINDOWS_PARTITION`: If `Windows\\System32` exists.
 
-How to use the flags
-^^^^^^^^^^^^^^^^^^^^
+How to Use the Flags
+--------------------
 
 Assuming you mount a partition and the end result is a variable called `mounted_part`. You won't need to use the flags directly. You can use the set of functions we provide:
 

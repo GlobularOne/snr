@@ -1,31 +1,31 @@
 Deeper Introduction
 ===================
 
-The :doc:`quickstart` barely scratches the surface of all snr is. Here we will dig a bit deeper into snr's interface so you could use it easier.
+:doc:`quickstart` barely scratches the surface of all there is to snr. Here we will dig a bit deeper into snr's interface so you could use it easier.
 
 Verbosity
 ---------
 
 If you want to get a better idea of how it works inside, you can run snr with `-v` flag to increase verbosity.
 
-Message symbols
+Message Symbols
 ---------------
 
-Each message is categorized by a character known as it's symbol, and a color:
+Each message is categorized by a character known as its symbol, and a color as well:
 
-* Debug: Debug messages use the symbol `.` and the color magenta
+* Debug: Debug messages use the symbol `.` and the color magenta.
 
-* Info: Those messages use the symbol '!' and the color blue
+* Info: Those messages use the symbol `!`` and the color blue.
 
-* OK: Symbol `+` is used with color green
+* OK: Symbol `+` is used with the color green.
 
-* Warning: It's symbol is `*` and uses color yellow
+* Warning: Its symbol is `*` and uses color yellow.
 
-* Error: Symbol is `-` and uses color red
+* Error: Symbol is `-` and uses color red.
 
-The colors are used in a way that even if one doesn't remember the symbols, they could easily tell the type of message by them.
+The colors are used in a way that even if one doesn't remember the symbols, you could easily tell the type of message by them.
 
-And also there are some special messages, called system messages. They are from internals of snr and commands don't use them, most commonly you might see them with configuration issues or using an unknown command. They use symbol `-->` and no color.
+And also there are some special messages, called system messages. They are from internals of snr and commands don't use them, most commonly you might see them with configuration issues or using an unknown command. They use the symbol `-->` and use no color.
 
 `--init-if-needed` and `--init-only`
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
@@ -33,20 +33,20 @@ And also there are some special messages, called system messages. They are from 
 These flags are used to control how snr deals with the initialization process. 
 `--init-only` only initializes and does not start the shell. Useful if you only want to initialize snr.
 `--init-if-needed` tells snr to initialize if it needs to (it has not been initialized or if it is recommended to initialize again).
-So it would be safe to run snr like this all the time to ensure you are using the latest of everything (and don't forget to update snr itself): 
+So it would be safe to run snr with `--init-if-needed` all the time to ensure you are using the latest of everything (and don't forget to update snr itself): 
 
 .. code-block:: shell
 
     snr --init-if-needed
 
-Reality of payloads
+Reality of Payloads
 -------------------
 
 The payload loading mechanism is kept simple and effective.
 Every payload is essentially a directory (python module) with some requirements.
-By changing the current working directory, you could load your own payloads
+By changing the current working directory, you could load your own custom payloads. (See more about that: :doc:`/dev_guide/payload_development/develop_your_own`)
 
-Advanced variable management
+Advanced Variable Management
 ----------------------------
 
 Variables do not need to be declared by payloads, you can define them as well using set:
@@ -55,7 +55,7 @@ Variables do not need to be declared by payloads, you can define them as well us
 
     set my_variable my_value
 
-But what if we wanted to set it's value from the output of a command?
+But what if we wanted to set its value from the output of a command?
 
 .. code-block::
 
@@ -63,7 +63,7 @@ But what if we wanted to set it's value from the output of a command?
 
 The `!` tells set to execute the value, and take the result of it as the new value.
 
-Payload unloading
+Payload Unloading
 -----------------
 
 You can unload a payload using:
@@ -104,4 +104,4 @@ Will just error out. (As you can see as well.) Because it will expand to `$var e
 .. seealso::
 
     :doc:`configuration`
-        Snr's behavior can be configured with a configuration file as well
+        Snr's behavior can be configured with a configuration file as well.

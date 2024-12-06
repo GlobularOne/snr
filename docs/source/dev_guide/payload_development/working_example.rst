@@ -1,7 +1,7 @@
 Working Example
--------
+===============
 
-After knowing all you need to know, let's give you a working example:
+After knowing all you need to know, let's give you a working example. This example is a framework payload:
 
 `my_payload/__init__.py`:
 
@@ -17,8 +17,8 @@ After knowing all you need to know, let's give you a working example:
         AUTHORS = ("GlobularOne",)
         TARGET_OS_LIST = ("GNU/Linux",)
         INPUTS = (
-            ("USERNAME", "", -1, "Username of the user to add the payload to their home directory "),
-            ("PASSPHRASES", [], -1, "Passphrases to try for LUKS-encrypted partitions"),
+            ("USERNAME", "", -1, "Username of the user to add the payload to their home directory"),
+            Payload.supports_encrypted_access()
         )
 
         def generate(self, ctx: Context) -> int:

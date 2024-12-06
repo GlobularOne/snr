@@ -1,14 +1,14 @@
 Configuration
 =============
 
-Snr can not only be configured at runtime using flags, but also using environment variables and it's config file.
+Snr can not only be configured at runtime using flags, but also using environment variables and the config file.
 
 Here, you will find a list of configuration keys and some help on them.
 
 The configuration file can be found in `~/.config/snr/main.conf`.
 We use the INI format, all snr configuration are inside the `[main]` section.
 
-Configuration priority
+Configuration Priority
 ----------------------
 
 If configuration can come from 3 sources, which have priority over the other?
@@ -19,7 +19,7 @@ If configuration can come from 3 sources, which have priority over the other?
 
 Meaning, command line options can override both environment variables and configuration in the file, and neither of those can override command line options.
 
-Configuration keys
+Configuration Keys
 ------------------
 
 verbose
@@ -84,7 +84,7 @@ Sets the default hostname of the generated host OS.
 default_primary_nameserver
 ^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-Sets the primary nameserver (primary dns server) of the generated host OS.
+Sets the primary nameserver (primary DNS server) of the generated host OS.
 
 **Type: IP address (v4 only)**
 
@@ -95,7 +95,7 @@ Sets the primary nameserver (primary dns server) of the generated host OS.
 default_secondary_nameserver
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-Sets the secondary nameserver (secondary dns server) of the generated host OS.
+Sets the secondary nameserver (secondary DNS server) of the generated host OS.
 
 **Type: IP address (v4 only)**
 
@@ -106,7 +106,7 @@ Sets the secondary nameserver (secondary dns server) of the generated host OS.
 default_user_agent
 ^^^^^^^^^^^^^^^^^^
 
-Set the default username for download operations.
+Sets the default user agent for download operations.
 
 **Type: string**
 
@@ -114,4 +114,4 @@ Set the default username for download operations.
 
 **Env var: SNR_USER_AGENT**
 
-*Added in version 1.1.0*
+.. versionadded:: 1.1.0

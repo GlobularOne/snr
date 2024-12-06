@@ -1,12 +1,12 @@
 Rootfs Versions
 ===============
 
-As Snr becomes more and more advanced, the rootfs also needs to be more equipped to supply it's payloads. Here is a history of all the rootfs versions snr had:
+As Snr becomes more and more advanced, the rootfs also needs to become more equipped to supply its payloads. Here is a history of all the rootfs versions snr had:
 
 Legacy
 ------
 
-The legacy version of snr rootfs is based on Debian 12 and belongs to pre-1.0.0 versions of snr and is no longer valid for any post-1.0.0 payloads.
+The legacy version of snr rootfs is based on Debian 12 and belongs to pre-1.0.0 versions of snr. It is no longer valid for any post-1.0.0 payloads.
 It contains the packages:
 
 * btrfs-progs
@@ -51,7 +51,7 @@ After snr version 1.0.0, a new approach was used: A continuous addition to the e
 v1
 ^^
 
-It is the first non-legacy version of snr rootfs which is based Ubuntu 22.04 LTS and contains the packages:
+It is the first non-legacy version of snr rootfs which is based on Ubuntu 22.04 LTS and contains the packages:
 
 * btrfs-progs
 * console-setup

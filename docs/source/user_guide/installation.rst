@@ -25,7 +25,7 @@ You can use our installation script for beta releases as well:
 
 The above will install snr's dependencies, snr itself and will initialize it.
 
-Installation (From source code)
+Installation (From Source Code)
 -------------------------------
 
 If you want to contribute, you can use the development version from source code.
@@ -43,10 +43,10 @@ Snr uses poetry for packaging and dependency management, if you don't have it in
     curl -sSL https://install.python-poetry.org | python3 -
 
 
-Install with docker (recommended)
+Install with Docker (Recommended)
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-We recommend installing from source code with docker, for a simple reason. 
+We recommend installing from source code with docker.
 Snr bind mounts `/sys`, `/dev` and `/proc`, and if something goes wrong during the payload generation process, 
 it may cause system instability that would be only fixable with restarting. 
 Restarting your docker instance is easier than your device.
@@ -70,7 +70,7 @@ If you want to contribute, it might be a good idea to install the `dev` and `doc
 
     POETRY_VIRTUALENVS_CREATE=false poetry install --with=dev,docs
 
-Install without docker
+Install without Docker
 ^^^^^^^^^^^^^^^^^^^^^^
 
 You need to install some packages for building snr:
@@ -101,7 +101,7 @@ After having these installed. Install python dependencies:
     poetry install
 
 
-**If you are getting an error about failure to open keyring, it's a bug in pip, please read the FAQ for a workaround**
+**If you are getting an error about failure to open keyring, it's a bug in pip, please read the FAQ for a workaround.**
 
 Initialize the snr project:
 
@@ -116,8 +116,8 @@ Now you can run it using:
 
     poetry run snr
 
-Or you can activate the virtual environment with `poetry shell` and just use `snr`
+Or you can activate the virtual environment with `poetry shell` and just use `snr`.
 
-.. seealso:
+.. seealso::
 
     :doc:`quickstart`
