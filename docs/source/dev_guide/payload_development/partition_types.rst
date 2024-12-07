@@ -3,12 +3,12 @@ Partition Types
 
 When you open a partition (See :doc:`/ref/snr.core.payload.storage`), you can use the `partition_type()` function to retrieve what kind of partition is it. Partitions are split into several categories:
 
-* EFI_PARTITION: Contains EFI boot files
-* BOOT_PARTITION: Contains bootloader files
-* SYSTEM_PARTITION: Contains system files
-* DATA_PARTITION: Contains user data
-* LINUX_PARTITION: Partition with Linux structure
-* WINDOWS_PARTITION: Partition with Windows structure
+* EFI_PARTITION: Contains EFI boot files.
+* BOOT_PARTITION: Contains bootloader files.
+* SYSTEM_PARTITION: Contains system files.
+* DATA_PARTITION: Contains user data.
+* LINUX_PARTITION: Partition with Linux structure.
+* WINDOWS_PARTITION: Partition with Windows structure.
 
 
 Partition Detection Criteria

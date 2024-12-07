@@ -18,5 +18,5 @@ Extra steps for a stable release:
 To do the release itself:
 
 * tag name: `v<VERSION>`. **Non-stable releases are made from main, stable releases from the stable branch.**
-* title would be: `Snr v<VERSION>`
+* title would be: `Snr v<VERSION>`.
 * The content would be taken from `CHANGELOG`.

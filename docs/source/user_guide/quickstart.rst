@@ -6,7 +6,7 @@ Snr (Stick 'n' Run) is a project that allows generating bootable mediums based o
 The project ultimately stems from one concept, physical access can be incredibly powerful. And snr is the toolkit for that. Modern operating systems come with several software based protections, login screens, restricted admin powers, firewalls, anti-viruses and so many other, yet none work when the operating system isn't on. This is when snr comes in, it allows you to bypass all those with never starting the operating system anyway, with just boot the generated operating system and let it do all the dirty stuff for you.
 
 **Note that this guide assumes you installed snr using pipx (no matter stable, beta).
-If you installed using source code, run a shell with `poetry shell` first and then continue`**
+If you installed using source code, run a shell with `poetry shell` first and then continue.**
 
 Initialize Snr
 --------------
