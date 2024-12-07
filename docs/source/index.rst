@@ -53,7 +53,6 @@ If you are interesting in developing your own payloads do not forget to read our
    ref/snr
    ref/snr.core
    ref/snr.cli
-   todo
    fdl
    dev_guide/release_checklist
 
@@ -68,12 +67,9 @@ Indices and tables
 License
 =======
 
-GNU Free Documentation License
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-
 :doc:`fdl`
 
-Copyright (C) 2024  GlobularOne.
+Copyright (C) 2024 GlobularOne.
 Permission is granted to copy, distribute and/or modify this document
 under the terms of the GNU Free Documentation License, Version 1.3
 or any later version published by the Free Software Foundation;

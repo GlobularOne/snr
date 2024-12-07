@@ -72,9 +72,9 @@ For these payloads, you can take advantage of the vast number of utilities snr o
 
 The generate function here uses three utility functions:
 
-* `get_self_variables`: Returns a dictionary of all the variables you declared in `INPUTS`
+* `get_self_variables`: Returns a dictionary of all the variables you declared in `INPUTS`.
 * `format_payload_and_write`: Formats a python file using the `AtFormatter` (See :doc:`/ref/snr.core.util.at_formatter`) named `payload.py` copies onto the host filesystem as `/root/payload.py`.
-* `add_autorun`: Adds an autorun for `/root/payload.py`. You can override the executable with passing its name
+* `add_autorun`: Adds an autorun for `/root/payload.py`. You can override the executable with passing its name.
 
 I highly advise you check out :doc:`/ref/snr.core.payload.payload` to understand these functions better and how to customize them.
 

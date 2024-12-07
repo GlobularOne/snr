@@ -3,7 +3,7 @@ Develop Your Own Command
 
 While snr does not provide a method to hot plug a module and load a command, it does not mean you can't add a custom command to snr. To do so you need to do a few things:
 
-* Identify the group the command belongs to (either of `filesystem`, `misc`, `payload` or `variable`)
+* Identify the group the command belongs to (either of `filesystem`, `misc`, `payload` or `variable`.)
 * Add the function of the command.
 * Document it (In `docs/user_guide/shell_commands.rst` as well.)
 * Provide necessary information for the syntax highlighting (read :doc:`highlighting`.)
@@ -21,7 +21,7 @@ The basic command would be:
         return "my_command has been invoked"
 
 The function decorator adds it to the commands, the `name` parameter being the command name. Then, as you can see, the return value of the command is not what it prints (those are just logs)
-but the value it return. This allows the shell to process the output if it needs to before printing it back to the user (this makes things like `set !my_var my_command` possible)
+but the value it returns. This allows the shell to process the output if it needs to before printing it back to the user (this makes things like `set !my_var my_command` possible.)
 
 Add an Argument
 ---------------
