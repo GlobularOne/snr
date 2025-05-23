@@ -15,7 +15,7 @@ Each message is categorized by a character known as its symbol, and a color as w
 
 * Debug: Debug messages use the symbol `.` and the color magenta.
 
-* Info: Those messages use the symbol `!`` and the color blue.
+* Info: Those messages use the symbol `!` and the color blue.
 
 * OK: Symbol `+` is used with the color green.
 
