@@ -3,6 +3,10 @@ Installing Snr
 
 Snr can be installed on almost any Linux distribution. Snr supports python versions above 3.10.
 
+.. warning::
+    Do not install Snr from a terminal on any Snap package (e.g Visual Studio Code from Snap.)
+    Snap messes with XDG Basedir environment variables that messes up your instance so only it can be used from inside of a Snap application.
+
 Stable Installation
 -------------------
 
