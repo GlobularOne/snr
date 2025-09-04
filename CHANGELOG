@@ -457,3 +457,22 @@ Release to push bug fixes of v1.4.1 as well.
 This release bumps dependencies and promotes the 1.5.X branch to stable.
 
 ## v1.6.X
+
+### 1.6.0
+
+- Additions:
+
+  - Add checks to initialization routine for required tools so on lack of one it fails gracefully
+  - Add new command "history" that allows for viewing and managing command-line history
+
+- Improvements:
+
+  - Documentation
+  - Bump dependency versions
+  - Set now gives a message that no variables are defined instead of just printing an empty table
+
+- Bug fixes:
+
+  - Fix a minor bug in which the highlighter wouldn't highlight a command before you add whitespace
+  - Fix a bug in tips
+  - Fix a minor bug in `generate`'s help message
