@@ -63,7 +63,7 @@ def test_query_all_block_info(mock_lsblk_block_list1):
     assert block_info[0] == "/dev/sda"
     assert block_info[0] != block_info[1]
     with pytest.raises(NotImplementedError):
-        assert block_info[0] == True
+        assert not (block_info[0] == True)
     assert not block_info[0].is_partition()
     assert block_info[0].is_disk()
     assert not block_info[0].is_crypt()
