@@ -54,7 +54,7 @@ Use a payload
 @click.argument("device", type=click.Path(exists=True, dir_okay=False, writable=True), required=True)
 def cmd_generate(device: str) -> str | None:
     """\
-   Generate a selected payload, pass device to write to as an argument
+Generate a selected payload, pass device to write to as an argument
        """
     if options.payload_module is None:
         common_utils.print_error("No payload selected")
