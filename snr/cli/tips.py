@@ -26,9 +26,9 @@ TIPS = [
     r"Payloads are categorized by their usage: access, extraction, infection, misc, tampering",
     r"Access type payloads create access: Like changing admin or root password for you or opening up a ssh server",
     r"Extraction type payloads extract data: Like copying files or account password hashes",
-    r"Infection type payloads infect target OS with payloads: Like installing a persistant meterpreter for you"
-    r"Tampering type payloads tamper with data on disk: Like changing passwords or swapping files"
-    r"Misc type payloads are the powerful misfits of Snr which offer unique payloads: Like misc/multi which allows bundling several payloads"
+    r"Infection type payloads infect target OS with payloads: Like installing a persistant meterpreter for you",
+    r"Tampering type payloads tamper with data on disk: Like changing passwords or swapping files",
+    r"Misc type payloads are the powerful misfits of Snr which offer unique payloads: Like misc/multi which allows bundling several payloads",
 ]
 
 
