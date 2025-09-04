@@ -27,10 +27,11 @@ def command_no_args(x: str) -> dict[str, list[tuple[str, Any, str]]]:
         Lexer entries
     """
     return {x: [
-        (r'(\s*)({0})'.format(x),
+        (r'(\s*)({0})(\s*|$)'.format(x),
          pygments.lexer.bygroups(
             pygments.token.Whitespace,
-            pygments.token.Keyword),
+            pygments.token.Keyword,
+            pygments.token.Whitespace),
          'eoc')
     ]}
 
@@ -45,12 +46,12 @@ def command_args(x: str) -> dict[str, list[tuple[str, Any, str]]]:
         Lexer entries
     """
     return {x: [
-        (r'(\s*)({0})(\s+)'.format(x),
+        (r'(\s*)({0})(\s+|$)'.format(x),
          pygments.lexer.bygroups(
             pygments.token.Whitespace,
             pygments.token.Keyword,
             pygments.token.Whitespace,
-        ), 'basic')
+        ), 'basic'),
     ]}
 
 
@@ -84,7 +85,7 @@ def command_key_args(x: str, keywords: tuple[str, ...]) -> dict[str, list[tuple[
         Lexer entries
     """
     return {x: [
-        (r'(\s*)({0})(\s+)({1})(\s+)'.format(x, "|".join(keywords)),
+        (r'(\s*)({0})(\s+)({1})(\s+|$)'.format(x, "|".join(keywords)),
          pygments.lexer.bygroups(
              pygments.token.Whitespace,
              pygments.token.Keyword,
