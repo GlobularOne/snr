@@ -121,7 +121,7 @@ class BlockInfo:
 
     def __eq__(self, other: object) -> bool:
         if not isinstance(other, (BlockInfo, str)):
-            raise NotImplementedError
+            return NotImplemented
 
         if isinstance(other, str):
             if other.startswith("/"):

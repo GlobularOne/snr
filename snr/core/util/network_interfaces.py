@@ -40,15 +40,15 @@ class NetworkInterface:  # pylint: disable=too-many-instance-attributes,too-few-
         self.name = name
         for addr in addr_list:
             match addr.family:
-                case socket.AddressFamily.AF_INET:
+                case socket.AF_INET:
                     self.ipv4_address = addr.address
                     self.ipv4_broadcast = addr.broadcast
                     self.ipv4_netmask = addr.netmask
-                case socket.AddressFamily.AF_INET6:
+                case socket.AF_INET6:
                     self.ipv6_address = addr.address
                     self.ipv6_broadcast = addr.broadcast
                     self.ipv6_netmask = addr.netmask
-                case socket.AddressFamily.AF_PACKET:
+                case socket.AF_PACKET:
                     self.mac_address = addr.address
         self.is_up = stat.isup
         self.mtu = stat.mtu

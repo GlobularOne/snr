@@ -35,7 +35,7 @@ __all__ = (
     "VALID_IPV4", "VALID_IPV6"
 )
 
-_invalid_path_chars = re.compile(r'[\\/:*?"<>|/]')
+_invalid_path_chars = re.compile(r'[\\:*?"<>|/]')
 
 
 class Payload:

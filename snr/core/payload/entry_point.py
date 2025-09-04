@@ -40,7 +40,7 @@ def entry_point(func: EntryPointType | None = None,
             else:
                 func()
             common_utils.print_ok(f"{payload_name} completed")
-        except Exception as exc:  # pylint: disable=broad-exception-caught
+        except Exception:  # pylint: disable=broad-exception-caught
             common_utils.handle_exception()
 
     if func is not None:

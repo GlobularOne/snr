@@ -58,7 +58,11 @@ build-backend = "poetry.core.masonry.api"
 [tool.pylint.main]
 ignore-paths = ["snr/payloads"]
 source-roots = ["snr"]
-disable = ["too-many-arguments"]
+disable = [
+    "too-many-positional-arguments",
+    "too-many-arguments",
+    "import-error",
+]
 
 [tool.pylint.messages_control]
 max-line-length = 120

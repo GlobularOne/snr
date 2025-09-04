@@ -72,17 +72,18 @@ def _clear_data() -> None:
 
 def _check_required_tools() -> None:
     common_utils.print_debug("Checking if required tools exist")
-    common_utils.print_debug(f"Checking for existence of 'debootstrap'")
+    common_utils.print_debug("Checking for existence of 'debootstrap'")
     if not shutil.which("debootstrap"):
         common_utils.print_fatal("Required tool 'deboostrap' is not found.")
     if os.getuid() != 0:
-        common_utils.print_debug(f"Checking for existence of 'fakeroot'")
+        common_utils.print_debug("Checking for existence of 'fakeroot'")
         if not shutil.which("fakeroot"):
             common_utils.print_fatal("Required tool 'fakeroot' is not found.")
-        common_utils.print_debug(f"Checking for existence of 'fakechroot'")
+        common_utils.print_debug("Checking for existence of 'fakechroot'")
         if not shutil.which("fakechroot"):
-            common_utils.print_fatal("Required tool 'fakechroot' is not found.")
-        
+            common_utils.print_fatal(
+                "Required tool 'fakechroot' is not found.")
+
 
 def _handle_required_directories() -> None:
 

@@ -88,8 +88,8 @@ def test_parse_unix_shadow_line_locked():
 
 def test_parse_unix_shadow_file(mocker):
     mock_data = "testuser:hashedpassword:20230101:90:7:14:30:20240101:\n\n"
-    new_open = mocker.patch("builtins.open",
-                            new=mocker.mock_open(read_data=mock_data))
+    mocker.patch("builtins.open",
+                 new=mocker.mock_open(read_data=mock_data))
     shadows = snr.core.payload.unix_shadow.parse_unix_shadow_file()
 
     assert len(shadows) == 1

@@ -9,14 +9,12 @@ import pdb
 import shutil
 import sys
 from shutil import get_terminal_size
-from typing import IO, Any, Callable, NoReturn
+from typing import Any, Callable, NoReturn
 
-import deprecated
-import rich.console
 import rich.pretty
 import rich.traceback
 
-from snr.core.core import common_paths, console, context, options
+from snr.core.core import common_paths, console, options
 from snr.core.core.logging import (carriage_return, clear_screen, print_debug,
                                    print_error, print_fatal, print_info,
                                    print_ok, print_sys, print_warning)
@@ -29,8 +27,7 @@ __all__ = (
     "print_sys", "print_warning",
     "EXTERNAL_CALL_FAILURE", "bytes_to_str_repr",
     "remake_dir", "graceful_exit",
-    "call_external_function", "rootfs_open",
-    "rootfs_makedirs", "get_rootfs_version",
+    "call_external_function", "get_rootfs_version",
     "temp_chdir", "UserError"
 )
 

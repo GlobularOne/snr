@@ -11,9 +11,7 @@ __all__ = (
     "ensure_dependencies",
 )
 
-ROOTFS_VERSION_PATCHES = [
-    
-]
+ROOTFS_VERSION_PATCHES = []
 
 
 def ensure_dependencies(ctx: context.Context) -> bool:

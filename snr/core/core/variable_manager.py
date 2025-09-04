@@ -258,7 +258,7 @@ class VariableManager:
         Returns:
             list of variable values
         """
-        return list(v[0] for v in self._variables.values())
+        return [v[0] for v in self._variables.values()]
 
     def get_variables_info(self) -> list[VariableInfo]:
         """Get list of all variable's info
@@ -266,4 +266,4 @@ class VariableManager:
         Returns:
             list of all variable info
         """
-        return list(v[1] for v in self._variables.values())
+        return [v[1] for v in self._variables.values()]
