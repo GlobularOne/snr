@@ -67,15 +67,29 @@ def _clear_data() -> None:
     """
     Remove the data directory
     """
-    shutil.rmtree(common_paths.DATA_PATH)
+    shutil.rmtree(common_paths.DATA_PATH, ignore_errors=True)
 
+
+def _check_required_tools() -> None:
+    common_utils.print_debug("Checking if required tools exist")
+    common_utils.print_debug(f"Checking for existence of 'debootstrap'")
+    if not shutil.which("debootstrap"):
+        common_utils.print_fatal("Required tool 'deboostrap' is not found.")
+    if os.getuid() != 0:
+        common_utils.print_debug(f"Checking for existence of 'fakeroot'")
+        if not shutil.which("fakeroot"):
+            common_utils.print_fatal("Required tool 'fakeroot' is not found.")
+        common_utils.print_debug(f"Checking for existence of 'fakechroot'")
+        if not shutil.which("fakechroot"):
+            common_utils.print_fatal("Required tool 'fakechroot' is not found.")
+        
 
 def _handle_required_directories() -> None:
 
     common_utils.print_debug("Looking for directories that should be cleaned")
 
     for path in (common_paths.DATA_PATH, common_paths.CACHE_PATH, common_paths.STATE_PATH):
-        common_utils.print_info(f"Removing path: {path}")
+        common_utils.print_debug(f"Removing path: {path}")
         shutil.rmtree(path, ignore_errors=True)
     # Preserve config path
 
@@ -182,6 +196,7 @@ def init_main() -> None:
     common_utils.print_debug("Registering clear data atexit callback")
     atexit.register(_clear_data)
 
+    _check_required_tools()
     _handle_required_directories()
     _generate_rootfs()
     _archive_post_process()
