@@ -83,6 +83,9 @@ Or unset a variable (syntax: set <variable name>).
 Or list all variables (syntax: set)
     """
     if name is None:
+        if not variables.global_vars.get_variables_name():
+            common_utils.print_info("No variables defined. Try defining one using 'set <variable name> <value>'")
+            return None
         table = rich.table.Table(title="Variables")
         table.add_column("Name", style="blue")
         table.add_column("Type", style="red")
