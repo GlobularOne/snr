@@ -9,7 +9,7 @@ class AccountHashesPayload(Payload):
     AUTHORS = ("GlobularOne",)
     TARGET_OS_LIST = ("Microsoft Windows", "GNU/Linux")
     ROOTFS_VERSION = 2
-    INPUTS = (
+    INPUT = (
         Payload.supports_encrypted_access()
     )
 

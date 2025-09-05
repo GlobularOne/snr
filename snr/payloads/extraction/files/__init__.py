@@ -8,7 +8,7 @@ from snr.core.payload.payload import REQUIRED, Context, Payload
 class FilesPayload(Payload):
     AUTHORS = ("GlobularOne",)
     TARGET_OS_LIST = ("Microsoft Windows", "GNU/Linux")
-    INPUTS = (
+    INPUT = (
         ("PATTERNS", [], -1, "Glob pattern for files to copy", REQUIRED),
         Payload.supports_encrypted_access()
     )

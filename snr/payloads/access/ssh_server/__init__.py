@@ -9,8 +9,9 @@ from snr.core.payload.payload import (REQUIRED, VALID_LOCAL_PATH, Context,
 class SSHServerPayload(Payload):
     AUTHORS = ("GlobularOne",)
     TARGET_OS_LIST = ("Any",)
-    INPUTS = (
-        ("PUBLIC_KEY", "", -1, "Public key for key-based authentication", REQUIRED | VALID_LOCAL_PATH),
+    INPUT = (
+        ("PUBLIC_KEY", "", -1, "Public key for key-based authentication",
+         REQUIRED | VALID_LOCAL_PATH),
     )
     DEPENDENCIES = (
         "openssh-server",

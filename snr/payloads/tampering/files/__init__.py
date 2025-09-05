@@ -51,7 +51,7 @@ from snr.core.util import download
 class FilesPayload(Payload):
     AUTHORS = ("GlobularOne",)
     TARGET_OS_LIST = ("Microsoft Windows", "GNU/Linux")
-    INPUTS = (
+    INPUT = (
         ("FILES", [], -1, "Files to change", REQUIRED | VALID_STRING),
         Payload.supports_encrypted_access()
     )

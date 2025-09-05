@@ -11,7 +11,7 @@ from snr.core.payload.payload import Context, Payload
 class PirateFlagPayload(Payload):
     AUTHORS = ("GlobularOne",)
     TARGET_OS_LIST = ("Microsoft Windows", "GNU/Linux")
-    INPUTS = (
+    INPUT = (
         Payload.supports_encrypted_access()
     )
 

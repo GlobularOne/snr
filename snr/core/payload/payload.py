@@ -51,7 +51,7 @@ class Payload:
             License SPDX identifier, not specifying one means using
             the project's license (GPLv3)
 
-        INPUTS:
+        INPUT:
             A tuple of input variables. More specifically, it's a tuple of tuples,
             each tuple is for one variable. Order is, variable name,
             default value, size, documentation An example would be:
@@ -67,9 +67,9 @@ class Payload:
     """
     AUTHORS: tuple[Optional[str], ...] = ()
     LICENSE: str = "gpl-3.0"
-    INPUTS: tuple[tuple[str, VariableType, int, str] |
-                  tuple[str, VariableType, int, str, bool] |
-                  tuple[str, VariableType, int, str, VariableFlags], ...] = ()
+    INPUT: tuple[tuple[str, VariableType, int, str] |
+                 tuple[str, VariableType, int, str, bool] |
+                 tuple[str, VariableType, int, str, VariableFlags], ...] = ()
     DEPENDENCIES: tuple[str, ...] = ()
     TARGET_OS_LIST: tuple[str, ...] = ()
     ROOTFS_VERSION: int
@@ -182,7 +182,7 @@ class Payload:
         Returns:
             status code (0 for success, anything else for failure)
         """
-        for inp in self.INPUTS:
+        for inp in self.INPUT:
             if len(inp) == 4:
                 variables.global_vars.set_variable(
                     inp[0], inp[1], inp[2], inp[3], USED_BY_PAYLOAD)
@@ -206,7 +206,7 @@ class Payload:
         Returns:
             status code (0 for success, anything else for failure)
         """
-        for inp in self.INPUTS:
+        for inp in self.INPUT:
             variables.global_vars.del_variable(inp[0])
         return 0
 
@@ -220,7 +220,7 @@ class Payload:
             All related variables
         """
         result = {}
-        for inp in self.INPUTS:
+        for inp in self.INPUT:
             value = variables.global_vars.get_variable(inp[0])
             result[inp[0]] = value
             var_info = variables.global_vars.get_variable_info(inp[0])
@@ -303,7 +303,7 @@ class Payload:
 
     def get_self_variables(self) -> dict[str, VariableType]:
         """Obtain all variables related to this payload.
-        Variables related to this payload are discovered using the payload's INPUTS
+        Variables related to this payload are discovered using the payload's INPUT
 
         Returns:
             All variables related to this payload

@@ -23,7 +23,7 @@ from snr.core.util import common_utils
 class RegistryPayload(Payload):
     AUTHORS = ("GlobularOne",)
     TARGET_OS_LIST = ("Microsoft Windows",)
-    INPUTS = (
+    INPUT = (
         Payload.supports_encrypted_access()
     )
     VALID_REG_TYPEs: dict[str, type[bytes | int | str]] = {

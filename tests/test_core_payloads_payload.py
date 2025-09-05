@@ -40,7 +40,7 @@ def payload_instance():
 
 
 def test_load(payload_instance, mock_global_vars):
-    payload_instance.INPUTS = (
+    payload_instance.INPUT = (
         ("var1", "default1", 10, "Variable 1"),
         ("var2", "default2", 20, "Variable 2",
          snr.core.core.variable_manager.VariableFlags.VALID_STRING),
@@ -60,7 +60,7 @@ def test_load(payload_instance, mock_global_vars):
 
 def test_load_invalid(payload_instance, temp_global_vars):
 
-    payload_instance.INPUTS = (
+    payload_instance.INPUT = (
         ("var1", "", -1, "Variable 1", True, True),
     )
     with pytest.raises(snr.core.util.common_utils.UserError):
@@ -68,7 +68,7 @@ def test_load_invalid(payload_instance, temp_global_vars):
 
 
 def test_unload(payload_instance, mock_global_vars):
-    payload_instance.INPUTS = (
+    payload_instance.INPUT = (
         ("var1", "default1", 10, "Variable 1"),
         ("var2", "default2", 20, "Variable 2")
     )
@@ -183,7 +183,7 @@ def test_validate_string_variable(mock_print_warning, value, flags, should_fail,
         "socket.gethostbyname", new=gethostbyname)
     mock_getaddrinfo = mocker.patch(
         "socket.getaddrinfo", new=getaddrinfo)
-    payload_instance.INPUTS = (
+    payload_instance.INPUT = (
         ("var1", value, -1, "Variable 1", flags),
     )
 
@@ -216,7 +216,7 @@ def test_generate(payload_instance, mock_context):
 def test_validate_int_variable(mock_print_warning, value, flags, should_fail, expected_value,
                                payload_instance, mock_context, temp_global_vars):
 
-    payload_instance.INPUTS = (
+    payload_instance.INPUT = (
         ("var1", value, -1, "Variable 1", flags),
     )
 
@@ -266,7 +266,7 @@ def test_format_payload_and_write(payload_instance, mock_context, mock_open):
 
 
 def test_get_self_variables(payload_instance, mock_context, temp_global_vars):
-    payload_instance.INPUTS = (
+    payload_instance.INPUT = (
         ("var1", "default", 10, "Variable 1",
          snr.core.core.variable_manager.VariableFlags.VALID_STRING),
     )

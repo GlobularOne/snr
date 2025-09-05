@@ -15,8 +15,9 @@ msfvenom = programs.program_wrapper_factory("msfvenom")
 class MeterpreterPayload(Payload):
     AUTHORS = ("GlobularOne",)
     TARGET_OS_LIST = ("GNU/Linux", "Microsoft Windows")
-    INPUTS = (
-        ("ENCODER", "x86/shikata_ga_nai", -1, "Encoder to use for x86", VALID_STRING),
+    INPUT = (
+        ("ENCODER", "x86/shikata_ga_nai", -1,
+         "Encoder to use for x86", VALID_STRING),
         ("LINUX_SERVICE_NAME", "", -1,
          "Name of the persistance service for Linux", REQUIRED | VALID_PATH_COMPONENT),
         ("LINUX_SERVICE_DESCRIPTION", "", -1,

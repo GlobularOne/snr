@@ -65,9 +65,9 @@ Print help on a specific command or variable, or list all commands
         doc = getattr(options.payload_module,
                       "__doc__",
                       "Not documented")
-        inputs = getattr(getattr(options.payload_module, "payload"),
-                         "INPUTS",
-                         (("No inputs specified",),))
+        all_input = getattr(getattr(options.payload_module, "payload"),
+                            "INPUT",
+                            (("No input specified",),))
         authors = getattr(getattr(options.payload_module, "payload"),
                           "AUTHORS",
                           ["No authors specified"])
@@ -80,7 +80,7 @@ Print help on a specific command or variable, or list all commands
                                  "TARGET_OS_LIST", ("None specified"))
         return f"""\
 Payload path: [blue]{options.payload_path}[/blue]
-Input: [blue]{' '.join([inp[0] for inp in inputs])}[/blue]
+Input: [blue]{' '.join([inp[0] for inp in all_input])}[/blue]
 Authors: [blue]{' '.join(authors)}[/blue]
 License: [blue]{license_info}[/blue]
 Dependencies: [blue]{' '.join(dependencies)}[/blue]

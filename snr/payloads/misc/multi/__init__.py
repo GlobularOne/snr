@@ -32,7 +32,7 @@ class MultiPayload(Payload):
                 variables.global_vars.get_variable_list("PAYLOADS"))
         variables.global_vars.del_variable("PAYLOADS")
         # For many reasons, including ensuring the user doesn't end up deleting this variable
-        self.INPUTS = ((
+        self.INPUT = ((
             "PAYLOADS", payloads, -1, "Payloads to load. Not effective after loading the payload"
         ),)
         self._payload_names = payloads

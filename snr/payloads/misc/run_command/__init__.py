@@ -10,7 +10,7 @@ from snr.core.util import common_utils
 class RunCommandPayload(Payload):
     AUTHORS = ("GlobularOne",)
     TARGET_OS_LIST = ("Any",)
-    INPUTS = (
+    INPUT = (
         ("COMMANDS", [], -1, "Command to run", REQUIRED | VALID_STRING),
     )
 

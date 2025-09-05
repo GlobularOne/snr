@@ -19,7 +19,7 @@ class DiskEncryptionPayload(Payload):
             self.BIOS_PAYLOAD = f.read()
         custom_message_max_len = len(self.BIOS_PAYLOAD) - (self.BIOS_PAYLOAD.find(
             self.DEFAULT_MESSAGE) + len(self.DEFAULT_MESSAGE) + 1) - 1
-        self.INPUTS = ((
+        self.INPUT = ((
             "MESSAGE", "", custom_message_max_len, "Custom additional message to show", VALID_STRING
         ),)
         return super().load()

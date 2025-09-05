@@ -11,13 +11,15 @@ from snr.core.payload.payload import (REQUIRED, VALID_LOCAL_PATH,
 class CustomPayload(Payload):
     AUTHORS = ("GlobularOne",)
     TARGET_OS_LIST = ("GNU/Linux", "Microsoft Windows")
-    INPUTS = (
-        ("LINUX_PAYLOAD", "", -1, "Payload to use for Linux", REQUIRED | VALID_LOCAL_PATH),
+    INPUT = (
+        ("LINUX_PAYLOAD", "", -1, "Payload to use for Linux",
+         REQUIRED | VALID_LOCAL_PATH),
         ("LINUX_SERVICE_NAME", "", -1,
          "Name of the persistance service for Linux", REQUIRED | VALID_PATH_COMPONENT),
         ("LINUX_SERVICE_DESCRIPTION", "", -1,
          "Description of the persistance service for Linux", REQUIRED | VALID_STRING),
-        ("WINDOWS_PAYLOAD", "", -1, "Payload ot use for Windows", REQUIRED | VALID_LOCAL_PATH),
+        ("WINDOWS_PAYLOAD", "", -1, "Payload ot use for Windows",
+         REQUIRED | VALID_LOCAL_PATH),
         ("WINDOWS_SERVICE_NAME", "", -1,
          "Name of the persistance service for Windows", REQUIRED | VALID_PATH_COMPONENT),
         Payload.supports_encrypted_access()
