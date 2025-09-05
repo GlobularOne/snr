@@ -1,7 +1,7 @@
 Installing Snr
 ==============
 
-Snr can be installed on almost any Linux distribution. Snr supports python versions above 3.10.
+Snr can be installed on almost any Linux distribution. Snr supports python version 3.12 and above.
 
 .. warning::
     Do not install Snr from a terminal on any Snap package (e.g Visual Studio Code from Snap.)
@@ -61,12 +61,17 @@ Build the docker image using:
 
     poetry run docker-build
 
-You can now run the image using (or using docker compose, `docker compose run --rm globularone/snr`):
+You can now run the image using:
 
 .. code-block:: shell
 
     poetry run docker-run
 
+You could also use docker compose:
+
+.. code-block:: shell
+
+    docker compose run --rm globularone/snr
 
 If you want to contribute, it might be a good idea to install the `dev` and `docs` group inside the generated docker image (from inside the docker):
 

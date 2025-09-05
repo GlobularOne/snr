@@ -1,6 +1,8 @@
 Develop Your Own Command
 ========================
 
+.. note:: Snr is written majorly in python, this guide assumes you already have a basic understanding of it. If not, you can check out many Python tutorials or courses first.
+
 While snr does not provide a method to hot plug a module and load a command, it does not mean you can't add a custom command to snr. To do so you need to do a few things:
 
 * Identify the group the command belongs to (either of `filesystem`, `misc`, `payload` or `variable`.)
@@ -11,7 +13,7 @@ While snr does not provide a method to hot plug a module and load a command, it 
 Basics of Commands
 ------------------
 
-Each command is simply a function (prefixed by `cmd_`) inside the categories that are inside `snr/cli/commands`. The documentation of these commands is the function's docstring.
+Each command is simply a function (prefixed by `cmd_`) inside the categories that are in `snr/cli/commands`. The documentation of these commands is the function's docstring.
 The basic command would be:
 
 .. code-block:: python
@@ -20,7 +22,7 @@ The basic command would be:
     def cmd_my_command() -> str | None:
         return "my_command has been invoked"
 
-The function decorator adds it to the commands, the `name` parameter being the command name. Then, as you can see, the return value of the command is not what it prints (those are just logs)
+The function decorator adds it to the commands, the `name` parameter being the command name. Then, as you can see, the return value of the command is not what it prints (those are just logs.)
 but the value it returns. This allows the shell to process the output if it needs to before printing it back to the user (this makes things like `set !my_var my_command` possible.)
 
 Add an Argument

@@ -8,7 +8,7 @@ Add a line for your command in the `commands` list:
 
     pygments.lexer.include('my_command')
 
-Now, find the command before your command inside your command's category, scroll up a bit until you find `SYNTAX` constant and find it.
+Now, find the command before yours inside the category, scroll up a bit until you find `SYNTAX` constant.
 
 Depending on how the user interacts with your command, there are some templates for you on what to add there:
 
@@ -41,3 +41,5 @@ Command Accepts One Keyword Argument and One or More Optional Arguments
 .. code-block:: python
 
     **command_key_args("my_command", ("keyword1", "keyword2", "keyword3"))
+
+That's all you need to do. You got it!

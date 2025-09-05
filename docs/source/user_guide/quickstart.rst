@@ -3,7 +3,7 @@ Getting Started with Snr
 
 Snr (Stick 'n' Run) is a project that allows generating bootable mediums based on Ubuntu. These bootable mediums only have one purpose. To run a payload.
 
-The project ultimately stems from one concept, physical access can be incredibly powerful. And snr is the toolkit for that. Modern operating systems come with several software based protections, login screens, restricted admin powers, firewalls, anti-viruses and so many other, yet none work when the operating system isn't on. This is when snr comes in, it allows you to bypass all those with never starting the operating system anyway, with just boot the generated operating system and let it do all the dirty stuff for you.
+The project ultimately stems from one concept, physical access can be incredibly powerful. And snr is the toolkit for that. Modern operating systems come with several software based protections, login screens, restricted admin powers, firewalls, anti-viruses and so many other, yet none work when the operating system isn't on. This is when snr comes in, it allows you to bypass all those with never starting the operating system anyway, with just booting the generated operating system and letting it do all the dirty stuff for you.
 
 **Note that this guide assumes you installed snr using pipx (no matter stable, beta).
 If you installed using source code, run a shell with `poetry shell` first and then continue.**
@@ -11,7 +11,7 @@ If you installed using source code, run a shell with `poetry shell` first and th
 Initialize Snr
 --------------
 
-If you have **installed the stable or beta version, this is already handled and you can skip this part**, if you installed from source code, snr needs some components to run:
+If you have **installed using any of the installation scripts, this is already handled and you can skip this part**, if you installed from source code, snr needs some components to run:
 
 .. code-block:: shell
 
@@ -47,6 +47,11 @@ Now to examples:
 .. figure:: img/2.png
    :alt: Running command `list` and using the `tampering/wipe_disks` payload
 
+.. seealso::
+
+    For how the payloads are structured.
+        :doc:`payload_categories`
+
 Notice how the prompt changed? This helps you remember what payload you have loaded.
 
 .. figure:: img/3.png
@@ -70,7 +75,7 @@ Here we choose wipe mode `B`, which according to the payload's help text, overwr
 
     generate /dev/sdb
 
-And it's done! Now you got a very dangerous USB drive (be responsible with it, as the disclaimer said.)
+And it's done! Now you got a very dangerous USB drive (be responsible with it)
 
 .. seealso::
 

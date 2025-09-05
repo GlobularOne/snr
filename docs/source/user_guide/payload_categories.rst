@@ -1,7 +1,7 @@
 Payload Categories
 ==================
 
-Since Snr version 1.0.0, payloads are categorized. The categories are:
+Payloads are categorized. The categories are:
 
 access
 ------

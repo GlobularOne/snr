@@ -12,7 +12,7 @@ Filesystem Commands
 pwd
 ^^^
 
-It prints the current working directory:
+Prints the current working directory:
 
 .. code-block::
 
@@ -22,7 +22,7 @@ It prints the current working directory:
 chdir
 ^^^^^
 
-It changes the current working directory:
+Changes the current working directory:
 
 .. code-block::
 
@@ -36,7 +36,7 @@ It changes the current working directory:
 list
 ^^^^
 
-It lists files and directories.
+Lists files and directories.
 By default lists the content of the current working directory:
 
 .. code-block::
@@ -58,7 +58,7 @@ Also accepts a directory to list the content of:
 read
 ^^^^
 
-It reads the content of a file:
+Reads the content of a file:
 
 .. code-block::
 
@@ -68,7 +68,7 @@ It reads the content of a file:
 checksum
 ^^^^^^^^
 
-It generates checksum of a file. Syntax:
+Generates checksum of a file. Syntax:
 
 .. code-block:: shell
 
@@ -98,7 +98,7 @@ Variable Commands
 unset
 ^^^^^
 
-It removes a variable, it's an alternative syntax to `set variable_name` which does the same:
+Removes a variable, it's an alternative syntax to `set variable_name` which does the same:
 
 .. code-block::
 
@@ -114,7 +114,7 @@ See it as the variable manager, it allows you to set variables:
     set my_var my_value
 
 
-Set also has a special ability, it can tie the output of a command to a variable:
+`Set` also has a special ability, it can tie the output of a command to a variable:
 
 .. code-block::
 
@@ -160,7 +160,7 @@ You may also reload a payload with just loading the same payload again.
 generate
 ^^^^^^^^
 
-It generates the selected payload onto the device or file you pass to it.
+Generates the selected payload onto the device or file you pass to it.
 
 .. code-block::
 
@@ -173,7 +173,7 @@ Miscellaneous Commands
 clear
 ^^^^^
 
-It clears the screen.
+Clears the screen.
 
 .. code-block::
 
@@ -182,7 +182,7 @@ It clears the screen.
 echo
 ^^^^
 
-It prints back what you give it. Mostly useful for getting value of variables.
+Prints back what you give it. Mostly useful for getting value of variables.
 
 .. code-block::
 
@@ -282,7 +282,8 @@ If you are getting an error, instead pass `--debug` to snr when running, which d
 reload
 ^^^^^^
 
-It reloads the shell, note that no state will be saved (variables, loaded payload.)
+Reloads the shell, note that no state will be saved (variables, loaded payload.)
+This also loads any active configuration changes.
 
 .. code-block::
 

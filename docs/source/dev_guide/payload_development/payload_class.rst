@@ -13,7 +13,7 @@ Now we can see a template for how a snr payload looks like:
     class MyPayload(Payload):
         AUTHORS = ("Me",)
         TARGET_OS_LIST = ...
-        INPUTS = (
+        INPUT = (
             ...
         )
 
@@ -68,8 +68,8 @@ LICENSE
 
 The SPDX license identifier of the payload's license, if not specified, it is assumed to be `gpl-3.0` (GPLv3.)
 
-INPUTS
-^^^^^^
+INPUT
+^^^^^
 
 A tuple, of tuples that describe variables that the user can change (or may be required to do so) to configure the payload.
 It is generally in this format:
@@ -130,7 +130,7 @@ With knowing all this, let's put them all to use. Here below is a more complete 
         AUTHORS = ("GlobularOne",)
         LICENSE = "Apache-2.0"
         TARGET_OS_LIST = ("Microsoft Windows (XP SP1 or later)", "GNU/Linux (Kernel version above 5.0.0)")
-        INPUTS = (
+        INPUT = (
             ("foo", "bar", 3, "Foo or bar"),
             ("spam", [], 12, "12 Spams", REQUIRED)
         )

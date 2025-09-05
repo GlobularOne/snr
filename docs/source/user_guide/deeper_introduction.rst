@@ -100,6 +100,7 @@ Now:
     $var $var
 
 Will just error out. (As you can see as well.) Because it will expand to `$var echo` and `$var` is not a valid command.
+This limitation is by design and is to prevent some abuse cases.
 
 .. seealso::
 

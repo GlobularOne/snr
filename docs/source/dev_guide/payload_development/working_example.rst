@@ -16,7 +16,7 @@ After knowing all you need to know, let's give you a working example. This examp
     class MyPayload(Payload):
         AUTHORS = ("GlobularOne",)
         TARGET_OS_LIST = ("GNU/Linux",)
-        INPUTS = (
+        INPUT = (
             ("USERNAME", "", -1, "Username of the user to add the payload to their home directory"),
             Payload.supports_encrypted_access()
         )

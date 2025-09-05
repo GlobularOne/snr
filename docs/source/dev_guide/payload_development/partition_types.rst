@@ -86,7 +86,7 @@ In summary:
 * If you saw `SYSTEM_PARTITION`, it definitely contains system data, may or may not contains user data as well. (Check for... `DATA_PARTITION`?)
 * If you saw `DATA_PARTITION`, it definitely contains user data, may or may not contain system data. (You know the drill.)
 * If you saw `LINUX_PARTITION`, it definitely contains Linux structure like `/etc`.
-* If you saw `WINDOWS_PARTITION`, it definitely contains Windows structure like `Windows`.
+* If you saw `WINDOWS_PARTITION`, it definitely contains Windows structure like `Windows` directory.
 
 Details
 -------

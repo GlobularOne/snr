@@ -34,7 +34,7 @@ DBus error when attempting to install the project
 
 If you get an error like:
 
-    Failed to open keyring: org.freedesktop.DBus.Error.ServiceUnknown: The name :1.325 was not provided by any .service files.
+`Failed to open keyring: org.freedesktop.DBus.Error.ServiceUnknown: The name :1.325 was not provided by any .service files.`
 
 This is a bug in pip. The workaround is to set the python keyring to null:
 
