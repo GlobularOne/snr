@@ -2,8 +2,10 @@ version: 2
 
 build:
   os: ubuntu-24.04
+  apt_packages:
+    - python3-hivex
   tools:
-    python: "3.11"
+    python: "3.12"
   jobs:
     post_create_environment:
       - curl -sSL https://install.python-poetry.org | python3 -
