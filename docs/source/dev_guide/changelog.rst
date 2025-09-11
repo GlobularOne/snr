@@ -1,0 +1,623 @@
+Changelog
+=========
+
+Quick Access
+------------
+
+-  `Legacy Versions <#legacy-versions>`__
+-  `Stable <#v1-5x-stable>`__
+-  `Beta <#v1-6x>`__
+-  `v1.0.X <#v1-0-x>`__
+-  `v1.1.X <#v1-1-x>`__
+-  `v1.2.X <#v1-2-x>`__
+-  `v1.3.X <#v1-3-x>`__
+-  `v1.4.X <#v1-4-x>`__
+-  `v1.5.X <#v1-5-x-stable>`__
+-  `v1.6.X <#v1-6-x>`__
+
+Legacy Versions
+---------------
+
+v0.0.1
+~~~~~~
+
+Initial release.
+
+v0.1.0
+~~~~~~
+
+-  Additions:
+
+   -  ``info`` command.
+
+   -  Ensure traceback is distinct enough.
+
+   -  Add payload count to the banner.
+
+-  Bugfixes:
+
+   -  Fix banner coloring issues.
+
+Some under-the-hood changes and code improvements.
+
+v1.0.X
+------
+
+v1.0.0
+~~~~~~
+
+This release is a huge step forward for snr, truly its transformation
+into an application worthy.
+
+-  Additions:
+
+   -  editorconfig file to ensure style across IDEs and text editors.
+
+   -  Now using logging methods automatically writes them to a log file
+      as well.
+
+   -  Use docker and docker compose.
+
+   -  Payload class, with most common functionality needed for payloads
+      as functions to ease writing payloads even more.
+
+   -  New utilities (like ``bytes_to_str_repr``.)
+
+   -  New ``ProgramWrapper`` options: ``fakeroot``, ``fakechroot`` and
+      ``sudo``. It allows you to run a program with fake root
+      permissions, prepare for a fakechroot environment and ask for root
+      using ``sudo``.
+
+   -  Now program wrapper’s expose the ``SubprocessError`` exception
+      class for better access.
+
+   -  A huge set of program wrappers have been added.
+
+   -  Add builtin debugger support (for when an uncaught exception
+      occurs or ``print_fatal`` is used.)
+
+   -  Add ``pdb`` command to drop to a shell.
+
+   -  Several new paths, ``DATA_PATH``, ``STATE_PATH`` and XDG ones: The
+      XDG basedir compliant paths.
+
+   -  Default DNS nameservers and hostname of generated host images can
+      now be changed on command line.
+
+   -  Default exit code can now be configured as well (on command line
+      as: ``--default-exit_code``.)
+
+   -  Config file! Snr can now be configured with its config file inside
+      ``~/.config/snr/main.conf`` (technically:
+      ``$XDG_CONFIG_HOME/snr/main.conf``)
+
+   -  ``BlockInfo`` a more pythonic way of handling block information.
+
+   -  Now you can set value of some flags using environment variables.
+
+   -  The init routine now has demands agreement to a disclaimer before
+      continuing.
+
+   -  Fix a ton of type-annotation mistakes.
+
+-  Improvements:
+
+   -  Get rid of the confirmation on initialization.
+
+   -  ``run_executable`` (now ``misc/run_executable``) payload searches
+      for the executable better.
+
+   -  ``clear`` command now does a better job at clearing the screen.
+
+   -  Snr no longer requires root permissions (almost, with the
+      exception of two parts.)
+
+   -  Snr no longer depends on ``dosfstools``, ``gdisk`` and ``parted``.
+      (It uses the ones in the host image.)
+
+   -  ``run_command`` (now ``misc/run_command``) now runs accepts
+      several commands, and also writes them into a bash file to ensure
+      better function.
+
+   -  ``unix_user_management`` is now called
+      ``tampering/user_management`` will soon have windows support as
+      well.
+
+   -  Merge ``bios_disk_encryption`` with ``uefi_disk_encryption`` (as
+      ``tampering/disk_encryption``.)
+
+   -  Use factory pattern for program wrappers.
+
+   -  Significantly improved CI/CD.
+
+   -  Fully comply with XDG basedir specifications.
+
+   -  Running snr from source code shows more information about the
+      state of the version. Now, running from the source code shows git
+      commit hash and whatever it was modified or not. Examples for the
+      version (``snr.version.__version__``) Not running from source
+      code:
+
+      .. code:: text
+
+         1.0.0
+
+      Running from source code, no code modification:
+
+      .. code:: text
+
+         1.0.0-gitXXXXXXX
+
+      Running from source code, with untracked or uncommitted
+      modifications:
+
+      .. code:: text
+
+         1.0.0-gitXXXXXXX*
+
+   -  Convert docstrings to Google style
+
+   -  Stop the wrong process of importing everything in the library with
+      an underscore (importing ``os`` as ``_os``) and instead prefer
+      google’s method. Import only the modules so everything is well
+      known (instead of
+      ``from snr.core.util.common_utils import print_ok as _print_ok``
+      use ``from snr.core.util import common_utils``.)
+
+-  Breaking changes:
+
+   -  Migrate from Debian stable rootfs to Ubuntu LTS rootfs.
+
+   -  Merge ``libsnr`` and ``snr_payloads`` with snr (``libsnr.core`` is
+      now ``snr.core.core``.)
+
+   -  Remove the ``Table`` class and use the ``rich.table`` project
+      instead.
+
+   -  Payloads are no longer one single python file but a package.
+
+   -  Move away from pure old pip to use poetry.
+
+   -  Use ``click`` and ``prompt-toolkit`` instead of a homegrown
+      solution for commands.
+
+   -  Now payloads are categorized by what they do.
+
+   -  Remove the payload set update mechanism and library version check
+      as they are no longer needed.
+
+   -  AtFormatter now looks for ``"@variable@"`` instead of
+      ``@variable@`` to ensure that the code is still correct by syntax
+      if the intended type is not string.
+
+   -  Version string is now in format:
+      ``snr {snr_version} {dependency}/{dependency_version}...``.
+
+   -  Using ``--verbose`` and ``--quiet`` now simply cancel each other
+      out instead of whichever that came last.
+
+   -  Context is no longer a dictionary but a whole class by itself.
+
+   -  ``ChrootProgramWrapper`` no longer exists, use the factory at
+      ``core.util.chroot_program_wrapper``.
+
+   -  ``options.prompt`` no longer exists, instead use
+      ``snr.cli.interactive_shell.prompt``.
+
+   -  ``misc/run_command`` now uses ``COMMANDS``, and not ``COMMAND``.
+
+   -  Now host rootfs image is inside the share directory, not the cache
+      directory.
+
+   -  Storage utilities in ``snr.core.payload.storage`` now function
+      with ``BlockInfo``.
+
+   -  Remove ``version.DEVELOPMENT``.
+
+   -  Remove snr development options (and subsequently ``dev_snr``
+      script).
+
+   -  ``-V`` is no longer a recognized flag, and ``-v`` is now for
+      ``--verbose``, to get version, use ``--version``.
+
+   -  ``-c`` and ``--code`` flag no longer exist, snr no longer supports
+      running snr commands non-interactively (which also means
+      ``options.interactive`` no longer exists) And we would advise
+      against running snr non-interactively using pipes.
+
+   -  ``snr.core.util.programs`` is no longer a directory of program
+      wrappers, but a file with all the program wrappers.
+
+   -  Drop usage of Doxygen and use sphinx.
+
+Several under the hood changes and minor improvements.
+
+v1.0.1
+~~~~~~
+
+-  Bug fixes:
+
+   -  Several init process bugs fixed.
+
+   -  Several docker bugs fixed.
+
+   -  Build scripts improved.
+
+v1.1.x
+------
+
+v1.1.0
+~~~~~~
+
+-  Additions:
+
+   -  snr core utility to download things over the internet.
+
+   -  Several new payloads: ``access/bypass_login``,
+      ``extraction/account_hashes``, ``extraction/files``,
+      ``infection/meterpreter``, ``misc/multi``, ``tampering/files``.
+
+   -  Let payloads document the OS they support as target.
+
+   -  Payload generation method itself is now inside the core library as
+      well.
+
+   -  Path wrappers: Wrap ``os`` and ``shutil`` functions around a
+      certain path to help with reducing the amount of
+      ``os.path.join``\ ’s one would have to write.
+
+   -  Significant new additions to the payload-directed parts of core
+      library, allowing a much much more clean interface. Including a
+      new unified interface to mount partitions.
+
+   -  ``temp_chdir``: A new method to temporarily change CWD.
+
+   -  Payloads now can additionally require a variable to be required,
+      reducing unneeded checks in many payloads.
+
+   -  ``--user-agent`` flag now that we can download things on the
+      internet (and subsequently new config value
+      ``default_user_agent``.)
+
+   -  Rootfs versioning: This help keeping tracking of rootfs changes to
+      root out possible issues caused by missing packages in an older
+      version.
+
+   -  New flag: ``--init-only`` Tells snr to only initialize if needed
+      and do not start the shell.
+
+   -  ``--init-if-needed`` Added. Tells snr to initialize if needed,
+      replacing the ``--reinit`` flag. Can be mixed with ``--init-only``
+      to only initialize if needed and not start the shell. It also can
+      be used in place of ``--init`` but there is no plan to deprecate
+      ``--init``.
+
+   -  Document usage of ``--init-if-needed`` and ``--init-only`` in
+      ``deeper_introduction`` as well.
+
+-  Improvements:
+
+   -  Now every payload gets run in its own directory, even if there are
+      multiple payloads nested thanks to a new mechanism of storing the
+      original cwd.
+
+   -  Refactored and improved several payloads.
+
+   -  Now all of the payload generation process is available inside
+      ``snr.core.payload_generation``.
+
+   -  Now no builtin payloads require any dependencies to be installed
+      during payload generation process. However the necessary
+      infrastructure still exists to facilitate writing custom payloads
+      and there is no plan to remove it. This helps with reducing
+      unnecessary downloads at payload generation time while ensuring
+      custom payloads have a clean way of declaring and ensuring
+      dependencies.
+
+   -  Init process refactored and is now more verbose to the console
+      about what it is doing.
+
+   -  Colored prompt is back. Now the prompt is green, bold and italic.
+
+   -  Refactor and improve the ``SnrLexer``, it is now almost twice
+      faster (which also effects the documentation generation.)
+
+   -  Use themes for the prompt.
+
+   -  License the documentation as GNU FDL instead of the project’s GNU
+      GPL as it is the more suitable license.
+
+   -  Significant documentation improvements. Now snr has documentation
+      for developing new payloads and commands.
+
+-  Deprecations:
+
+   -  ``data_open``, ``data_mkdir``, ``rootfs_makedirs``,
+      ``rootfs_open`` have been deprecated in favor of path wrapper
+      based solutions.
+
+   -  ``--reinit`` flag have been deprecated in favor of
+      ``--init-if-needed`` and ``--init-only`` to provide better control
+      over the invocation to the user.
+
+v1.1.1
+~~~~~~
+
+-  Bug fixes:
+
+   -  Now ``access/bypass_login`` ensures cleans backup files before
+      making another backup, so if the payload is run twice it won’t
+      error out.
+
+   -  Minor bug fixes which can hardly be felt by the end user.
+
+v1.1.2
+~~~~~~
+
+-  Bug fixes:
+
+   -  ``infection/meterpreter``: Fix bug result of using relative paths.
+
+v1.2.X
+------
+
+v1.2.0
+~~~~~~
+
+-  Additions:
+
+   -  New payload: ``access/ssh_server``.
+
+   -  snrgen: Non-interactive mode for snr.
+
+v1.2.1
+~~~~~~
+
+Release to push bug fixes of v1.1.2 as well.
+
+v1.2.2
+~~~~~~
+
+-  Additions:
+
+   -  Snr core API for manipulating NT registry hives
+      (``snr.core.payload.nt_registry``.)
+
+   -  New payload: ``tampering/registry``.
+
+-  Improvements:
+
+   -  ``infection/meterpreter`` now supports windows as well.
+
+v1.2.3
+~~~~~~
+
+This release promotes the 1.2.X branch as stable.
+
+-  Additions:
+
+   -  Now ``tampering/user_management`` shows an error message when it
+      sees an operating system it doesn’t recognize.
+
+   -  Improve documentation on a common error in pip and its workaround.
+
+   -  Snr core support for NT registries.
+
+   -  ``tampering/registry``: New payload to change registries.
+
+-  Improvements:
+
+   -  ``infection/meterpreter``: Now has windows support!
+
+   -  Several under the hood code cleanups
+
+-  Bug fixes:
+
+   -  Improve the README and documentation to ensure remnants of the
+      legacy version are no longer there.
+
+v1.3.X
+------
+
+v1.3.0
+~~~~~~
+
+This release aims to make Snr more comfortable for the end user.
+
+-  Additions:
+
+   -  Network interfaces snr core utils, allowing gathering data on
+      network interfaces.
+
+   -  Payload variable validation.
+
+   -  As per the new validations, now commands show a more accurate type
+      for variables (VALID_PORT causes an int variable to become a port
+      number, not just an int.)
+
+   -  Documentation for validators on ``payload_development`` guide.
+
+   -  New development tool: ``bypass_init``. It creates the directories
+      snr needs and an empty file as rootfs to essentially bypass init
+      for usages other than generating payloads (that obviously wouldn’t
+      work.)
+
+   -  Document release steps to ensure mistakes won’t happen again.
+
+   -  Allow toggling of Option variables using syntax:
+      ``set <var_name> !``.
+
+   -  Allow expansion of variables as ``${<var_name>}``.
+
+   -  Now ``set`` command based on flags tries to return type as
+      something more descriptive, like ``IP Address`` or ``Port Number``
+      once the flags are passed.
+
+   -  ``unset`` (and subsequently ``set``) no longer error out when
+      trying to unset payload-defined variables, but instead reset it to
+      its default value.
+
+   -  Snr now shows tips at each shell setup (after each time getting
+      run or reloaded).
+
+   -  Once ``VALID_IP``, ``VALID_IPV4`` or ``VALID_IPV6`` flag is passed
+      for a variable, user can enter interface name, or domain name and
+      Snr would retrieve the IP for the payload.
+
+   -  Payload generation now shows a progress bar.
+
+-  Improvements:
+
+   -  Ensure all tools have the executable bit.
+
+   -  Use validators in all built-in payloads.
+
+   -  Now ``set`` command instead of just showing the types, (even if no
+      flags are passed) uses a more friendly type name:
+
+      -  ``String`` for ``str``.
+      -  ``Number`` for ``int``.
+      -  ``Option`` for ``bool``.
+      -  ``String List`` for ``list[str]``.
+
+-  Breaking changes:
+
+   -  Payload generation steps are now generators. This helps creating a
+      more pleasant experience for users.
+
+v1.3.1
+~~~~~~
+
+-  Bug fixes:
+
+   -  Fix several critical bugs
+
+Lots of under the hood changes to formatting, typing, etc.
+
+v1.3.2
+~~~~~~
+
+-  Bug fixes:
+
+   -  Fix another set of critical bugs.
+
+v1.3.3
+~~~~~~
+
+-  Bug fixes:
+
+   -  Fix a yet another set of bugs.
+
+v1.4.X
+------
+
+v1.4.0
+~~~~~~
+
+This release is aimed at making writing payloads even easier and also
+stabilization of Snr.
+
+-  Breaking changes:
+
+   -  ``data_open`` and ``data_mkdir`` have been finally removed after
+      being deprecated from version ``1.1.0``.
+
+-  Additions:
+
+   -  Now the payload’s storage utilities allows detection of what kind
+      of partition is mounted based on content.
+
+   -  Now it is easier to exclude the payload’s host device when looping
+      over devices or partitions.
+
+-  Improvements:
+
+   -  All built-in payloads use the new storage utility.
+
+   -  Now the entry point automatically writes the payload started and
+      completed messages, guessing from module docstring.
+
+   -  Test cases for 100% coverage of Snr core payloads library.
+
+   -  The prompt is now ``Snr>`` and not ``snr>``. Minor detail.
+
+-  Bug fixes:
+
+   -  A few more bugs have been fixed.
+
+v1.4.1
+~~~~~~
+
+-  Bug fixes:
+
+   -  Fix a bug in ``payload_generation_post``.
+
+v1.5.X (Stable)
+---------------
+
+v1.5.0
+~~~~~~
+
+-  Breaking changes:
+
+   -  Remove long deprecated ``rootfs_open`` and ``rootfs_makedirs``.
+
+   -  Drop support for backwards rootfs versions.
+
+-  Deprecations:
+
+   -  Deprecate usage of a boolean as payload variable flags.
+
+-  Additions:
+
+   -  New rootfs version using Ubuntu 24.04 LTS.
+
+-  Bug fixes:
+
+   -  Fix minor documentation bugs.
+
+v1.5.1
+~~~~~~
+
+Release to push bug fixes of v1.4.1 as well.
+
+1.5.2
+~~~~~
+
+-  Bug fixes:
+
+   -  Ensure ``bypass_init.sh`` also is XDG basedir compliant.
+   -  Many documentation improvements.
+
+This release bumps dependencies and promotes the 1.5.X branch to stable.
+
+v1.6.X
+------
+
+.. _section-1:
+
+1.6.0
+~~~~~
+
+-  Additions:
+
+   -  Add checks to initialization routine for required tools so on lack
+      of one it fails gracefully
+   -  Add new command “history” that allows for viewing and managing
+      command-line history
+
+-  Improvements:
+
+   -  Documentation
+   -  Bump dependency versions
+   -  Set now gives a message that no variables are defined instead of
+      just printing an empty table
+   -  Move to Python 3.12
+   -  Code Quality Improvements
+
+-  Bug fixes:
+
+   -  Fix a minor bug in which the highlighter wouldn’t highlight a
+      command before you add whitespace
+   -  Fix a bug in tips
+   -  Fix a minor bug in ``generate``\ ’s help message

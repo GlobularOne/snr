@@ -45,16 +45,19 @@ If you are interesting in developing your own payloads do not forget to read our
    dev_guide/command_development/develop_your_own
    dev_guide/command_development/highlighting
 
+.. toctree::
+   :maxdepth: 2
+   :caption: Snr Changelog
+
+   dev_guide/changelog
+
 
 .. toctree::
    :maxdepth: 3
    :caption: API Reference
 
    ref/snr
-   ref/snr.core
-   ref/snr.cli
    fdl
-   dev_guide/release_checklist
 
 
 Indices and tables
