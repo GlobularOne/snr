@@ -470,6 +470,8 @@ This release bumps dependencies and promotes the 1.5.X branch to stable.
   - Documentation
   - Bump dependency versions
   - Set now gives a message that no variables are defined instead of just printing an empty table
+  - Move to Python 3.12
+  - Code Quality Improvements
 
 - Bug fixes:
 
