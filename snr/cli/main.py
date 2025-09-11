@@ -5,6 +5,8 @@ import bdb
 import os
 import pathlib
 import sys
+import stat
+import time
 from typing import Any
 
 import click
@@ -42,19 +44,11 @@ def _show_version(show_version: bool) -> None:
         sys.exit(0)
 
 
-def _handle_init(do_init: bool, do_reinit: bool, init_only: bool, init_if_needed: bool) -> None:
+def _handle_init(do_init: bool, init_only: bool, init_if_needed: bool) -> None:
     common_paths.format_rootfs_archive_path(arch.get_arch())
     should_initialize = False
     # Check the made by value
-    if do_reinit:
-        if do_init:
-            # Just issue a warning that this combination
-            # doesn't sound very valid
-            common_utils.print_warning("--init and --reinit used together")
-        common_utils.print_warning(
-            "--reinit has been deprecated. Use --init-if-needed instead")
-        should_initialize = True
-    elif not os.path.exists(common_paths.ROOTFS_ARCHIVE_PATH):
+    if not os.path.exists(common_paths.ROOTFS_ARCHIVE_PATH):
         # Are we allowed to initialize
         if do_init or init_if_needed:
             should_initialize = True
@@ -62,17 +56,22 @@ def _handle_init(do_init: bool, do_reinit: bool, init_only: bool, init_if_needed
             common_utils.print_fatal(
                 "Please re-run snr with --init to initialize")
     rootfs_version = common_utils.get_rootfs_version()
-    if rootfs_version != common_paths.ROOTFS_CURRENT_VERSION and init_if_needed:
+    rootfs_mtime_diff = int(
+        time.time()) - int(os.stat(common_paths.ROOTFS_ARCHIVE_PATH).st_mtime)
+    if rootfs_mtime_diff > 0:
+        common_utils.print_warning("Your rootfs has seemingly time traveled")
+        rootfs_mtime_diff = 60 * 24 * 30
+    if (rootfs_version != common_paths.ROOTFS_CURRENT_VERSION or rootfs_mtime_diff >= 60 * 24 * 30) and init_if_needed:
         should_initialize = True
     if not should_initialize:
         if rootfs_version < common_paths.ROOTFS_MIN_VERSION:
 
             common_utils.print_fatal(
-                "Incompatible version found. Please re-run snr with --reinit"
+                "Incompatible version found. Please re-run snr with --init-if-needed"
             )
-        elif rootfs_version != common_paths.ROOTFS_CURRENT_VERSION:
+        elif rootfs_version != common_paths.ROOTFS_CURRENT_VERSION or rootfs_mtime_diff >= 60 * 24 * 30:
             common_utils.print_warning(
-                "It is advised to re-run snr with --reinit"
+                "It is advised to re-run snr with --init-if-needed"
             )
     else:
         options.initializing = True
@@ -118,12 +117,6 @@ def _setup_shell() -> None:
               is_flag=True,
               show_default=True,
               help="Initialize snr")
-@click.option("--reinit", "do_reinit",
-              default=False,
-              is_flag=True,
-              show_default=True,
-              help="Force initialize, even if it seems like"
-              " initialization has been done before")
 @click.option("--init-only",
               default=False,
               is_flag=True,
@@ -171,7 +164,7 @@ def _setup_shell() -> None:
 def _main(verbose: bool, quiet: bool, payload_arch: str, host_primary_nameserver: str,
           host_secondary_nameserver: str, host_hostname: str, user_agent: str,
           default_exit_code: int, debug: bool, show_version: bool, do_init: bool = False, init_only: bool = False,
-          init_if_needed: bool = False, do_reinit: bool = False, **_: Any) -> None:
+          init_if_needed: bool = False, **_: Any) -> None:
     """Stick 'n' Run (snr)"""
     common_utils.print_debug("Installing rich traceback handler")
     rich.traceback.install()
@@ -189,7 +182,7 @@ def _main(verbose: bool, quiet: bool, payload_arch: str, host_primary_nameserver
     options.debug = debug
     console.console.no_color = options.quiet
     console.err_console.no_color = options.quiet
-    _handle_init(do_init, do_reinit, init_only, init_if_needed)
+    _handle_init(do_init, init_only, init_if_needed)
     common_utils.print_debug("Setting up shell")
     _setup_shell()
     interactive_shell.interactive_shell()  # pylint: disable=no-value-for-parameter

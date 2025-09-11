@@ -184,7 +184,6 @@ def handle_non_interactive_mode(ctx: click.Context, **kwargs: Any) -> None:
 @click.option("--init", "do_init", is_flag=True)
 @click.option("--init-only", is_flag=True)
 @click.option("--init-if-needed", is_flag=True)
-@click.option("--reinit", "do_reinit", is_flag=True)
 @click.option("--host-primary-nameserver")
 @click.option("--host-secondary-nameserver")
 @click.option("--host-hostname")
