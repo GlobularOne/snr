@@ -1,4 +1,4 @@
-name: Run Pylint
+name: Lint
 
 on:
   push:
