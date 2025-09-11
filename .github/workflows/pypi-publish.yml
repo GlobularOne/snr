@@ -23,7 +23,7 @@ jobs:
 
       - name: Install Poetry
         uses: Gr1N/setup-poetry@48b0f77c8c1b1b19cb962f0f00dff7b4be8f81ec
-s
+
       - name: Build payloads
         run: |
           chmod +x tools/build_payloads.sh
