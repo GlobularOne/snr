@@ -10,7 +10,7 @@ PASSPHRASES = "@PASSPHRASES@"
 
 
 @entry_point.entry_point
-def main(block_info: storage.BlocksType, *_) -> None:
+def main(block_info: storage.BlocksType, *_) -> None:  # type: ignore
     for part in storage.query_all_partitions(block_info):
         with storage.mount_partition(part, PASSPHRASES) as mounted_part:
             if mounted_part.is_windows():
@@ -30,10 +30,11 @@ def main(block_info: storage.BlocksType, *_) -> None:
                                 parent_node = new_node
                             # Now parent_node is our node
                             node = parent_node
-                        node.new_data(key, getattr(
-                            nt_registry, type_), REGISTRIES[raw_key])
+                        node.new_data(key, getattr(nt_registry, type_),
+                                      REGISTRIES[raw_key])  # type: ignore
             else:
                 common_utils.print_warning("Unknown operating system!")
 
+
 if __name__ == "__main__":
-    main()
+    main()  # type: ignore

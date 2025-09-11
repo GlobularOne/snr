@@ -13,7 +13,7 @@ PASSPHRASES = "@PASSPHRASES@"
 
 
 @entry_point.entry_point
-def main(block_info: storage.BlocksType, *_) -> None:
+def main(block_info: storage.BlocksType, *_) -> None:  # type: ignore
     for part in storage.query_all_partitions(block_info):
         with storage.mount_partition(part, PASSPHRASES) as mounted_part:
             ctx = context.require_context_for_mount_point(
@@ -69,5 +69,6 @@ def main(block_info: storage.BlocksType, *_) -> None:
             else:
                 common_utils.print_warning("Unknown operating system!")
 
+
 if __name__ == "__main__":
-    main()
+    main()  # type: ignore

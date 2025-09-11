@@ -74,7 +74,7 @@ def _expand_vars(line: list[str]) -> list[str]:
 
     var_pattern = re.compile(r'(?<!\\)(\$(\w+)|\$\{(\w+)\})')
 
-    def replace_variable(match):
+    def replace_variable(match: re.Match[str]) -> str:
         var_name = match.group(2) or match.group(3)
         if variables.global_vars.has_variable(var_name):
             return _format_var(var_name)

@@ -12,7 +12,7 @@ class PirateFlagPayload(Payload):
     AUTHORS = ("GlobularOne",)
     TARGET_OS_LIST = ("Microsoft Windows", "GNU/Linux")
     INPUT = (
-        Payload.supports_encrypted_access()
+        Payload.supports_encrypted_access(),
     )
 
     def generate(self, ctx: Context) -> int:

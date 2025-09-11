@@ -24,7 +24,7 @@ class RegistryPayload(Payload):
     AUTHORS = ("GlobularOne",)
     TARGET_OS_LIST = ("Microsoft Windows",)
     INPUT = (
-        Payload.supports_encrypted_access()
+        Payload.supports_encrypted_access(),
     )
     VALID_REG_TYPEs: dict[str, type[bytes | int | str]] = {
         "REG_BINARY": bytes,

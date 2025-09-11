@@ -17,7 +17,7 @@ EntryPointType = Callable[[
 
 
 def entry_point(func: EntryPointType | None = None,
-                no_lvm: bool = False):
+                no_lvm: bool = False) -> Callable[[], None] | Callable[[EntryPointType], Callable[[], None]]:
     """Payload entry point decorator
 
     Args:
@@ -36,9 +36,9 @@ def entry_point(func: EntryPointType | None = None,
             common_utils.print_debug(f"{payload_name} started")
             if len(inspect.signature(func).parameters) > 0:
                 block_info, root_ctx, our_device = storage.setup(no_lvm=no_lvm)
-                func(block_info, root_ctx, our_device)
+                func(block_info, root_ctx, our_device)  # type: ignore
             else:
-                func()
+                func()  # type: ignore
             common_utils.print_ok(f"{payload_name} completed")
         except Exception:  # pylint: disable=broad-exception-caught
             common_utils.handle_exception()

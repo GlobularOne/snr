@@ -120,7 +120,7 @@ class VariableManager:
         """
         return name in self._variables
 
-    def set_variable(self, name: str, value: VariableType,
+    def set_variable(self, name: str, value: VariableType | None,
                      info_length: int = -1, info_description: str = "",
                      flags: VariableFlags = VariableFlags.NORMAL) -> None:
         """Set value of variable.

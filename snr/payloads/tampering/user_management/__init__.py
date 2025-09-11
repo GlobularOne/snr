@@ -7,7 +7,7 @@ from snr.core.payload.payload import VALID_STRING, Context, Payload
 class UserManagementPayload(Payload):
     AUTHORS = ("GlobularOne",)
     TARGET_OS_LIST = ("GNU/Linux",)
-    INPUT = (
+    INPUT = (  # type: ignore
         ("PAIRS", [], -1, "User:Password pairs, Changes user's password", VALID_STRING),
         ("USERS", [], -1, "List of users to add or delete, -<USERNAME> deletes a user", VALID_STRING),
         ("GROUPS", [], -1, "List of groups to add or delete, -<USERNAME> deletes a group", VALID_STRING),

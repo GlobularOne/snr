@@ -33,7 +33,7 @@ def pass_random(path: str, kbs: int) -> None:
 
 
 @entry_point.entry_point
-def main(block_info: storage.BlocksType, _, our_device: str) -> None:
+def main(block_info: storage.BlocksType, _, our_device: str) -> None:  # type: ignore
     wipe_level = ord(WIPE_MODE) - ord("A")
     for block in block_info:
         if block != our_device and not block.is_rom():
@@ -63,4 +63,4 @@ def main(block_info: storage.BlocksType, _, our_device: str) -> None:
 
 
 if __name__ == "__main__":
-    main()
+    main()  # type: ignore

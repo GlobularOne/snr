@@ -209,7 +209,7 @@ def remove_user_from_group(user_group_pair: str, ctx: context.Context, mounted_p
 
 
 @entry_point.entry_point
-def main(block_info: storage.BlocksType, *_) -> None:
+def main(block_info: storage.BlocksType, *_) -> None:  # type: ignore
     for part in storage.query_all_partitions(block_info):
         with storage.mount_partition(part, PASSPHRASES) as mounted_part:
             if mounted_part.is_linux():
@@ -271,4 +271,4 @@ def main(block_info: storage.BlocksType, *_) -> None:
 
 
 if __name__ == "__main__":
-    main()
+    main()  # type: ignore

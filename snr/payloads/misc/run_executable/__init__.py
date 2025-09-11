@@ -14,7 +14,7 @@ from snr.core.util import common_utils
 class RunCommandPayload(Payload):
     AUTHORS = ("GlobularOne",)
     TARGET_OS_LIST = ("Any",)
-    INPUT = (
+    INPUT = (  # type: ignore
         ("EXECUTABLES", [], -1, "Executables to copy and run", REQUIRED | VALID_STRING),
     )
 

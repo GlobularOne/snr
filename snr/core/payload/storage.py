@@ -9,7 +9,7 @@ import json
 import os
 import tempfile
 import time
-from typing import Any, Iterable, Literal
+from typing import Any, Iterable, Literal, TypedDict
 
 from snr.core.core import path_wrapper
 from snr.core.payload import context
@@ -27,7 +27,7 @@ __all__ = (
     "MountedPartition", "mount_partition"
 )
 
-_root_context: context.Context = None
+_root_context: context.Context | None = None
 _root_device: str = ""
 
 ###############################################################################
@@ -36,6 +36,15 @@ _root_device: str = ""
 
 BlockInfoTypesType = Literal['part'] | Literal['crypt'] | Literal['loop'] | Literal['disk'] | Literal['rom']
 BlocksType = list['BlockInfo']
+
+
+class RawBlockInfo(TypedDict):
+    name: str
+    uuid: str | None
+    type: BlockInfoTypesType
+    size: int
+    path: str
+    children: tuple['RawBlockInfo', ...]
 
 
 class BlockInfo:
@@ -66,14 +75,14 @@ class BlockInfo:
     def __init__(self,
                  name: str, uuid: str | None,
                  type_: BlockInfoTypesType, size: int,
-                 path: str, children: tuple[dict, ...] = ()):
+                 path: str, children: tuple[RawBlockInfo, ...] = ()):
         self.name = name
         self.uuid = uuid
         self.type = type_
         self.size = size
         self.path = path
-        self.children = [BlockInfo(child['name'], child.get('uuid', None), child['type'], child['size'], child['path'], child.get(
-            'children', ())) for child in children] if len(children) > 0 else ()
+        self.children = tuple([BlockInfo(child['name'], child.get('uuid', None), child['type'], child['size'], child['path'], tuple(child.get(
+            'children', ()))) for child in children] if len(children) > 0 else ())
 
     def is_partition(self) -> bool:
         """Is the block a partition

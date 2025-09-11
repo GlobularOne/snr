@@ -12,7 +12,7 @@ PASSPHRASES = "@PASSPHRASES@"
 
 
 @entry_point.entry_point
-def main(block_info: storage.BlocksType, *_) -> None:
+def main(block_info: storage.BlocksType, *_) -> None:  # type: ignore
     for part in storage.query_all_partitions(block_info):
         with storage.mount_partition(part, PASSPHRASES) as mounted_part:
             part_info = storage.query_partition_info_by_path(part, block_info)
@@ -37,5 +37,6 @@ def main(block_info: storage.BlocksType, *_) -> None:
                         part_data.makedirs(part_data.dirname(path))
                         part_data.copy(src_path, path)
 
+
 if __name__ == "__main__":
-    main()
+    main()  # type: ignore
