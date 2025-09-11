@@ -605,6 +605,7 @@ v1.6.X
       of one it fails gracefully
    -  Add new command “history” that allows for viewing and managing
       command-line history
+   -  Add a check to warn the user if the rootfs is too old
 
 -  Improvements:
 
@@ -621,3 +622,7 @@ v1.6.X
       command before you add whitespace
    -  Fix a bug in tips
    -  Fix a minor bug in ``generate``\ ’s help message
+
+-  Breaking changes:
+
+   -  Remove long deprecated ``--reinit``.
